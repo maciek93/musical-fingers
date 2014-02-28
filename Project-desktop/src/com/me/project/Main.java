@@ -8,8 +8,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Project";
 		cfg.useGL20 = false;
-		cfg.width = 1280;
-		cfg.height = 800;
+		cfg.width = 1024;
+		cfg.height = 512;
 		
 		new LwjglApplication(new Interface(), cfg);
 	}
