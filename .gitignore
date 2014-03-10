@@ -6,4 +6,4 @@
 *.ear
 
 # External libraries #
-!/lib/*
+!Musical-fingers/lib/*.jar
