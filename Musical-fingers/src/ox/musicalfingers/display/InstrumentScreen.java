@@ -9,12 +9,18 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.leapmotion.leap.Frame;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import ox.musicalfingers.leap.LeapMotion;
 
 public class InstrumentScreen implements Screen {
 	 SpriteBatch batch;
 	 Texture texture;
 	 BitmapFont font;
+	 LeapMotion leap = new LeapMotion(this);
+	 boolean[] taps;
 	 float x = 0;
 	 boolean recording = false;
 	 boolean playing = false;
@@ -38,11 +44,16 @@ public class InstrumentScreen implements Screen {
     		 }
 	 }
   
+	 public void setTaps(boolean[] taps) {
+		 this.taps = taps;
+	 }
+	 
 	@Override
 	public void init() {
 
 		batch = new SpriteBatch();
-        	texture = new Texture(Gdx.files.internal("assets/keys.png")); 
+        	texture = new Texture(Gdx.files.internal("assets/keys.png"));
+        leap = new LeapMotion(this);
 	 	font = new BitmapFont();
 	 	font.setScale(1,-1);
 		font.setColor(Color.RED);
@@ -56,9 +67,18 @@ public class InstrumentScreen implements Screen {
 	@Override
 	public void update() {
 		
-		x = Gdx.input.getX(0);
+		//x = Gdx.input.getX(0);
 		
-    	 	if (Gdx.input.justTouched() && playing==false) {
+			for(int i = 0; i < 10; i++) {
+				if(taps[0])  playnote(1,sound1);
+         		else if(taps[1])  playnote(2,sound2);
+         		else if(taps[2])  playnote(3,sound3);
+         		else if(taps[3])  playnote(4,sound4);
+         		else  playnote(5,sound5);
+			}
+		
+		
+    	 	/*if (Gdx.input.justTouched() && playing==false) {
          		if(x<205)  playnote(1,sound1);
          		else if(x<410)  playnote(2,sound2);
          		else if(x<615)  playnote(3,sound3);
@@ -80,7 +100,7 @@ public class InstrumentScreen implements Screen {
     		 if ((Gdx.input.isKeyPressed(Keys.UP)) && recording==false) {
     			 playing = true;
     			 playback(song);
-    	 	}
+    	 	}*/
     	}
 
 	@Override
