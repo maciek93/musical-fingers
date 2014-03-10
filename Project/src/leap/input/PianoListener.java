@@ -21,10 +21,5 @@ class PianoListener extends Listener {
     public void onConnect(Controller controller) {
         controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
     }
-
-    public void onFrame(Controller controller) {
-        Frame frame = controller.frame();
-        leap.processData(frame);
-    }
 }
 

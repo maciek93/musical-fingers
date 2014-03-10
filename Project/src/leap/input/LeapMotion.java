@@ -27,7 +27,8 @@ public class LeapMotion {
 		controller.addListener(pianoListener);
 	}
 	
-	public boolean[] processData(Frame frame) {
+	public boolean[] processData() {
+		Frame frame = controller.frame();
 		FingerList newFingers = frame.fingers();
 		for(Iterator<Finger> fingersIter = newFingers.iterator(); fingersIter.hasNext();) {
 			Finger finger = fingersIter.next();
