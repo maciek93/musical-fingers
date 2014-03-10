@@ -1,4 +1,4 @@
-package leap.input;
+package ox.musicalfingers.leap;
 
 import java.io.IOException;
 import java.lang.Math;

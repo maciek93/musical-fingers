@@ -1,4 +1,4 @@
-package com.me.project;
+package ox.musicalfingers.display;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Input;

@@ -1,4 +1,4 @@
-package leap.input;
+package ox.musicalfingers.leap;
 
 import java.util.Arrays;
 import java.util.HashMap;
