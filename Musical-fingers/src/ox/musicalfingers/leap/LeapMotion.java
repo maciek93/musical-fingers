@@ -33,12 +33,12 @@ public class LeapMotion {
 	}
 	
 	public void processData(Frame frame) {
-		System.out.println("Detected " + frame.gestures().iterator().next().id() + " gesture");
-		System.out.println("Which has " + (new KeyTapGesture(frame.gestures().iterator().next()).pointable().id()) + "Fingers");
+		//System.out.println("Detected " + frame.gestures().iterator().next().id() + " gesture");
+		//System.out.println("Which has " + (new KeyTapGesture(frame.gestures().iterator().next()).pointable().id()) + "Fingers");
 		FingerList newFingers = frame.fingers();
 		for(Iterator<Finger> fingersIter = newFingers.iterator(); fingersIter.hasNext();) {
 			Finger finger = fingersIter.next();
-			System.out.println("Frame has finger " + finger.id());
+			//System.out.println("Frame has finger " + finger.id());
 			if(!fingers.contains(Integer.valueOf(finger.id()))) {
 				identifyFingers(newFingers);
 				break;
@@ -61,7 +61,7 @@ public class LeapMotion {
 
 	private int processGesture(Gesture gesture) {
 		int fingerInt = new KeyTapGesture(gesture).pointable().id();
-		System.out.println("Found finger " + fingers.indexOf(Integer.valueOf(fingerInt)));
+		//System.out.println("Found finger " + fingers.indexOf(Integer.valueOf(fingerInt)));
 		return fingers.indexOf(Integer.valueOf(fingerInt));
 	}
 
@@ -70,7 +70,7 @@ public class LeapMotion {
 		List<Integer> update = new LinkedList<Integer>();
 		for(Iterator<Finger> fingers = newFingers.iterator(); fingers.hasNext();) {
 			Finger finger = fingers.next();
-			System.out.println("Frame has finger " + finger.id());
+			//System.out.println("Frame has finger " + finger.id());
 			fingerMap.put(finger.tipPosition().getX(), finger);
 		}
 		Object[] positions = fingerMap.keySet().toArray();

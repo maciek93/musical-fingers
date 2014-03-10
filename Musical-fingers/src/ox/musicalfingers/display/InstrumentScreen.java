@@ -67,9 +67,14 @@ public class InstrumentScreen implements Screen {
 	@Override
 	public void update() {
 		
+		System.out.println("-");
+		for(int i = 0; i < 5; i++) {
+			if(taps[i]) {System.out.println(taps[i]);};
+		}
+		
 		//x = Gdx.input.getX(0);
 		
-			for(int i = 0; i < 10; i++) {
+			/*for(int i = 0; i < 10; i++) {
 				if(taps[0])  playnote(1,sound1);
          		else if(taps[1])  playnote(2,sound2);
          		else if(taps[2])  playnote(3,sound3);
@@ -78,7 +83,7 @@ public class InstrumentScreen implements Screen {
 			}
 		
 		
-    	 	/*if (Gdx.input.justTouched() && playing==false) {
+    	 	if (Gdx.input.justTouched() && playing==false) {
          		if(x<205)  playnote(1,sound1);
          		else if(x<410)  playnote(2,sound2);
          		else if(x<615)  playnote(3,sound3);
