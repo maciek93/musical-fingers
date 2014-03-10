@@ -64,7 +64,7 @@ public class LeapMotion {
 		}
 		Float[] positions = (Float[]) fingerMap.keySet().toArray();
 		Arrays.sort(positions);
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < positions.length; i++) {
 			update.add(fingerMap.get(positions[i]));
 		}
 		fingers = update;
