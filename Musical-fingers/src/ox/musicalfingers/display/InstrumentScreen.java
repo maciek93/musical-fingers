@@ -74,22 +74,22 @@ public class InstrumentScreen implements Screen {
 		
 		x = Gdx.input.getX(0);
 		
-			for(int i = 0; i < 10; i++) {
+			
 				if(taps[0])  playnote(1,sound1);
          		else if(taps[1])  playnote(2,sound2);
          		else if(taps[2])  playnote(3,sound3);
          		else if(taps[3])  playnote(4,sound4);
          		else if(taps[4])  playnote(5,sound5);
-			}
+			
 		
 		
-    	 	/*if (Gdx.input.justTouched() && playing==false) {
+    	 	if (Gdx.input.justTouched() && playing==false) {
          		if(x<205)  playnote(1,sound1);
          		else if(x<410)  playnote(2,sound2);
          		else if(x<615)  playnote(3,sound3);
          		else if(x<820)  playnote(4,sound4);
          		else  playnote(5,sound5);
-    	 	}*/
+    	 	}
     	 	
     	 	if ((Gdx.input.isKeyPressed(Keys.SPACE)) && recording==false && playing==false) {
     			 t = System.nanoTime();
