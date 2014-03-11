@@ -5,9 +5,5 @@
 *.war
 *.ear
 
-# Classpath and project #
-Musical-fingers/.classpath
-Musical-fingers/.project
-
 # External libraries #
 !Musical-fingers/lib/*.jar
