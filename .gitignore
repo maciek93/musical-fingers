@@ -1,4 +1,9 @@
 *.class
+bin/
+
+#Eclipse metadata and settings#
+.metadata/
+.settings/
 
 # Package Files #
 *.jar
