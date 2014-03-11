@@ -24,7 +24,6 @@ public class LeapMotion {
     private InstrumentScreen screen;
 	private PianoListener pianoListener = new PianoListener(this);
 	private Controller controller = new Controller();
-	List<Integer> fingers = new LinkedList<Integer>();
 	Set<Gesture> currentGestures = new HashSet<Gesture>();
 	
 	public LeapMotion(InstrumentScreen screen) {
@@ -33,25 +32,17 @@ public class LeapMotion {
 	}
 	
 	public void processData(Frame frame) {
-		//System.out.println("Detected " + frame.gestures().iterator().next().id() + " gesture");
-		//System.out.println("Which has " + (new KeyTapGesture(frame.gestures().iterator().next()).pointable().id()) + "Fingers");
-		FingerList newFingers = frame.fingers();
-		for(Iterator<Finger> fingersIter = newFingers.iterator(); fingersIter.hasNext();) {
-			Finger finger = fingersIter.next();
-			//System.out.println("Frame has finger " + finger.id());
-			if(!fingers.contains(Integer.valueOf(finger.id()))) {
-				identifyFingers(newFingers);
-				break;
-			}
-		}
 		GestureList newGestures = frame.gestures();
-		boolean[] taps = new boolean[10];
+		boolean[] taps = new boolean[6];
 		Set<Gesture> update = new HashSet<Gesture>();
 		for(Iterator<Gesture> gestureIter = newGestures.iterator(); gestureIter.hasNext();) {
 			Gesture gesture = gestureIter.next();
-			//if(!currentGestures.contains(gesture)) {
-			taps[processGesture(gesture)] = true;
-			//}
+			if(!currentGestures.contains(gesture)) {
+				int key = processGesture(gesture);
+				if(key >= 0) {
+					taps[key] = true;
+				}
+			}
 			update.add(gesture);
 		}
 		currentGestures = update;
@@ -60,25 +51,25 @@ public class LeapMotion {
 	}
 
 	private int processGesture(Gesture gesture) {
-		int fingerInt = new KeyTapGesture(gesture).pointable().id();
-		//System.out.println("Found finger " + fingers.indexOf(Integer.valueOf(fingerInt)));
-		return fingers.indexOf(Integer.valueOf(fingerInt));
-	}
-
-	private void identifyFingers(FingerList newFingers) {
-		HashMap<Float, Finger> fingerMap = new HashMap<Float, Finger>();
-		List<Integer> update = new LinkedList<Integer>();
-		for(Iterator<Finger> fingers = newFingers.iterator(); fingers.hasNext();) {
-			Finger finger = fingers.next();
-			//System.out.println("Frame has finger " + finger.id());
-			fingerMap.put(finger.tipPosition().getX(), finger);
+		KeyTapGesture tap = new KeyTapGesture(gesture);
+		float x = tap.position().getX();
+		float y = tap.position().getY();
+		double angles = Math.toDegrees(Math.atan2(x,y));
+		int area = (int) Math.round(angles);
+		if(-90 <= area && area < -60) {
+			return 0;
+		} else if (-60 <= area && area < -30) {
+			return 1;
+		} else if (-30 <= area && area < 0) {
+			return 2;
+		} else if (0 <= area && area < 30) {
+			return 3;
+		} else if (30 <= area && area < 60) {
+			return 4;
+		} else if (60 <= area && area < 90) {
+			return 5;
+		} else {
+			return -1;
 		}
-		Object[] positions = fingerMap.keySet().toArray();
-		Arrays.sort(positions);
-		for(int i = 0; i < positions.length; i++) {
-			//System.out.println("Identified finger " + i);
-			update.add(fingerMap.get(positions[i]).id());
-		}
-		fingers = update;
 	}
 }
