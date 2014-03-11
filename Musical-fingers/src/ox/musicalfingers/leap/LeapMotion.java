@@ -20,7 +20,7 @@ import com.leapmotion.leap.KeyTapGesture;
 import com.leapmotion.leap.Pointable;
 
 public class LeapMotion {
-	
+	/*
     private InstrumentScreen screen;
 	private PianoListener pianoListener = new PianoListener(this);
 	private Controller controller = new Controller();
@@ -81,4 +81,5 @@ public class LeapMotion {
 		}
 		fingers = update;
 	}
+	*/
 }

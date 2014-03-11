@@ -9,17 +9,25 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Listener;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import ox.musicalfingers.instrument.DiscreteDisplay;
+import ox.musicalfingers.instrument.DiscreteInput;
+import ox.musicalfingers.instrument.DiscreteOutput;
+import ox.musicalfingers.instrument.Piano.Piano_FiveKey;
+import ox.musicalfingers.instrument.Random.FiveNotes;
 import ox.musicalfingers.leap.LeapMotion;
+import ox.musicalfingers.leap.PianoListener;
 
 public class InstrumentScreen implements Screen {
 	 SpriteBatch batch;
 	 Texture texture;
 	 BitmapFont font;
-	 LeapMotion leap = new LeapMotion(this);
+	
 	 boolean[] taps;
 	 float x = 0;
 	 boolean recording = false;
@@ -33,6 +41,11 @@ public class InstrumentScreen implements Screen {
 	 Sound sound3;
 	 Sound sound4;
 	 Sound sound5;
+	 
+	 Controller controller;
+	 DiscreteInput input;
+	 DiscreteOutput output;
+	 DiscreteDisplay display;
     
 	 public class Note {
     		public int note;
@@ -43,35 +56,43 @@ public class InstrumentScreen implements Screen {
     		       time = b;
     		 }
 	 }
-  
-	 public void setTaps(boolean[] taps) {
-		 this.taps = taps;
-	 }
 	 
 	@Override
 	public void init() {
 
-		batch = new SpriteBatch();
-        	texture = new Texture(Gdx.files.internal("assets/keys.png"));
-        leap = new LeapMotion(this);
-	 	font = new BitmapFont();
-	 	font.setScale(1,-1);
-		font.setColor(Color.RED);
-        	sound1 = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.mp3"));
-        	sound2 = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.mp3"));
-        	sound3 = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.mp3"));
-        	sound4 = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.mp3"));
-        	sound5 = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.mp3"));
+		controller = new Controller();
+		input = new PianoListener();
+		output = new FiveNotes();
+		display = new Piano_FiveKey();
+		
+		controller.addListener((Listener) input);
+		
+		//TEMP 
+		//For recording
+    	sound1 = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.mp3"));
+    	sound2 = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.mp3"));
+    	sound3 = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.mp3"));
+    	sound4 = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.mp3"));
+    	sound5 = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.mp3"));
+    	
+		
 	}
 
 	@Override
 	public void update() {
+		
+		output.playNotes(input.getNotes());
+		display.getNotes(input.getNotes());
+		display.getFingers(controller.frame().fingers());
+		
+		//TODO: Move recording stuff to its own class
 		
 		/*System.out.println("-");
 		for(int i = 0; i < 5; i++) {
 			if(taps[i]) {System.out.println(taps[i]);};
 		}*/
 		
+		/*
 		x = Gdx.input.getX(0);
 		
 			for(int i = 0; i < 10; i++) {
@@ -81,7 +102,7 @@ public class InstrumentScreen implements Screen {
          		else if(taps[3])  playnote(4,sound4);
          		else if(taps[4])  playnote(5,sound5);
 			}
-		
+		*/
 		
     	 	/*if (Gdx.input.justTouched() && playing==false) {
          		if(x<205)  playnote(1,sound1);
@@ -110,6 +131,11 @@ public class InstrumentScreen implements Screen {
 
 	@Override
 	public void draw(SpriteBatch batch) {
+		
+		
+		display.draw(batch);
+		
+		/*
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		//updateInput();
@@ -117,6 +143,8 @@ public class InstrumentScreen implements Screen {
         	batch.draw(texture, 0, 0, 1280, 800);
         	font.draw(batch, Integer.toString(Gdx.input.getX(0)), 200, 200);
         	//batch.end();
+        	 * 
+        	 */
 
 	}
 
@@ -131,11 +159,13 @@ public class InstrumentScreen implements Screen {
 		font.dispose();
 	}
 	
+	
 	public void playnote(int x , Sound s) {
     		if (recording==true) queue.add(new Note(x,(System.nanoTime()-t)));
     		s.stop(); 
     		s.play();
 	 }
+	 
     
     	public void playback(Note[] a) {
     		float t = System.nanoTime();
