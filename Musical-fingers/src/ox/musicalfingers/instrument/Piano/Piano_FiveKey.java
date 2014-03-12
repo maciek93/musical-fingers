@@ -27,9 +27,9 @@ public class Piano_FiveKey implements DiscreteDisplay{
 		pixmap.fill();
 		rectangle = new Texture(pixmap);
 		
-		pixmap = new Pixmap(64,64,Format.RGBA8888);
+		pixmap = new Pixmap(16,16,Format.RGBA8888);
 		pixmap.setColor(1,0,0,1);
-		pixmap.fillCircle( 32, 32, 32 );
+		pixmap.fillCircle( 8, 8, 8 );
 		circle = new Texture( pixmap );
 		pixmap.dispose();
 	}
@@ -66,7 +66,7 @@ public class Piano_FiveKey implements DiscreteDisplay{
 		
 		for(Finger finger : fingers) {
 			batch.setColor(Color.RED);
-			batch.draw(circle,finger.tipPosition().getX()-32,finger.tipPosition().getY()-32);
+			batch.draw(circle,(finger.tipPosition().getX()-8)*(5)+640,finger.tipPosition().getZ()+300-8);
 		}
 		
 	}

@@ -57,21 +57,32 @@ public class PianoListener extends Listener implements DiscreteInput{
     private int processGesture(Gesture gesture) {
 		KeyTapGesture tap = new KeyTapGesture(gesture);
 		float x = tap.position().getX();
-		float y = tap.position().getY();
-		double angles = Math.toDegrees(Math.atan2(x,y));
+		//float y = tap.position().getY();
+		/*double angles = Math.toDegrees(Math.atan2(x,y));
 		int area = (int) Math.round(angles);
-		if(-90 <= area && area < -60) {
+		if (-45 <= area && area < -30) {
 			return 0;
-		} else if (-60 <= area && area < -30) {
+		} else if (-30 <= area && area < -15) {
 			return 1;
-		} else if (-30 <= area && area < 0) {
+		} else if (-15 <= area && area < 15) {
 			return 2;
-		} else if (0 <= area && area < 30) {
+		} else if (15 <= area && area < 30) {
 			return 3;
-		} else if (30 <= area && area < 60) {
+		} else if (30 <= area && area < 45) {
 			return 4;
-		} else if (60 <= area && area < 90) {
-			return 5;
+		} else {
+			return -1;
+		}*/
+		if (-50 <= x && x < -30) {
+			return 0;
+		} else if (-30 <= x && x < -10) {
+			return 1;
+		} else if (-10 <= x && x < 10) {
+			return 2;
+		} else if (10 <= x && x < 30) {
+			return 3;
+		} else if (30 <= x && x < 50) {
+			return 4;
 		} else {
 			return -1;
 		}

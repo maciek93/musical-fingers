@@ -76,11 +76,11 @@ public class InstrumentScreen implements Screen {
 		
 		//TEMP 
 		//For recording
-    	sound1 = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.mp3"));
-    	sound2 = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.mp3"));
-    	sound3 = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.mp3"));
-    	sound4 = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.mp3"));
-    	sound5 = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.mp3"));
+    	sound1 = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.wav"));
+    	sound2 = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.wav"));
+    	sound3 = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.wav"));
+    	sound4 = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.wav"));
+    	sound5 = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.wav"));
     	
 		
 	}
@@ -92,23 +92,30 @@ public class InstrumentScreen implements Screen {
 		display.getNotes(input.getNotes());
 		display.getFingers(controller.frame().fingers());
 		
+		if(recording) {
+			playnote(input.getNotes());
+		}
+		
 		//TODO: Move recording stuff to its own class
 		    	 	
-	 	if ((Gdx.input.isKeyPressed(Keys.SPACE)) && recording==false && playing==false) {
+	 	if ((Gdx.input.isKeyPressed(Keys.SPACE)) && !recording && !playing) {
 			 t = System.nanoTime();
 			 queue = new ConcurrentLinkedQueue<Note>();
 			 recording = true;
 		}
 		 
-		if ((Gdx.input.isKeyPressed(Keys.DOWN)) && recording==true) {
+		if ((Gdx.input.isKeyPressed(Keys.DOWN)) && recording) {
 			 song = queue.toArray(new Note[0]);
 			 recording = false;
 	 	}
 	 
-		if ((Gdx.input.isKeyPressed(Keys.UP)) && recording==false) {
+		if ((Gdx.input.isKeyPressed(Keys.UP)) && !recording && !playing) {
 			 playing = true;
-			 playback(song);
+			 
+			 timer = System.nanoTime();
+			// playback(song);
 	 	}
+		if(playing) playback(song);
     }
 
 	@Override
@@ -130,32 +137,47 @@ public class InstrumentScreen implements Screen {
 	}
 	
 	
-	public void playnote(int x , Sound s) {
-    		if (recording==true) queue.add(new Note(x,(System.nanoTime()-t)));
-    		s.stop(); 
-    		s.play();
+	public void playnote(boolean[] notes) {
+    		//if (recording==true) {System.out.println("Recorded"); queue.add(new Note(x,(System.nanoTime()-t)));}
+    		//s.stop(); 
+    		//s.play();
+		for(int i=0; i< 5;i++) {
+			if(notes[i]) {
+				queue.add(new Note(i,System.nanoTime()-t));
+			}
+		}
 	 }
-	 
+	 float timer = 0;
+	 int i = 0;
     
     	public void playback(Note[] a) {
-    		float t = System.nanoTime();
+    		//float t = System.nanoTime();
     		int n = a.length;
-    		int i = 0;
+    		//int i = 0;
     		int note = 0;
 	    	float time = 0;
-	    	while(i < n) {
+	    	if(i < n) {
     			note = (a[i]).note;
     			time = (a[i]).time;
-    			while(System.nanoTime()-t < time) {
+    			if(System.nanoTime()-timer >= time) {
+    				if(note==0) {sound1.stop(); sound1.play();}
+        			else if(note==1)  {sound2.stop(); sound2.play();}
+        			else if(note==2)  {sound3.stop(); sound3.play();}
+        			else if(note==3) {sound4.stop(); sound4.play();}
+        			else  {sound5.stop(); sound5.play();}
+    				i++;
     			}
+    			/*
     			if(note==1)  playnote(1,sound1);
     			else if(note==2)  playnote(2,sound2);
     			else if(note==3)  playnote(3,sound3);
     			else if(note==4)  playnote(4,sound4);
     			else  playnote(5,sound5);
     			i++;
+    			*/
     		}
-    		playing = false;
+	    	
+    		if(i==n) {playing = false; i = 0;}
     	}
 
 }
