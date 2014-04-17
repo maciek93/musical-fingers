@@ -2,6 +2,7 @@ package ox.musicalfingers.display;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,8 +17,8 @@ public class MusicalFingers implements ApplicationListener{
 	private BitmapFont font;
 	
 	//Screen info
-	private int width = 0;
-	private int height = 0;
+	public static int width = 0;
+	public static int height = 0;
 	
 	//To show fps
 	private long time = 0;
@@ -37,6 +38,9 @@ public class MusicalFingers implements ApplicationListener{
 	//Current screen, used for convenience 
 	Screen current;
 	
+	//AssetManager for storing assets
+	public static AssetManager manager = new AssetManager();
+	
 
 	@Override
 	public void create() {
@@ -46,9 +50,10 @@ public class MusicalFingers implements ApplicationListener{
 		Gdx.graphics.setVSync(true);
 		camera = new OrthographicCamera(width,height);
 		//Set y-axis pointing down
-		camera.setToOrtho(true);
+		camera.setToOrtho(false);
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		//font = new BitmapFont(false);
 		
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -62,7 +67,7 @@ public class MusicalFingers implements ApplicationListener{
 	private void init() {
 		
 		//Create screen objects
-		loading = new LoadingScreen();
+		loading = new LoadingScreen(manager);
 		menu = new MenuScreen();
 		instrument = new InstrumentScreen();
 		
@@ -97,7 +102,7 @@ public class MusicalFingers implements ApplicationListener{
 		this.width = width;
 		this.height = height;
 		camera = new OrthographicCamera(width,height);
-		camera.setToOrtho(true);
+		camera.setToOrtho(false);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		
@@ -117,8 +122,8 @@ public class MusicalFingers implements ApplicationListener{
 		
 		//Draw fps in top left corner
 		font.setColor(1,1,1,1);
-		font.setScale(1,-1);
-		font.draw(batch, "Fps: "+showfps, 0,0);
+		//font.setScale(1,-1);
+		font.draw(batch, "Fps: "+showfps, 0,height);
 		
 		batch.end();
 		
