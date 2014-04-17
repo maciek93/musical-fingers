@@ -11,11 +11,11 @@ public class FiveNotes implements DiscreteOutput {
 	
 	public FiveNotes() {
 		//TEMPORARY
-    	sounds[0] = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.wav"));
-    	sounds[1] = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.wav"));
-    	sounds[2] = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.wav"));
-    	sounds[3] = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.wav"));
-    	sounds[4] = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.wav"));
+    	sounds[0] = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.mp3"));
+    	sounds[1] = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.mp3"));
+    	sounds[2] = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.mp3"));
+    	sounds[3] = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.mp3"));
+    	sounds[4] = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.mp3"));
 		
 	}
 

@@ -6,13 +6,18 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Listener;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ox.musicalfingers.instrument.DiscreteDisplay;
@@ -52,6 +57,17 @@ public class InstrumentScreen implements Screen {
 	 DiscreteOutput output;
 	 //Displays the instrument and fingers
 	 DiscreteDisplay display;
+	 
+	 //Background texture
+	 Texture rectangle;
+	 
+	 //Stuff for drawing background notes
+	 List<Integer> noteHeights = new ArrayList<Integer>(16);
+	 int count = 0;
+	 Texture note1;
+	 Texture note2;
+	 Texture note3;
+	 Texture clef;
     
 	 //TODO: Move this 
 	 public class Note {
@@ -74,13 +90,29 @@ public class InstrumentScreen implements Screen {
 		
 		controller.addListener((Listener) input);
 		
+		//For background
+		Pixmap pixmap = new Pixmap( 1,1, Format.RGBA8888 );
+		pixmap.setColor( 1,1,1,1);
+		pixmap.fill();
+		rectangle = new Texture(pixmap);
+		
+		//For background notes
+		note1 = MusicalFingers.manager.get("assets/1note.png");
+		note2 = MusicalFingers.manager.get("assets/2note.png");
+		note3 = MusicalFingers.manager.get("assets/3note.png");
+		clef = MusicalFingers.manager.get("assets/clef.png");
+		
+		for(int i=0;i<16;i++) {
+			noteHeights.add(new Random().nextInt(MusicalFingers.height-40));
+		}
+		
 		//TEMP 
 		//For recording
-    	sound1 = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.wav"));
-    	sound2 = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.wav"));
-    	sound3 = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.wav"));
-    	sound4 = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.wav"));
-    	sound5 = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.wav"));
+    	sound1 = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.mp3"));
+    	sound2 = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.mp3"));
+    	sound3 = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.mp3"));
+    	sound4 = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.mp3"));
+    	sound5 = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.mp3"));
     	
 		
 	}
@@ -92,8 +124,11 @@ public class InstrumentScreen implements Screen {
 		display.getNotes(input.getNotes());
 		display.getFingers(controller.frame().fingers());
 		
-		if(recording) {
-			playnote(input.getNotes());
+
+		//Update background images
+		count++;
+		if(count>noteHeights.size()*100) {
+			count = 0;
 		}
 		
 		//TODO: Move recording stuff to its own class
@@ -120,6 +155,23 @@ public class InstrumentScreen implements Screen {
 
 	@Override
 	public void draw(SpriteBatch batch) {
+		
+		batch.setColor(147,210,255,1);
+		batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);
+		
+		//Some notes in the background
+		for(int i=0;i<noteHeights.size();i++) {
+			if(i%4==0) {
+				batch.draw(clef,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),clef.getWidth()*4f,clef.getHeight()*4f);
+			} else if(i%4==1) {
+				batch.draw(note1,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note1.getWidth()*4f,note1.getHeight()*4f);
+			} else if(i%4==2) {
+				batch.draw(note2,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note2.getWidth()*4f,note2.getHeight()*4f);
+			} else {
+				//batch.draw(note3,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i));
+				batch.draw(note3,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note3.getWidth()*4f,note3.getHeight()*4f);
+			}
+		}
 		
 		display.draw(batch);
 		

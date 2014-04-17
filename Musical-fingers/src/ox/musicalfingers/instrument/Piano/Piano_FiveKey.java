@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.FingerList;
 
+import ox.musicalfingers.display.MusicalFingers;
 import ox.musicalfingers.instrument.DiscreteDisplay;
 
 public class Piano_FiveKey implements DiscreteDisplay{
@@ -20,6 +21,11 @@ public class Piano_FiveKey implements DiscreteDisplay{
 	
 	Texture rectangle;
 	Texture circle;
+	
+	Texture piano;
+	Texture fingerPoint;
+	
+	int scaleFactor = 1;
 	
 	public Piano_FiveKey() {
 		Pixmap pixmap = new Pixmap( 1,1, Format.RGBA8888 );
@@ -32,6 +38,11 @@ public class Piano_FiveKey implements DiscreteDisplay{
 		pixmap.fillCircle( 8, 8, 8 );
 		circle = new Texture( pixmap );
 		pixmap.dispose();
+		
+		piano = MusicalFingers.manager.get("assets/5key_piano.png");
+		fingerPoint = MusicalFingers.manager.get("assets/finger.png");
+		
+		scaleFactor = ((MusicalFingers.width/160)-2);
 	}
 
 	@Override
@@ -52,6 +63,7 @@ public class Piano_FiveKey implements DiscreteDisplay{
 	public void draw(SpriteBatch batch) {
 		
 		//Maybe not the best representation of a 5-key piano...
+		/*
 		batch.setColor(Color.BLUE);
 		batch.draw(rectangle,385,100,510,300);
 		
@@ -67,6 +79,23 @@ public class Piano_FiveKey implements DiscreteDisplay{
 		for(Finger finger : fingers) {
 			batch.setColor(Color.RED);
 			batch.draw(circle,(finger.tipPosition().getX()-8)*(5)+640,finger.tipPosition().getZ()+300-8);
+		}
+		*/
+		
+		batch.setColor(Color.WHITE);
+		
+		batch.draw(piano,160,120,scaleFactor*160,scaleFactor*80);
+		
+		batch.setColor(0f,0f,0f,0.5f);
+		for(int i=0;i<5;i++) {
+			if(keys[i]) {
+				batch.draw(rectangle,160+(i*32)*scaleFactor,120+2*scaleFactor,32*scaleFactor,67*scaleFactor);
+			}
+		}
+		
+		batch.setColor(Color.WHITE);
+		for(Finger finger : fingers) {
+			batch.draw(fingerPoint,finger.tipPosition().getX()-32,finger.tipPosition().getY()-32,64,64);
 		}
 		
 	}
