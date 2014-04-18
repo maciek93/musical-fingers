@@ -84,9 +84,10 @@ public class InstrumentScreen implements Screen {
 	public void init() {
 
 		controller = new Controller();
-		input = new PianoListener();
 		output = new FiveNotes();
 		display = new Piano_FiveKey();
+		input = new PianoListener(display);
+
 		
 		controller.addListener((Listener) input);
 		
@@ -123,7 +124,7 @@ public class InstrumentScreen implements Screen {
 		output.playNotes(input.getNotes());
 		display.getNotes(input.getNotes());
 		display.getFingers(controller.frame().fingers());
-		
+		display.getInteractionBox(controller.frame().interactionBox());
 
 		//Update background images
 		count++;
@@ -157,7 +158,7 @@ public class InstrumentScreen implements Screen {
 	public void draw(SpriteBatch batch) {
 		
 		batch.setColor(147,210,255,1);
-		batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);
+		batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);   //bottom x, bottom y, width, hright.
 		
 		//Some notes in the background
 		for(int i=0;i<noteHeights.size();i++) {
