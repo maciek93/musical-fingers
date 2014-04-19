@@ -52,8 +52,9 @@ public class MusicalFingers implements ApplicationListener{
 		//Set y-axis pointing down
 		camera.setToOrtho(false);
 		batch = new SpriteBatch();
+		//Temporary font for drawing fps in top left corner
 		font = new BitmapFont();
-		//font = new BitmapFont(false);
+		font = new BitmapFont(Gdx.files.internal("assets/font/pixel.fnt"), Gdx.files.internal("assets/font/pixel.png"), false);
 		
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -123,7 +124,7 @@ public class MusicalFingers implements ApplicationListener{
 		//Draw fps in top left corner
 		font.setColor(1,1,1,1);
 		//font.setScale(1,-1);
-		font.draw(batch, "Fps: "+showfps, 0,height);
+		font.draw(batch, "FPS  "+showfps, 0,height);
 		
 		batch.end();
 		
@@ -169,6 +170,7 @@ public class MusicalFingers implements ApplicationListener{
 	public void dispose() {
 		batch.dispose();
 		font.dispose();
+		manager.dispose();
 		
 	}
 
