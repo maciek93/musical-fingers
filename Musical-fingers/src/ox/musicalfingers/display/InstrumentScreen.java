@@ -103,17 +103,19 @@ public class InstrumentScreen implements Screen {
 		note3 = MusicalFingers.manager.get("assets/3note.png");
 		clef = MusicalFingers.manager.get("assets/clef.png");
 		
+		Random rnd = new Random();
+		
 		for(int i=0;i<16;i++) {
-			noteHeights.add(new Random().nextInt(MusicalFingers.height-40));
+			noteHeights.add(rnd.nextInt(MusicalFingers.height-40));
 		}
 		
 		//TEMP 
 		//For recording
-    	sound1 = Gdx.audio.newSound(Gdx.files.internal("assets/sound1.mp3"));
-    	sound2 = Gdx.audio.newSound(Gdx.files.internal("assets/sound2.mp3"));
-    	sound3 = Gdx.audio.newSound(Gdx.files.internal("assets/sound3.mp3"));
-    	sound4 = Gdx.audio.newSound(Gdx.files.internal("assets/sound4.mp3"));
-    	sound5 = Gdx.audio.newSound(Gdx.files.internal("assets/sound5.mp3"));
+    	sound1 = MusicalFingers.manager.get("assets/sound1.mp3");
+    	sound2 = MusicalFingers.manager.get("assets/sound2.mp3");
+    	sound3 = MusicalFingers.manager.get("assets/sound3.mp3");
+    	sound4 = MusicalFingers.manager.get("assets/sound4.mp3");
+    	sound5 = MusicalFingers.manager.get("assets/sound5.mp3");
     	
 		
 	}
@@ -157,8 +159,8 @@ public class InstrumentScreen implements Screen {
 	@Override
 	public void draw(SpriteBatch batch) {
 		
-		batch.setColor(147,210,255,1);
-		batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);   //bottom x, bottom y, width, hright.
+		//batch.setColor(147,210,255,1);
+		//batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);   //bottom x, bottom y, width, hright.
 		
 		//Some notes in the background
 		for(int i=0;i<noteHeights.size();i++) {

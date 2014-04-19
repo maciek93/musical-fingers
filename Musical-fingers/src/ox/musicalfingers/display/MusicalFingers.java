@@ -53,7 +53,6 @@ public class MusicalFingers implements ApplicationListener{
 		camera.setToOrtho(false);
 		batch = new SpriteBatch();
 		//Temporary font for drawing fps in top left corner
-		font = new BitmapFont();
 		font = new BitmapFont(Gdx.files.internal("assets/font/pixel.fnt"), Gdx.files.internal("assets/font/pixel.png"), false);
 		
 		camera.update();
@@ -115,7 +114,7 @@ public class MusicalFingers implements ApplicationListener{
 		
 		//Clear screen with black background
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glClearColor(0,0,0,1);
+		Gdx.gl.glClearColor(147f/255f,210f/255f,255f/255f,1);
 		
 		batch.begin();
 		
