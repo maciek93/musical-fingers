@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MenuScreen implements Screen {
@@ -26,6 +28,7 @@ public class MenuScreen implements Screen {
 		//Font
 		font = MusicalFingers.manager.get("assets/font/pixel.fnt");
 		
+		/*
 		//Skin
 		Skin skin = new Skin();
 		//Set default font
@@ -46,6 +49,22 @@ public class MenuScreen implements Screen {
 		buttonStyle.font.setScale(2);
 		skin.add("default", buttonStyle);
 		
+		*/
+		
+		Skin skin = MusicalFingers.manager.get("assets/ui/pixelSkin.json");
+		
+		skin.getFont("default").setScale(2f);
+		
+		//Label for the title
+		Label title = new Label("MUSICAL FINGERS", skin);
+		title.setFontScale(3.5f);
+		title.setX(0);
+		title.setWidth(MusicalFingers.width);
+		title.setY(MusicalFingers.height*3f/4f);
+		title.setAlignment(Align.center);
+		
+		stage.addActor(title);
+		
 		//Button to go to instrument screen
 		TextButton button = new TextButton("free play", skin);
 		button.setWidth(400f);
@@ -60,6 +79,8 @@ public class MenuScreen implements Screen {
 		);
 		
 		stage.addActor(button);
+		
+		goToInstrumentScreen = false;
 
 	}
 
@@ -74,9 +95,9 @@ public class MenuScreen implements Screen {
 		batch.end();
 		stage.draw();
 		batch.begin();
-		font.setScale(5);
-		font.drawMultiLine(batch,"MUSICAL\nFINGERS",250,MusicalFingers.height-50);
-		font.setScale(1);
+		//font.setScale(5);
+		//font.drawMultiLine(batch,"MUSICAL\nFINGERS",250,MusicalFingers.height-50);
+		//font.setScale(1);
 		
 	}
 

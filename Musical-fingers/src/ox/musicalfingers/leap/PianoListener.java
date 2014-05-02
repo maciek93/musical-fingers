@@ -41,7 +41,6 @@ public class PianoListener extends Listener implements DiscreteInput{
     
     public void onFrame(Controller controller) {
     	processData(controller.frame());
-    	
     }
     
     public boolean[] getNotes() {
@@ -68,7 +67,7 @@ public class PianoListener extends Listener implements DiscreteInput{
 		KeyTapGesture tap = new KeyTapGesture(gesture);
 		InteractionBox iBox=frame.interactionBox();
 		float x = iBox.normalizePoint(tap.position()).getX();
-		float y = iBox.normalizePoint(tap.position()).getY();
+		float y = iBox.normalizePoint(tap.position()).getZ();
 		
 		//System.out.println(piano.FindKey(x,y));
 		return piano.FindKey(x, y);

@@ -139,7 +139,7 @@ public class Piano_FiveKey implements DiscreteDisplay{
 	        Vector Position = finger.tipPosition();
 	        Vector nPos = iBox.normalizePoint(Position);
 
-			batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,nPos.getY()*MusicalFingers.height-6,12,12);
+			batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,(1f-nPos.getZ())*MusicalFingers.height-6,12,12);
 			//batch.draw(fingerPoint,finger.tipPosition().getX()*scaleFactor*160-32,finger.tipPosition().getY()*scaleFactor*80-32,64,64);
 			//batch.draw(circle,(finger.tipPosition().getX()-8)*(5)+640,finger.tipPosition().getZ()+300-8);
 ;
