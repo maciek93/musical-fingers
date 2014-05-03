@@ -33,8 +33,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ox.musicalfingers.instrument.DiscreteDisplay;
 import ox.musicalfingers.instrument.DiscreteInput;
+import ox.musicalfingers.instrument.DiscreteInputDisplay;
 import ox.musicalfingers.instrument.DiscreteOutput;
 import ox.musicalfingers.instrument.GuitarOutput;
+import ox.musicalfingers.instrument.Piano.Piano;
 import ox.musicalfingers.instrument.Piano.Piano_FiveKey;
 import ox.musicalfingers.instrument.Random.FiveNotes;
 import ox.musicalfingers.leap.GuitarListener;
@@ -52,6 +54,8 @@ public class InstrumentScreen implements Screen {
 	DiscreteOutput output;
 	// Displays the instrument and fingers
 	DiscreteDisplay display;
+	// Input and display
+	DiscreteInputDisplay inputDisplay;
 	// Output for recorded notes
 	DiscreteOutput recordedOutput;
 
@@ -214,29 +218,34 @@ public class InstrumentScreen implements Screen {
 		
 		//Change instruments?
 		if(currentInstrument != instruments.getSelectionIndex()) {
-			if(input!=null)
-			controller.removeListener((Listener) input);
+			
+			if(inputDisplay!=null) {
+				controller.removeListener((Listener) inputDisplay);
+			}
+			
 			if(instruments.getSelectionIndex() == 0) {
 				//Piano
 				output = new FiveNotes();
-				display = new Piano_FiveKey();
-				input = new PianoListener(display);
+				
+				inputDisplay = new Piano();
 			} else if(instruments.getSelectionIndex() == 1) {
 				//Guitar
 				output = new GuitarOutput();
 				display = new GuitarDisplay();
 				input = new GuitarListener(display);
 			}
-			controller.addListener((Listener) input);
+			
+			controller.addListener((Listener) inputDisplay);
 			currentInstrument = instruments.getSelectionIndex();
 		}
 
 		
 		//Instruments 
-		output.playNotes(input.getNotes());
-		display.getNotes(input.getNotes());
-		display.getFingers(controller.frame().fingers());
-		display.getInteractionBox(controller.frame().interactionBox());
+		output.playNotes(inputDisplay.getNotes());
+		
+		//display.getNotes(input.getNotes());
+		//display.getFingers(controller.frame().fingers());
+		//display.getInteractionBox(controller.frame().interactionBox());
 
 		// Update background images
 		count++;
@@ -286,7 +295,7 @@ public class InstrumentScreen implements Screen {
 		}
 
 		//Draw instrument
-		display.draw(batch);
+		inputDisplay.draw(batch);
 		
 		//Draw rectangle under toolbar
 		batch.setColor(200f/255f,200f/255f,200f/255f,1);

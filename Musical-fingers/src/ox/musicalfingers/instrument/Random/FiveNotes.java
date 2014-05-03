@@ -8,7 +8,11 @@ import ox.musicalfingers.instrument.DiscreteOutput;
 
 public class FiveNotes implements DiscreteOutput {
 	
-	 Sound[] sounds = new Sound[5];
+	Sound[] sounds = new Sound[5];
+	boolean[] prev = new boolean[5];
+	boolean[] stopInABit = new boolean[5];
+	int[] stopTime = new int[5];
+	int stoppingTime = 50;
 	
 	public FiveNotes() {
    	
@@ -23,12 +27,25 @@ public class FiveNotes implements DiscreteOutput {
 	@Override
 	public void playNotes(boolean[] notes) {
 		for(int i=0; i<5;i++) {
-			if(notes[i]) {
-				sounds[i].stop();
+			
+			if(stopInABit[i]) {
+				stopTime[i]++;
+				if(stopTime[i]>stoppingTime) {
+					sounds[i].stop();
+					stopInABit[i]=false;
+				}
+			}
+			
+			if(!prev[i] && notes[i]) {
 				sounds[i].play();
+				stopInABit[i] = false;
+			}
+			if(prev[i] && !notes[i]) {
+				stopInABit[i]=true;
+				stopTime[i]=0;
 			}
 		}
-		
+		System.arraycopy(notes,0,prev,0,notes.length);
 	}
 
 }

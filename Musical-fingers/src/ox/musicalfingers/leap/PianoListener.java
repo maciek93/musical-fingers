@@ -34,7 +34,7 @@ public class PianoListener extends Listener implements DiscreteInput{
 	Set<Gesture> currentGestures = new HashSet<Gesture>();
 	boolean[] notes = new boolean[10];
     
-    public void onInit (Controller controller){
+    public void onInit (Controller controller) {
     	controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
         System.out.println("Initialized PianoListener");
     }
