@@ -34,8 +34,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import ox.musicalfingers.instrument.DiscreteDisplay;
 import ox.musicalfingers.instrument.DiscreteInput;
 import ox.musicalfingers.instrument.DiscreteOutput;
+import ox.musicalfingers.instrument.GuitarOutput;
 import ox.musicalfingers.instrument.Piano.Piano_FiveKey;
 import ox.musicalfingers.instrument.Random.FiveNotes;
+import ox.musicalfingers.leap.GuitarListener;
 import ox.musicalfingers.leap.LeapMotion;
 import ox.musicalfingers.leap.PianoListener;
 import ox.musicalfingers.recording.Recorder;
@@ -76,6 +78,8 @@ public class InstrumentScreen implements Screen {
 	
 	// UI
 	Stage stage;
+	SelectBox instruments;
+	int currentInstrument = 0;
 	
 	// Boolean to go back to meny
 	boolean backToMenu =false;
@@ -156,6 +160,14 @@ public class InstrumentScreen implements Screen {
 				} else {
 					recorder.startRecording();
 					record.setText("stop");
+					
+					if(instruments.getSelectionIndex() == 0) {
+						//Piano
+						recordedOutput = new FiveNotes();
+					} else if(instruments.getSelectionIndex() == 1) {
+						//Guitar
+						recordedOutput = new GuitarOutput();
+					}
 				}
 				recording = !recording;
 			}
@@ -180,9 +192,9 @@ public class InstrumentScreen implements Screen {
 		}
 		);
 		
-		String[] instrumentNames = {"     PIANO", "     GUITAR", "     DRUM"};
+		String[] instrumentNames = {"     PIANO", "     GUITAR"};
 		
-		SelectBox instruments = new SelectBox(instrumentNames, skin);
+		instruments = new SelectBox(instrumentNames, skin);
 		instruments.setPosition(MusicalFingers.width-255f, MusicalFingers.height-100f-5f);
 		instruments.setWidth(250f);
 		instruments.setHeight(100f);	
@@ -204,7 +216,27 @@ public class InstrumentScreen implements Screen {
 
 	@Override
 	public void update() {
+		
+		//Change instruments?
+		if(currentInstrument != instruments.getSelectionIndex()) {
+			controller.removeListener((Listener) input);
+			if(instruments.getSelectionIndex() == 0) {
+				//Piano
+				output = new FiveNotes();
+				display = new Piano_FiveKey();
+				input = new PianoListener(display);
+			} else if(instruments.getSelectionIndex() == 1) {
+				//Guitar
+				output = new GuitarOutput();
+				display = new GuitarDisplay();
+				input = new GuitarListener(display);
+			}
+			controller.addListener((Listener) input);
+			currentInstrument = instruments.getSelectionIndex();
+		}
 
+		
+		//Instruments 
 		output.playNotes(input.getNotes());
 		display.getNotes(input.getNotes());
 		display.getFingers(controller.frame().fingers());

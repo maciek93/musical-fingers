@@ -32,7 +32,7 @@ import com.leapmotion.leap.Gesture.State;
 			this.guitar = guitar;
 		}
 		 
-		boolean[] notes = new boolean[6];
+		boolean[] notes = new boolean[12];
 	    
 	    public void onInit (Controller controller){
 	        System.out.println("Initialized GuitarListener");
@@ -49,7 +49,7 @@ import com.leapmotion.leap.Gesture.State;
 	    
 	    private void processData(Frame frame) {
 			InteractionBox iBox = frame.interactionBox();
-			notes = new boolean[6];
+			notes = new boolean[12];
 			for(Pointable pointable : frame.pointables()) {
 				float z = iBox.normalizePoint(pointable.tipPosition()).getZ();
 				float y = iBox.normalizePoint(pointable.tipPosition()).getY();

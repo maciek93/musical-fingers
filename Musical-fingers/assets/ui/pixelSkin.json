@@ -16,6 +16,6 @@
                 default: {font: default}
         },
         com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
-                default: { font: default, background: select, backgroundOver: selectOver, scrollStyle: { background: gray }, listStyle: { font: default, selection: light-gray} }
+                default: { font: default, background: select, backgroundOver: selectOver,backgroundOpen: selectOver, scrollStyle: { background: gray }, listStyle: { font: default, selection: light-gray} }
         }
  }
