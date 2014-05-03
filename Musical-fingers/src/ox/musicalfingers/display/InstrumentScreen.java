@@ -88,13 +88,8 @@ public class InstrumentScreen implements Screen {
 	public void init() {
 
 		controller = new Controller();
-		output = new FiveNotes();
-		display = new Piano_FiveKey();
-		input = new PianoListener(display);
-
-		controller.addListener((Listener) input);
-
-		recordedOutput = new FiveNotes();
+		
+		currentInstrument = 99;
 
 		// For background
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
@@ -219,6 +214,7 @@ public class InstrumentScreen implements Screen {
 		
 		//Change instruments?
 		if(currentInstrument != instruments.getSelectionIndex()) {
+			if(input!=null)
 			controller.removeListener((Listener) input);
 			if(instruments.getSelectionIndex() == 0) {
 				//Piano
