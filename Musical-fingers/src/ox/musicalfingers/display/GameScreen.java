@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ox.musicalfingers.game.GameNote;
+import ox.musicalfingers.game.GamePianoInput;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.leapmotion.leap.Controller;
 
 public class GameScreen implements Screen{
 	  private SpriteBatch batch;
@@ -38,10 +40,16 @@ public class GameScreen implements Screen{
 	boolean T;
 	Texture piano;
 	
+	GamePianoInput input;
+	
 	List<GameNote> gameNotes = new ArrayList<GameNote>();
+	
+	Controller controller;
 
 	@Override
 	public void init() {
+		
+		controller = new Controller();
 		
 		batch = new SpriteBatch();    
         font = new BitmapFont();
@@ -49,6 +57,10 @@ public class GameScreen implements Screen{
         t = System.nanoTime();
         song = new Note[] {new Note(0,60),new Note(1,120),new Note(2,180),new Note(3,240),new Note(4,300)};
         piano = MusicalFingers.manager.get("assets/game/game_piano.png");
+        
+        input = new GamePianoInput();
+        
+        controller.addListener(input);
 		
 	}
 
@@ -116,6 +128,7 @@ public class GameScreen implements Screen{
 	public void draw(SpriteBatch batch) {
 		batch.setColor(Color.WHITE);
 	    batch.draw(piano,80,400,1120,240);
+	    input.draw(batch);
 	    for(GameNote note:gameNotes) {
 			note.draw(batch);
 		}
