@@ -256,13 +256,15 @@ public class InstrumentScreen implements Screen {
 		//Recording and playback
 		
 		if (recording) {
-			recorder.recordNotes(input.getNotes());
+			recorder.recordNotes(inputDisplay.getNotes());
 		}
 
 		if (playingBack) {
 			if(!recorder.endOfRecording()) {
 				recordedOutput.playNotes(recorder.playNotes());
+				System.out.println("play");
 			} else {
+				//System.out.println("here");
 				if(repeatPlayback) {
 					recorder.startPlaying();
 				}

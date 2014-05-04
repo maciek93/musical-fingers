@@ -17,6 +17,7 @@ public class MenuScreen implements Screen {
 	private Stage stage;
 	private BitmapFont font;
 	private boolean goToInstrumentScreen = false;
+	private boolean goToGameScreen = false;
 
 	@Override
 	public void init() {
@@ -69,7 +70,7 @@ public class MenuScreen implements Screen {
 		TextButton button = new TextButton("free play", skin);
 		button.setWidth(400f);
 		button.setHeight(200f);
-		button.setPosition(MusicalFingers.width/2f - 200f, MusicalFingers.height/3f-50f);
+		button.setPosition(MusicalFingers.width/2f - 200f, MusicalFingers.height/3f-200f);
 		button.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -78,9 +79,23 @@ public class MenuScreen implements Screen {
 		}
 		);
 		
+		TextButton button2 = new TextButton("play", skin);
+		button2.setWidth(400f);
+		button2.setHeight(200f);
+		button2.setPosition(MusicalFingers.width/2f - 200f, MusicalFingers.height/2f - 100f);
+		button2.addListener(new ClickListener() { 
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				goToGameScreen = true;
+			}
+		}
+		);
+		
 		stage.addActor(button);
+		stage.addActor(button2);
 		
 		goToInstrumentScreen = false;
+		goToGameScreen = false;
 
 	}
 
@@ -105,9 +120,9 @@ public class MenuScreen implements Screen {
 	public int changeStateTo() {
 		if(goToInstrumentScreen) {
 			return MusicalFingers.STATE_INSTRUMENT;
-		} else {
-			return -1;
-		}
+		} else if (goToGameScreen) {
+			return MusicalFingers.STATE_GAME;
+		} else return -1;
 	}
 
 	@Override

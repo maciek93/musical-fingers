@@ -28,6 +28,8 @@ public class Recorder {
 		}
 		
 		time++;
+		
+		//System.out.println(recordedNotes.isEmpty());
 	}
 	
 	public void startPlaying() {
@@ -42,6 +44,8 @@ public class Recorder {
 			currentNotes = copyOfNotes.poll();
 		}
 		time++;
+		for(int i=0; i<currentNotes.getNotes().length ; i++){System.out.print(currentNotes.getNotes()[i]);}
+		System.out.println();
 		return currentNotes.getNotes();
 	}
 	

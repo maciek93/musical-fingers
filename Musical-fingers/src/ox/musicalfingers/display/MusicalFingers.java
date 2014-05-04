@@ -29,12 +29,14 @@ public class MusicalFingers implements ApplicationListener{
 	public static final int STATE_LOADING = 0;
 	public static final int STATE_MENU = 1;
 	public static final int STATE_INSTRUMENT = 2;
+	public static final int STATE_GAME = 3;
 	private int current_state = 0;
 	
 	//Different 'Screens' for the app
 	Screen loading;
 	Screen menu;
 	Screen instrument;
+	Screen game;
 	//Current screen, used for convenience 
 	Screen current;
 	
@@ -70,6 +72,7 @@ public class MusicalFingers implements ApplicationListener{
 		loading = new LoadingScreen(manager);
 		menu = new MenuScreen();
 		instrument = new InstrumentScreen();
+		game = new GameScreen();
 		
 		//Set the state to loading
 		changeState(STATE_LOADING);
@@ -91,6 +94,10 @@ public class MusicalFingers implements ApplicationListener{
 			case STATE_INSTRUMENT:  instrument.init();
 									current_state = STATE_INSTRUMENT;
 									current = instrument;
+									break;
+			case STATE_GAME:		game.init();
+									current_state = STATE_GAME;
+									current = game;
 									break;
 			default:				throw new Error(changeTo + " is not a valid state");
 		}
