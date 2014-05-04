@@ -1,5 +1,7 @@
 package ox.musicalfingers.display;
 
+import ox.musicalfingers.game.GameNote;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -20,18 +22,6 @@ public class GameScreen implements Screen{
   		       time = b;
   		 }
 	 }
-	  
-	  public class Note2 {
-		  public int note;
-		  public float time;
-		  public float pos;
-		  
-		  public Note2(int a, float b, float c) {
-			  note = a;
-			  time = b;
-			  pos = c;
-		  }
-	  }
 	
 	Note[] song;
 	float t;
@@ -88,11 +78,11 @@ public class GameScreen implements Screen{
 	}
 	
 	public void spawn(int x) {
-		if(x==1) {time1 = 2; new Note2(1,2000f,800f);}
-		else if (x==2) {time2 = 2; new Note2(2,2000f,800f);}
-		else if (x==3) {time3 = 2; new Note2(3,2000f,800f);}
-		else if (x==4) {time4 = 2; new Note2(4,2000f,800f);}
-		else {time5 = 2; new Note2(5,2000f,800f);}
+		if(x==1) {time1 = 2; new GameNote(1,2000f,800f);}
+		else if (x==2) {time2 = 2; new GameNote(2,2000f,800f);}
+		else if (x==3) {time3 = 2; new GameNote(3,2000f,800f);}
+		else if (x==4) {time4 = 2; new GameNote(4,2000f,800f);}
+		else {time5 = 2; new GameNote(5,2000f,800f);}
 	}
 
 	@Override
