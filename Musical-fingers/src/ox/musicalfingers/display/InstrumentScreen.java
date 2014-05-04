@@ -39,6 +39,7 @@ import ox.musicalfingers.instrument.GuitarOutput;
 import ox.musicalfingers.instrument.Piano.Piano;
 import ox.musicalfingers.instrument.Piano.Piano_FiveKey;
 import ox.musicalfingers.instrument.Random.FiveNotes;
+import ox.musicalfingers.instrument.guitar.Guitar;
 import ox.musicalfingers.leap.GuitarListener;
 import ox.musicalfingers.leap.LeapMotion;
 import ox.musicalfingers.leap.PianoListener;
@@ -231,8 +232,7 @@ public class InstrumentScreen implements Screen {
 			} else if(instruments.getSelectionIndex() == 1) {
 				//Guitar
 				output = new GuitarOutput();
-				display = new GuitarDisplay();
-				input = new GuitarListener(display);
+				inputDisplay = new Guitar();
 			}
 			
 			controller.addListener((Listener) inputDisplay);
