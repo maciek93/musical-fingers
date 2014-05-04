@@ -30,6 +30,6 @@ public class GameNote {
 						break;
 			default:				throw new Error("not a valid state");
 		}
-		  batch.draw(gameNote,100+note*200,pos,gameNote.getWidth()*10,gameNote.getHeight()*10);
+		  batch.draw(gameNote,140+note*224,pos,gameNote.getWidth()*10,gameNote.getHeight()*10);
 	  }
 }

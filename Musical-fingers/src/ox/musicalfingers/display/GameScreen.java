@@ -28,11 +28,6 @@ public class GameScreen implements Screen{
 	
 	Note[] song;
 	float t;
-	float time0;
-	float time1;
-	float time2;
-	float time3;
-	float time4;
 	int time = 0;
 	int i = 0;
 	int score = 0;
@@ -41,6 +36,7 @@ public class GameScreen implements Screen{
 	boolean E;
 	boolean R;
 	boolean T;
+	Texture piano;
 	
 	List<GameNote> gameNotes = new ArrayList<GameNote>();
 
@@ -48,11 +44,11 @@ public class GameScreen implements Screen{
 	public void init() {
 		
 		batch = new SpriteBatch();    
-		circle = MusicalFingers.manager.get("assets/clef.png");
         font = new BitmapFont();
         font.setColor(Color.RED);
         t = System.nanoTime();
         song = new Note[] {new Note(0,60),new Note(1,120),new Note(2,180),new Note(3,240),new Note(4,300)};
+        piano = MusicalFingers.manager.get("assets/game/game_piano.png");
 		
 	}
 
@@ -118,17 +114,11 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void draw(SpriteBatch batch) {
-	        batch.setColor(Color.RED);
-	        batch.draw(circle, 800, 200, 200, 200, 200, 200, 1, 1);
-	        font.draw(batch, Float.toString(time0), 350, 400);
-	        font.draw(batch, Float.toString(time1), 450, 400);
-	        font.draw(batch, Float.toString(time2), 550, 400);
-	        font.draw(batch, Float.toString(time3), 650, 400);
-	        font.draw(batch, Float.toString(time4), 750, 400);
-	        font.draw(batch, Float.toString((System.nanoTime()-t)/100000),850,400);
-	        for(GameNote note:gameNotes) {
-				note.draw(batch);
-			}
+		batch.setColor(Color.WHITE);
+	    batch.draw(piano,80,400,1120,240);
+	    for(GameNote note:gameNotes) {
+			note.draw(batch);
+		}
 		
 	}
 
