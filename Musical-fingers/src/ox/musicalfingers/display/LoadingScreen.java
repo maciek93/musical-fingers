@@ -73,6 +73,7 @@ public class LoadingScreen implements Screen {
 	   		manager.load("assets/guitar"+ i +".wav", Sound.class);
 	   	}
 		manager.load("assets/guitar_main.png", Texture.class);
+		manager.load("assets/game/GameNote.png", Texture.class);
 
 	}
 
