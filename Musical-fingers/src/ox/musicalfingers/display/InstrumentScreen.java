@@ -84,7 +84,9 @@ public class InstrumentScreen implements Screen {
 	// UI
 	Stage stage;
 	SelectBox instruments;
+	SelectBox recordings;
 	int currentInstrument = 0;
+	int currentRecording = 0;
 	
 	// Boolean to go back to meny
 	boolean backToMenu =false;
@@ -139,7 +141,7 @@ public class InstrumentScreen implements Screen {
 		TextButton back = new TextButton("back", skin, "small");
 		back.setWidth(100f);
 		back.setHeight(100f);
-		back.setPosition(5, MusicalFingers.height-100f-5f);
+		back.setPosition(5, MusicalFingers.height-105f);
 		back.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -151,7 +153,7 @@ public class InstrumentScreen implements Screen {
 		final TextButton record = new TextButton("record", skin, "small");
 		record.setWidth(150f);
 		record.setHeight(100f);
-		record.setPosition(MusicalFingers.width/3f, MusicalFingers.height-100f-5f);
+		record.setPosition(MusicalFingers.width/3f-200, MusicalFingers.height-105f);
 		record.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -177,7 +179,7 @@ public class InstrumentScreen implements Screen {
 		final TextButton playButton = new TextButton("play", skin, "small");
 		playButton.setWidth(150f);
 		playButton.setHeight(100f);
-		playButton.setPosition(MusicalFingers.width/3f+250f, MusicalFingers.height-100f-5f);
+		playButton.setPosition(MusicalFingers.width/3f+50f, MusicalFingers.height-105f);
 		playButton.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -199,7 +201,15 @@ public class InstrumentScreen implements Screen {
 		instruments.setWidth(250f);
 		instruments.setHeight(100f);	
 		
+		String[] recordingNames = {"     SONG  1"	, "     SONG  2" , "     SONG  3" , "     SONG  4" , "     SONG  5"	, "     SONG  6" , "     SONG  7" , "     SONG  8" , "     SONG  9"}	;					
+		
+		recordings = new SelectBox (recordingNames, skin);
+		recordings.setPosition(MusicalFingers.width-555f , MusicalFingers.height-105f);
+		recordings.setWidth(250f);
+		recordings.setHeight(100f);
+		
 		stage.addActor(instruments);
+		stage.addActor(recordings);
 		stage.addActor(playButton);
 		stage.addActor(record);
 		stage.addActor(back);
@@ -238,6 +248,9 @@ public class InstrumentScreen implements Screen {
 			controller.addListener((Listener) inputDisplay);
 			currentInstrument = instruments.getSelectionIndex();
 		}
+		
+		//Change recording?
+		
 
 		
 		//Instruments 
@@ -308,14 +321,14 @@ public class InstrumentScreen implements Screen {
 		batch.setColor(Color.WHITE);
 		//Draw some ui images
 		if(recording) {
-			batch.draw(rec,MusicalFingers.width/3f-50f,MusicalFingers.height-75,40f,40f);
+			batch.draw(rec,MusicalFingers.width/3f-250f,MusicalFingers.height-75,40f,40f);
 		} else {
-			batch.draw(notRec,MusicalFingers.width/3f-50f,MusicalFingers.height-75,40f,40f);
+			batch.draw(notRec,MusicalFingers.width/3f-250f,MusicalFingers.height-75,40f,40f);
 		}
 		if(playingBack) {
-			batch.draw(play,MusicalFingers.width/3f+250f-50f,MusicalFingers.height-55f-33f,42f,66f);
+			batch.draw(play,MusicalFingers.width/3f,MusicalFingers.height-88f,42f,66f);
 		} else {
-			batch.draw(notPlay,MusicalFingers.width/3f+250f-50f,MusicalFingers.height-55f-33f,42f,66f);
+			batch.draw(notPlay,MusicalFingers.width/3f,MusicalFingers.height-88f,42f,66f);
 		}
 		
 		//Draw ui

@@ -47,7 +47,7 @@ public class GameScreen implements Screen{
         font = new BitmapFont();
         font.setColor(Color.RED);
         t = System.nanoTime();
-        song = new Note[] {new Note(0,60),new Note(1,120),new Note(2,180),new Note(3,240),new Note(4,300)};
+        song = new Note[] {new Note(2,30),new Note(2,60),new Note(2,90),new Note(0,120),new Note(1,150),new Note(1,180),new Note(0,210),new Note(4,270),new Note(4,300),new Note(3,330),new Note(3,360),new Note(2,390),new Note(0,480)};
         piano = MusicalFingers.manager.get("assets/game/game_piano.png");
 		
 	}
