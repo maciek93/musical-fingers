@@ -1,5 +1,6 @@
 package ox.musicalfingers.recording;
 
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,16 +21,15 @@ public class Recorder {
 	public void recordNotes(boolean[] notes) {
 		
 		if(recordedNotes.isEmpty()) { 
-			recordedNotes.add(new Notes(time, notes));
+			recordedNotes.add(new Notes(time, notes.clone()));
 		}
-		
-		if(!recordedNotes.peekLast().getNotes().equals(notes)) {
-			recordedNotes.add(new Notes(time, notes));
+
+		if(!(recordedNotes.peekLast().getNotes().equals(notes))) {
+			recordedNotes.add(new Notes(time, notes.clone()));
 		}
 		
 		time++;
 		
-		//System.out.println(recordedNotes.isEmpty());
 	}
 	
 	public void startPlaying() {
@@ -45,7 +45,6 @@ public class Recorder {
 		}
 		time++;
 		for(int i=0; i<currentNotes.getNotes().length ; i++){System.out.print(currentNotes.getNotes()[i]);}
-		System.out.println();
 		return currentNotes.getNotes();
 	}
 	

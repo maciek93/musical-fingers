@@ -105,6 +105,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
     public void onInit (Controller controller){
         System.out.println("Initialized GuitarListener");
         fingers = controller.frame().fingers();
+        iBox = controller.frame().interactionBox();
     }
     
     public void onFrame(Controller controller) {
@@ -113,7 +114,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
     }
 	
 	private void processData(Frame frame) {
-		InteractionBox iBox = frame.interactionBox();
+		iBox = frame.interactionBox();
 		notes = new boolean[12];
 		for(Pointable pointable : frame.pointables()) {
 			float z = iBox.normalizePoint(pointable.tipPosition()).getZ();

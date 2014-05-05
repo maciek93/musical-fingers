@@ -275,9 +275,7 @@ public class InstrumentScreen implements Screen {
 		if (playingBack) {
 			if(!recorder.endOfRecording()) {
 				recordedOutput.playNotes(recorder.playNotes());
-				System.out.println("play");
 			} else {
-				//System.out.println("here");
 				if(repeatPlayback) {
 					recorder.startPlaying();
 				}
@@ -349,7 +347,7 @@ public class InstrumentScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		stage.dispose();
 		
 	}
 

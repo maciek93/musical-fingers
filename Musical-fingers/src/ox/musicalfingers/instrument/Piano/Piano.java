@@ -34,7 +34,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 	public Piano() {
 		//Define keys in normalised InteractionBox co-ords
 		for(int i=0;i<5;i++) {
-			keys[i] = new Rectangle(i*(1f/5f),0.1f,(1f/5f),0.8f);
+			keys[i] = new Rectangle(i*(1f/5f),0f,(1f/5f),0.5f);
 		}
 		
 		piano = MusicalFingers.manager.get("assets/5key_piano.png");
@@ -89,7 +89,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 		
 		for(Finger finger: fingerList) {
 			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
-			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - (piano.getWidth()/2f*sF) +piano.getWidth()*sF*fingerPos.getX(),-6f+MusicalFingers.height/6f+(8+62*(1f-fingerPos.getZ()))*sF,12,12);
+			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - (piano.getWidth()/2f*sF) +piano.getWidth()*sF*fingerPos.getX(),-6f+MusicalFingers.height/6f+(6+64*(1f-2f*fingerPos.getZ()))*sF,12,12);
 		}
 		
 		batch.setColor(0f, 0f, 0f, 0.5f);
