@@ -9,32 +9,44 @@ import java.util.Queue;
 public class Recorder {
 	
 	private int time = 0;
-	private Deque<Notes> recordedNotes = new LinkedList<Notes>();
+	private Deque<Notes>[] recordedNotes = (LinkedList<Notes>[]) new LinkedList<?>[9];
 	private Queue<Notes> copyOfNotes;
 	private Notes currentNotes;
+	
+	private int song = 0;
+	
+	public Recorder() {
+		for(int i=0;i<recordedNotes.length;i++) {
+			recordedNotes[i] = new LinkedList<Notes>();
+		}
+	}
 
 	public void startRecording() {
 		time = 0;
-		recordedNotes.clear();
+		recordedNotes[song].clear();
 	}
 	
 	public void recordNotes(boolean[] notes) {
 		
-		if(recordedNotes.isEmpty()) { 
-			recordedNotes.add(new Notes(time, notes.clone()));
+		if(recordedNotes[song].isEmpty()) { 
+			recordedNotes[song].add(new Notes(time, notes.clone()));
 		}
 
-		if(!(recordedNotes.peekLast().getNotes().equals(notes))) {
-			recordedNotes.add(new Notes(time, notes.clone()));
+		if(!(recordedNotes[song].peekLast().getNotes().equals(notes))) {
+			recordedNotes[song].add(new Notes(time, notes.clone()));
 		}
 		
 		time++;
 		
 	}
 	
+	public void changeToSong(int s) { 
+		song = s;
+	}
+	
 	public void startPlaying() {
 		time = 0;
-		copyOfNotes = new LinkedList<Notes>(recordedNotes);
+		copyOfNotes = new LinkedList<Notes>(recordedNotes[song]);
 		currentNotes = copyOfNotes.poll();
 	}
 	
@@ -44,7 +56,7 @@ public class Recorder {
 			currentNotes = copyOfNotes.poll();
 		}
 		time++;
-		for(int i=0; i<currentNotes.getNotes().length ; i++){System.out.print(currentNotes.getNotes()[i]);}
+		
 		return currentNotes.getNotes();
 	}
 	

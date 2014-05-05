@@ -87,6 +87,7 @@ public class InstrumentScreen implements Screen {
 	SelectBox recordings;
 	int currentInstrument = 0;
 	int currentRecording = 0;
+	int currentSong = 0;
 	
 	// Boolean to go back to meny
 	boolean backToMenu =false;
@@ -170,6 +171,7 @@ public class InstrumentScreen implements Screen {
 						//Guitar
 						recordedOutput = new GuitarOutput();
 					}
+
 				}
 				recording = !recording;
 			}
@@ -249,8 +251,20 @@ public class InstrumentScreen implements Screen {
 			currentInstrument = instruments.getSelectionIndex();
 		}
 		
-		//Change recording?
-		
+		//Change song?
+		if(currentSong != recordings.getSelectionIndex()) {
+			//Song changed
+			recorder.changeToSong(recordings.getSelectionIndex());
+			
+			if(recording) {
+				recorder.startRecording();
+			}
+			if(playingBack) {
+				recorder.startPlaying();
+			}
+			
+			currentSong = recordings.getSelectionIndex();
+		}
 
 		
 		//Instruments 
