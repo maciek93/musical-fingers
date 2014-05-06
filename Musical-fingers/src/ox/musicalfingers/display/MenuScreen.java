@@ -67,7 +67,7 @@ public class MenuScreen implements Screen {
 		stage.addActor(title);
 		
 		//Button to go to instrument screen
-		TextButton button = new TextButton("free play", skin);
+		TextButton button = new TextButton("compose", skin);
 		button.setWidth(400f);
 		button.setHeight(200f);
 		button.setPosition(MusicalFingers.width/2f - 200f, MusicalFingers.height/3f-200f);
@@ -79,7 +79,7 @@ public class MenuScreen implements Screen {
 		}
 		);
 		
-		TextButton button2 = new TextButton("play", skin);
+		TextButton button2 = new TextButton("play game", skin);
 		button2.setWidth(400f);
 		button2.setHeight(200f);
 		button2.setPosition(MusicalFingers.width/2f - 200f, MusicalFingers.height/2f - 100f);

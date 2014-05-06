@@ -75,6 +75,12 @@ public class LoadingScreen implements Screen {
 		manager.load("assets/guitar_main.png", Texture.class);
 		manager.load("assets/game/GameNote.png", Texture.class);
 		manager.load("assets/game/game_piano.png", Texture.class);
+		
+		//Game 
+		manager.load("assets/game/boo.png", Texture.class);
+		manager.load("assets/game/butterfingers.png", Texture.class);
+		manager.load("assets/game/fingermaster.png", Texture.class);
+		manager.load("assets/game/wooh.png", Texture.class);
 
 	}
 
