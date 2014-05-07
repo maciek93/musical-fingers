@@ -64,9 +64,12 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
     			
     			for(int i=0;i<5;i++) {
-	    			if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
+	    			/*if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
 	    				(iBox.normalizePoint(palmPos,false).getY() - fingerPos.getY() > 0.001f)) {
-	    				notes[i] = true;
+	    				notes[i] = true;*/
+    				  if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
+    	    				(fingerPos.getY() < 0.3f)) {
+    	    				notes[i] = true;
 	    			} else {
 	    				notes[i]=false;
 	    			}
