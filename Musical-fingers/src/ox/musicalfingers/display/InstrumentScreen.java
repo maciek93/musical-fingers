@@ -94,6 +94,10 @@ public class InstrumentScreen implements Screen {
 
 	@Override
 	public void init() {
+		
+		if(controller != null) {
+			controller.delete();
+		}
 
 		controller = new Controller();
 		

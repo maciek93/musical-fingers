@@ -50,8 +50,8 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 		fingerPoint = MusicalFingers.manager.get("assets/finger.png");
 		
 		//ScaleFactor
-		sF = MusicalFingers.width/piano.getWidth();
-		sF-=2;
+		sF = (int) (MusicalFingers.height/piano.getHeight()/1.5f);
+		//sF-=2;
 		
 		//Rectangle
 		Pixmap pixmap = new Pixmap( 1,1, Format.RGBA8888 );
@@ -140,11 +140,11 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 			Finger finger = fingerListSorted.get(i);
 			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),true);
 			
-			batch.draw(rectangle,MusicalFingers.width/2f - fingerListSorted.size()/2f*10f+10f*i,50+(fingerPos.getY()-pianoLevel)*50f,10,5);
+			batch.draw(rectangle,MusicalFingers.width/2f - fingerListSorted.size()/2f*10f*sF+sF*10f*i,50+(fingerPos.getY()-pianoLevel)*50f,10*sF,sF);
 		}
 		
 		batch.setColor(Color.BLACK);
-		batch.draw(rectangle,MusicalFingers.width/2f - 5*10f,49,100,6);
+		batch.draw(rectangle,MusicalFingers.width/2f - 5*10f*sF,49,100*sF,sF);
 		
 	}
 

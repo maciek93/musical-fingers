@@ -13,7 +13,7 @@ public class Main {
 		//Fixed Size Window
 		config.width = 1280;
 		config.height = 800;
-		config.resizable = false;
+		//config.resizable = false;
 		//Fullscreen
 		//config.fullscreen=true;
 		
