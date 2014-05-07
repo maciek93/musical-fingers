@@ -2,6 +2,8 @@ package ox.musicalfingers.instrument;
 
 import ox.musicalfingers.display.MusicalFingers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 
 public class GuitarOutput implements DiscreteOutput {
