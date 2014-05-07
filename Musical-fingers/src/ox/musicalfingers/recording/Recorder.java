@@ -6,6 +6,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import ox.musicalfingers.instrument.DiscreteInputDisplay;
+import ox.musicalfingers.instrument.DiscreteOutput;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class Recorder {
 	
 	private int time = 0;
@@ -15,15 +20,22 @@ public class Recorder {
 	
 	private int song = 0;
 	
+	private DiscreteOutput[] instruments = new DiscreteOutput[9];
+	
 	public Recorder() {
 		for(int i=0;i<recordedNotes.length;i++) {
 			recordedNotes[i] = new LinkedList<Notes>();
 		}
 	}
 
-	public void startRecording() {
+	public void startRecording(DiscreteOutput inst) {
 		time = 0;
 		recordedNotes[song].clear();
+		instruments[song] = inst;
+	}
+	
+	public DiscreteOutput getInstrumentForPlayback() {
+		return instruments[song];
 	}
 	
 	public void recordNotes(boolean[] notes) {

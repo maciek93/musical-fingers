@@ -158,22 +158,24 @@ public class InstrumentScreen implements Screen {
 		record.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(recording) {
-					record.setText("record");
-				} else {
-					recorder.startRecording();
-					record.setText("stop");
-					
-					if(instruments.getSelectionIndex() == 0) {
-						//Piano
-						recordedOutput = new FiveNotes();
-					} else if(instruments.getSelectionIndex() == 1) {
-						//Guitar
-						recordedOutput = new GuitarOutput();
+				if(!playingBack){
+					if(recording) {
+						record.setText("record");
+					} else {
+						recorder.startRecording(output);
+						record.setText("stop");
+						
+						if(instruments.getSelectionIndex() == 0) {
+							//Piano
+							recordedOutput = new FiveNotes();
+						} else if(instruments.getSelectionIndex() == 1) {
+							//Guitar
+							recordedOutput = new GuitarOutput();
+						}
+	
 					}
-
+					recording = !recording;
 				}
-				recording = !recording;
 			}
 		}
 		);
@@ -185,13 +187,15 @@ public class InstrumentScreen implements Screen {
 		playButton.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(playingBack) {
-					playButton.setText("play");
-				} else {
-					recorder.startPlaying();
-					playButton.setText("stop");
+				if(!recording) {
+					if(playingBack) {
+						playButton.setText("play");
+					} else {
+						recorder.startPlaying();
+						playButton.setText("stop");
+					}
+					playingBack = !playingBack;
 				}
-				playingBack = !playingBack;
 			}
 		}
 		);
@@ -223,6 +227,9 @@ public class InstrumentScreen implements Screen {
 		play = MusicalFingers.manager.get("assets/playing.png");
 		
 		backToMenu = false;
+		
+		recording = false;
+		playingBack = false;
 	
 	}
 
@@ -257,13 +264,15 @@ public class InstrumentScreen implements Screen {
 			recorder.changeToSong(recordings.getSelectionIndex());
 			
 			if(recording) {
-				recorder.startRecording();
+				recorder.startRecording(output);
 			}
 			if(playingBack) {
 				recorder.startPlaying();
 			}
 			
 			currentSong = recordings.getSelectionIndex();
+			
+			recordedOutput = recorder.getInstrumentForPlayback();
 		}
 
 		
