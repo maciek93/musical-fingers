@@ -5,6 +5,7 @@ import ox.musicalfingers.display.MusicalFingers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class GameNote {
 	 public int note;
@@ -30,6 +31,18 @@ public class GameNote {
 						break;
 			default:				throw new Error("not a valid state");
 		}
-		  batch.draw(gameNote,140+note*224,pos,gameNote.getWidth()*10,gameNote.getHeight()*10);
+		  batch.draw(gameNote,MusicalFingers.width/2f - 160/2f*5+note*32*5+gameNote.getWidth()*2.5f,pos,gameNote.getWidth()*10,gameNote.getHeight()*10);
+	  }
+	  
+	  public Rectangle bounds() {
+		  return new Rectangle(MusicalFingers.width/2f - 160/2f*5+note*32*5+gameNote.getWidth()*2.5f,pos,gameNote.getWidth()*10,gameNote.getHeight()*10);
+	  }
+	  
+	  public int getX() {
+		  return (int) (MusicalFingers.width/2f - 160/2f*5+note*32*5+gameNote.getWidth()*2.5f);
+	  }
+	  
+	  public int getY() {
+		  return (int) (pos);
 	  }
 }

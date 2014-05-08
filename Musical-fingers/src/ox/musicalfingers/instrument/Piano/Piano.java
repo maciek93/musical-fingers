@@ -71,7 +71,6 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     	for(int i=0;i<5;i++) { notes[i]=false;}
     	
     	for(Hand hand : controller.frame().hands()) {
-    		Vector palmPos = hand.palmPosition();
     		for(Finger finger : hand.fingers()) {
     			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
     			

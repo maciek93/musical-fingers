@@ -20,8 +20,10 @@ import com.leapmotion.leap.Vector;
 public class GamePianoInput extends Listener {
 	
 	private boolean[] notes = new boolean[5];
+	private boolean[] prevNotes = new boolean[5];
 	boolean[] pressed = new boolean[5];
 	Rectangle[] keys = new Rectangle[5];
+	Rectangle[] bounds = new Rectangle[5];
 	
 	Texture fingerPoint;
 	
@@ -30,16 +32,37 @@ public class GamePianoInput extends Listener {
 	FingerList fingerList;
 	InteractionBox iBox;
 	
+	Texture piano;
+	Texture rectangle;
+	
+	float pianoLevel =0.5f;
+	
 	public GamePianoInput() {
-		//Define keys in normalised InteractionBox co-ords
-		for(int i=0;i<5;i++) {
-			keys[i] = new Rectangle(i*(1f/5f),0f,(1f/5f),1f);
-		}
 		
 		fingerPoint = MusicalFingers.manager.get("assets/finger.png");
 		
-		sF = 7;
+		piano = MusicalFingers.manager.get("assets/game/game_piano.png");
 		
+		//Looks better this way
+		sF = 1280/piano.getWidth() - 3;
+		
+		//Rectangle
+		Pixmap pixmap = new Pixmap( 1,1, Format.RGBA8888 );
+		pixmap.setColor( 1,1,1,1);
+		pixmap.fill();
+		rectangle = new Texture(pixmap);
+		
+		
+		//Define keys in normalised InteractionBox co-ords
+		for(int i=0;i<5;i++) {
+			keys[i] = new Rectangle(i*(1f/5f),0f,(1f/5f),1f);
+			bounds[i] = new Rectangle(MusicalFingers.width/2f - piano.getWidth()/2f*sF+32*sF*i,MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f))+3*4,32*sF,67*sF);
+		}
+		
+	}
+	
+	public Rectangle getBounds(int i) {
+		return bounds[i];
 	}
 	
     public void onInit (Controller controller) {
@@ -49,24 +72,26 @@ public class GamePianoInput extends Listener {
     
     public void onFrame(Controller controller) {
     	iBox = controller.frame().interactionBox();
+    	//Set notes to false
+    	for(int i=0;i<5;i++) { notes[i]=false;}
+    	
     	for(Hand hand : controller.frame().hands()) {
-    		Vector palmPos = hand.palmPosition();
     		for(Finger finger : hand.fingers()) {
     			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
     			
     			for(int i=0;i<5;i++) {
-	    			if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
-	    				(iBox.normalizePoint(palmPos,false).getY() - fingerPos.getY() > 0.001f)) {
-	    				if (notes[i] = false) {
-	    					pressed[i] = true;
-	    				}
-	    				notes[i]=true;
-	    			} else {
-	    				notes[i]=false;
+    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
+    	    				(fingerPos.getY() < pianoLevel)) {
+    					if(prevNotes[i]==false) {
+    						pressed[i]=true;
+    					}
+	    				notes[i] = true;
 	    			}
     			}
     		}
     	}
+    	
+    	System.arraycopy(notes, 0, prevNotes, 0, notes.length);
     	fingerList = controller.frame().fingers();
     }
 
@@ -75,10 +100,23 @@ public class GamePianoInput extends Listener {
 	}
 	
 	public void draw(SpriteBatch batch) {
+		
+		batch.draw(piano, MusicalFingers.width/2f - piano.getWidth()/2f*sF,MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f)),piano.getWidth()*sF,piano.getHeight()*(4f));
 
+		
+		batch.setColor(0f, 0f, 0f, 0.5f);
+		for (int i = 0; i < 5; i++) {
+			if (notes[i]) {
+				batch.draw(rectangle, MusicalFingers.width/2f - piano.getWidth()/2f*sF + (i*32)*sF,MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f)) + 2*4, 32*sF,67*4);
+			}
+		}
+		
+		
+		batch.setColor(Color.BLACK);
 		for(Finger finger: fingerList) {
 			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
-			batch.draw(fingerPoint,-6f+80+160f*sF*fingerPos.getX(),-6f+400+((1f-fingerPos.getZ())*40)*sF,12,12);
+			
+			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - piano.getWidth()/2f*sF+160f*sF*fingerPos.getX(),MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f))+((1f-fingerPos.getZ())*67)*sF,12,12);
 		}
 		
 	}
