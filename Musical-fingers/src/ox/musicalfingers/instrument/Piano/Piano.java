@@ -66,12 +66,14 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     }
     
     public void onFrame(Controller controller) {
+    	
+    	boolean[] noteCopy = new boolean[5];
     	iBox = controller.frame().interactionBox();
     	//Set notes to false
-    	for(int i=0;i<5;i++) { notes[i]=false;}
+    	for(int i=0;i<5;i++) { noteCopy[i]=false;}
     	
-    	for(Hand hand : controller.frame().hands()) {
-    		for(Finger finger : hand.fingers()) {
+    	//for(Hand hand : controller.frame().hands()) {
+    		for(Finger finger : controller.frame().fingers()) {
     			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
     			
     			for(int i=0;i<5;i++) {
@@ -81,9 +83,8 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 	    			}
 	    				//*/
     				///*
-    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
-    	    				(fingerPos.getY() < pianoLevel)) {
-    	    				notes[i] = true;
+    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) && (fingerPos.getY() < pianoLevel)) {
+    					noteCopy[i] = true;
 	    			}
     				/*
     				else {
@@ -92,7 +93,9 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 	    			*/
     			}
     		}
-    	}
+    	//}
+    	
+    	this.setNotes(noteCopy);
     	fingerList = controller.frame().fingers();
     }
     
@@ -107,23 +110,24 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     		}
     	});
     }
+    
+    public synchronized void setNotes(boolean[] note) {
+    	notes = note;
+    }
 
 	@Override
-	public boolean[] getNotes() {
+	public synchronized boolean[] getNotes() {
 		return notes;
 	}
 
 	@Override
 	public void draw(SpriteBatch batch) {
 		
+		//Piano
 		batch.setColor(Color.WHITE);
 		batch.draw(piano, MusicalFingers.width/2f - piano.getWidth()/2f*sF,MusicalFingers.height/6f,piano.getWidth()*sF,piano.getHeight()*sF);
 		
-		for(Finger finger: fingerList) {
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
-			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - (piano.getWidth()/2f*sF) +piano.getWidth()*sF*fingerPos.getX(),-6f+MusicalFingers.height/6f+(6+64*(1f-1f*fingerPos.getZ()))*sF,12,12);
-		}
-		
+		//Keys
 		batch.setColor(0f, 0f, 0f, 0.5f);
 		for (int i = 0; i < 5; i++) {
 			if (notes[i]) {
@@ -144,6 +148,13 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 		
 		batch.setColor(Color.BLACK);
 		batch.draw(rectangle,MusicalFingers.width/2f - 5*10f*sF,49,100*sF,sF);
+		
+		//Fingers
+		batch.setColor(Color.WHITE);
+		for(Finger finger: fingerList) {
+			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
+			batch.draw(fingerPoint,-18f+MusicalFingers.width/2f - (piano.getWidth()/2f*sF) +piano.getWidth()*sF*fingerPos.getX(),-18f+MusicalFingers.height/6f+(6+64*(1f-1f*fingerPos.getZ()))*sF,36,36);
+		}
 		
 	}
 

@@ -48,7 +48,7 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 	}
 	
     public void onInit (Controller controller) {
-        System.out.println("Initialized Piano");
+        System.out.println("Initialized Drum");
         pointableList = controller.frame().pointables();
     }
     

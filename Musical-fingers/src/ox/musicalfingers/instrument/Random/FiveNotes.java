@@ -37,6 +37,9 @@ public class FiveNotes implements DiscreteOutput {
 			}
 			
 			if(!prev[i] && notes[i]) {
+				if(stopInABit[i] = true) {
+					sounds[i].stop();
+				}
 				sounds[i].play();
 				stopInABit[i] = false;
 			}
@@ -46,6 +49,7 @@ public class FiveNotes implements DiscreteOutput {
 			}
 		}
 		System.arraycopy(notes,0,prev,0,notes.length);
+		prev = notes.clone();
 	}
 
 }

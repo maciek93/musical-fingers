@@ -119,6 +119,8 @@ public class GamePianoInput extends Listener {
 			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - piano.getWidth()/2f*sF+160f*sF*fingerPos.getX(),MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f))+((1f-fingerPos.getZ())*67)*sF,12,12);
 		}
 		
+		//TODO: Add the reference levels for fingers and the piano
+		
 	}
 
 }

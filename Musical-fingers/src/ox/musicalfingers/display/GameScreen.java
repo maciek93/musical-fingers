@@ -143,6 +143,7 @@ public class GameScreen implements Screen{
 		 score = 0; 
 		 winScreen=false;
 		 loseScreen=false;
+		 gameNotes.clear();
 		
 		batch = new SpriteBatch();    
         font = new BitmapFont();
