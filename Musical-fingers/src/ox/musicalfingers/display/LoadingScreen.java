@@ -73,6 +73,21 @@ public class LoadingScreen implements Screen {
 	   		manager.load("assets/guitar"+ i +".wav", Sound.class);
 	   	}
 		manager.load("assets/guitar_main.png", Texture.class);
+
+		for(int i = 1; i < 6; i++) {
+	   		manager.load("assets/drum"+ i +".wav", Sound.class);
+	   	}
+		manager.load("assets/drum.png", Texture.class);
+
+		
+		for (int i=1; i<4; i++) {
+			manager.load("assets/sampler/Kick"+ i +".wav", Sound.class);
+			manager.load("assets/sampler/Snare"+ i +".wav", Sound.class);
+			manager.load("assets/sampler/Clap"+ i +".wav", Sound.class);
+			manager.load("assets/sampler/Hat"+ i +".wav", Sound.class);
+		}
+		manager.load("assets/sampler.png", Texture.class);
+		
 		manager.load("assets/game/GameNote.png", Texture.class);
 		manager.load("assets/game/game_piano.png", Texture.class);
 		

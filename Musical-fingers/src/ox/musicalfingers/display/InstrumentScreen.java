@@ -36,10 +36,15 @@ import ox.musicalfingers.instrument.DiscreteInput;
 import ox.musicalfingers.instrument.DiscreteInputDisplay;
 import ox.musicalfingers.instrument.DiscreteOutput;
 import ox.musicalfingers.instrument.GuitarOutput;
+import ox.musicalfingers.instrument.DrumOutput;
+import ox.musicalfingers.instrument.sampler.SamplerDisplay;
+import ox.musicalfingers.instrument.sampler.SamplerOutput;
 import ox.musicalfingers.instrument.Piano.Piano;
 import ox.musicalfingers.instrument.Piano.Piano_FiveKey;
 import ox.musicalfingers.instrument.Random.FiveNotes;
 import ox.musicalfingers.instrument.guitar.Guitar;
+import ox.musicalfingers.instrument.drum.Drum;
+import ox.musicalfingers.instrument.sampler.Sampler;
 import ox.musicalfingers.leap.GuitarListener;
 import ox.musicalfingers.leap.LeapMotion;
 import ox.musicalfingers.leap.PianoListener;
@@ -175,6 +180,12 @@ public class InstrumentScreen implements Screen {
 						} else if(instruments.getSelectionIndex() == 1) {
 							//Guitar
 							recordedOutput = new GuitarOutput();
+						} else if(instruments.getSelectionIndex() == 2) {
+							//Drum
+							recordedOutput = new DrumOutput();
+						} else if(instruments.getSelectionIndex() == 3) {
+							// Sampler
+							recordedOutput = new SamplerOutput();
 						}
 	
 					}
@@ -204,7 +215,7 @@ public class InstrumentScreen implements Screen {
 		}
 		);
 		
-		String[] instrumentNames = {"     PIANO", "     GUITAR"};
+		String[] instrumentNames = {"     PIANO", "     GUITAR", "      DRUM", "   SAMPLER"};
 		
 		instruments = new SelectBox(instrumentNames, skin);
 		instruments.setPosition(MusicalFingers.width-255f, MusicalFingers.height-100f-5f);
@@ -256,6 +267,14 @@ public class InstrumentScreen implements Screen {
 				//Guitar
 				output = new GuitarOutput();
 				inputDisplay = new Guitar();
+			} else if(instruments.getSelectionIndex() == 2) {
+				//Drum
+				output = new DrumOutput();
+				inputDisplay = new Drum();
+			} else if(instruments.getSelectionIndex() == 3) {
+				//Sampler
+				output = new SamplerOutput();
+				inputDisplay = new Sampler();
 			}
 			
 			controller.addListener((Listener) inputDisplay);
