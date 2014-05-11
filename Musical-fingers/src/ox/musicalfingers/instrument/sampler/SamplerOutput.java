@@ -1,12 +1,13 @@
 package ox.musicalfingers.instrument.sampler;
 
 import ox.musicalfingers.display.MusicalFingers;
+import ox.musicalfingers.instrument.DiscreteOutput;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 
-public class SamplerOutput {
+public class SamplerOutput implements DiscreteOutput {
 
 	Sound[] sounds = new Sound[12];
 	boolean[] prev = new boolean[12];
@@ -16,10 +17,10 @@ public class SamplerOutput {
 	
 	public SamplerOutput() {
 		for (int i=0; i<12; i++) {
-			if (i%4==0) sounds[i] = MusicalFingers.manager.get("assets/sampler/Kick"+(i%3+1)+".mp3");
-			if (i%4==1) sounds[i] = MusicalFingers.manager.get("assets/sampler/Snare"+(i%3+1)+".mp3");
-			if (i%4==2) sounds[i] = MusicalFingers.manager.get("assets/sampler/Clap"+(i%3+1)+".mp3");
-			if (i%4==3) sounds[i] = MusicalFingers.manager.get("assets/sampler/Hat"+(i%3+1)+".mp3");
+			if (i%4==0) sounds[i] = MusicalFingers.manager.get("assets/sampler/Kick"+(i%3+1)+".wav");
+			if (i%4==1) sounds[i] = MusicalFingers.manager.get("assets/sampler/Snare"+(i%3+1)+".wav");
+			if (i%4==2) sounds[i] = MusicalFingers.manager.get("assets/sampler/Clap"+(i%3+1)+".wav");
+			if (i%4==3) sounds[i] = MusicalFingers.manager.get("assets/sampler/Hat"+(i%3+1)+".wav");
 		}
 	}
 

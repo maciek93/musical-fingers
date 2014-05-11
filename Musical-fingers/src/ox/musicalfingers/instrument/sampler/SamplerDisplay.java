@@ -46,7 +46,7 @@ public class SamplerDisplay implements DiscreteDisplay{
 		circle = new Texture( pixmap );
 		pixmap.dispose();
 		
-		sampler = MusicalFingers.manager.get("assets/5key_sampler.png");
+		sampler = MusicalFingers.manager.get("assets/sampler.png");
 		fingerPoint = MusicalFingers.manager.get("assets/finger.png");
 		
 		scaleFactor = ((MusicalFingers.width/160)-2);
@@ -118,8 +118,6 @@ public class SamplerDisplay implements DiscreteDisplay{
 	        Vector nPos = iBox.normalizePoint(Position);
 
 			batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,(1f-nPos.getZ())*MusicalFingers.height-6,12,12);
-			//batch.draw(fingerPoint,finger.tipPosition().getX()*scaleFactor*160-32,finger.tipPosition().getY()*scaleFactor*80-32,64,64);
-			//batch.draw(circle,(finger.tipPosition().getX()-8)*(5)+640,finger.tipPosition().getZ()+300-8);
 ;
 		}
 		

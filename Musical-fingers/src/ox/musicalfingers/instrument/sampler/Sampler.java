@@ -46,7 +46,7 @@ public class Sampler extends Listener implements DiscreteInputDisplay{
 			keys[i] = new Rectangle((i%4)*(1f/4f),(i%3)*(1f/3f),1f/4f,1f/3f);
 		}
 		
-		sampler = MusicalFingers.manager.get("assets/5key_piano.png");
+		sampler = MusicalFingers.manager.get("assets/sampler.png");
 		fingerPoint = MusicalFingers.manager.get("assets/finger.png");
 		
 		//ScaleFactor
@@ -117,7 +117,7 @@ public class Sampler extends Listener implements DiscreteInputDisplay{
 		batch.setColor(0f, 0f, 0f, 0.5f);
 		for (int i = 0; i < 12; i++) {
 			if (notes[i]) {
-				batch.draw(rectangle, MusicalFingers.width/2f - sampler.getWidth()/2f*sF + ((i%4)*40)*sF,MusicalFingers.height/6f + ((i%3)*32)*2*sF, 40*sF,32*sF);
+				batch.draw(rectangle, MusicalFingers.width/2f - sampler.getWidth()/2f*sF + ((i%4)*sampler.getWidth()/4f)*sF, MusicalFingers.height/6f + ((2-(i%3))*sampler.getHeight()/3f)*sF, (sampler.getWidth()/4f)*sF,sampler.getHeight()*sF / 3f);
 			}
 		}
 		
