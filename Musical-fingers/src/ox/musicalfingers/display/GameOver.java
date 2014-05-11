@@ -100,7 +100,7 @@ public class GameOver implements Screen {
 		TextButton button = new TextButton("compose", skin);
 		button.setWidth(400f);
 		button.setHeight(200f);
-		button.setPosition(MusicalFingers.width/2f - 450f, MusicalFingers.height/2f - 200f);
+		button.setPosition(MusicalFingers.width/2f - 428f, MusicalFingers.height/2f - 200f);
 		button.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -112,7 +112,7 @@ public class GameOver implements Screen {
 		TextButton button2 = new TextButton("play again", skin);
 		button2.setWidth(400f);
 		button2.setHeight(200f);
-		button2.setPosition(MusicalFingers.width/2f , MusicalFingers.height/2f - 200f);
+		button2.setPosition(MusicalFingers.width/2f+30 , MusicalFingers.height/2f - 200f);
 		button2.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

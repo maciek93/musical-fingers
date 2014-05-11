@@ -128,6 +128,7 @@ public class MusicalFingers implements ApplicationListener{
 		camera.setToOrtho(false);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
+		current.init();
 		
 	}
 

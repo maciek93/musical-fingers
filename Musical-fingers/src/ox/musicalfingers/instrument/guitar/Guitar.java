@@ -1,5 +1,10 @@
 package ox.musicalfingers.instrument.guitar;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,10 +25,26 @@ import ox.musicalfingers.instrument.KeyPos;
 
 public class Guitar extends Listener implements DiscreteInputDisplay{
 	
-	private KeyPos [] keyPos = new KeyPos[6];
+	private class Str {
+		float pos;
+		float width = (float) 0.1;
+		
+		Str(float pos) {
+			this.pos = pos;
+		}
+
+		public boolean isInRange(Float x) {
+			System.out.println("Checking: " + x);
+			return (pos <= x && x <= (pos+width));
+		}
+	}
+	
+	//private KeyPos [] keyPos = new KeyPos[6];
+	private Str[] string = new Str[6];
 	private boolean[] keys = new boolean[6];
 	private FingerList fingers;
 	private InteractionBox iBox;
+	
 	
 	Texture rectangle;
 	Texture circle;
@@ -34,6 +55,12 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	int sF = 1;
 	
 	public Guitar() {
+		try {
+			Keyboard.create();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+		
 		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
 		pixmap.setColor(1, 1, 1, 1);
 		pixmap.fill();
@@ -51,6 +78,12 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 		sF = ((MusicalFingers.width/160)-2);
 		
 		for(int i=0;i<6;i++) {
+			float x= (float) (0.3 + (i * 0.1));
+			string[i]= new Str(x);
+			System.out.println("String: " + x);
+	}
+		
+		/*for(int i=0;i<6;i++) {
 				float z=1;
 				float x=160+(i*16)*sF*z;
 				float y=120+2*sF*z;
@@ -58,7 +91,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 				float height=67*sF*z;
 				keyPos[i]= new KeyPos(x/MusicalFingers.width, y/MusicalFingers.height, width/MusicalFingers.width, 
 						height/MusicalFingers.height);
-		}
+		}*/
 	}
 
 	@Override
@@ -77,7 +110,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 			if(notes[i]) {
 				float z=1;
 				float x=147+2*sF*z;
-				float y=150+(i*13)*sF*z;
+				float y=540-(i*13)*sF*z;
 				float width=160*sF*z;
 				float height=5*sF*z;
 				
@@ -97,8 +130,6 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 		
 		
 	}
-	
-	private Frame lastFrame = new Frame();
 	 
 	boolean[] notes = new boolean[12];
     
@@ -119,25 +150,46 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 		for(Pointable pointable : frame.pointables()) {
 			float z = iBox.normalizePoint(pointable.tipPosition()).getZ();
 			float y = iBox.normalizePoint(pointable.tipPosition()).getY();
-			Pointable last = lastFrame.pointable(pointable.id());
-			if(last.isValid() && y < 5) {
-				float lastZ = iBox.normalizePoint(pointable.tipPosition()).getZ();
-				int string = processPointable(z, lastZ);
+			if(y < 5) {
+				int string = processPointable(z);
 				if(string >= 0) {
 					notes[string] = true;
 				}
 			}
 		}
-		lastFrame = frame;
+		if(Gdx.input.isKeyPressed(Keys.A) && notes[0]) {
+			notes[6] = true;
+			notes[0] = false;
+		}
+		if(Gdx.input.isKeyPressed(Keys.S) && notes[1]) {
+			notes[7] = true;
+			notes[1] = false;
+		}
+		if(Gdx.input.isKeyPressed(Keys.D) && notes[2]) {
+			notes[8] = true;
+			notes[2] = false;
+		}
+		if(Gdx.input.isKeyPressed(Keys.F) && notes[3]) {
+			notes[9] = true;
+			notes[3] = false;
+		}
+		if(Gdx.input.isKeyPressed(Keys.G) && notes[4]) {
+			notes[10] = true;
+			notes[4] = false;
+		}
+		if(Gdx.input.isKeyPressed(Keys.H) && notes[5]) {
+			notes[11] = true;
+			notes[5] = false;
+		}
 	}
 	
-	 private int processPointable(float z, float lastZ) {
-			return FindKey(z, lastZ);
+	 private int processPointable(float z) {
+			return FindKey(z);
 		}
 	 
-	 public int FindKey(Float x, Float y) {
+	 public int FindKey(Float x) {
 			for(int i=0;i<6;i++) {
-				if (keyPos[i].isInRange(x, y)) {return i;}
+				if (string[i].isInRange(x)) {return i;}
 			}
 			return -1;
 		}

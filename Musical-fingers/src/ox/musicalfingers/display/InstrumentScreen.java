@@ -36,10 +36,12 @@ import ox.musicalfingers.instrument.DiscreteInput;
 import ox.musicalfingers.instrument.DiscreteInputDisplay;
 import ox.musicalfingers.instrument.DiscreteOutput;
 import ox.musicalfingers.instrument.GuitarOutput;
+import ox.musicalfingers.instrument.DrumOutput;
 import ox.musicalfingers.instrument.Piano.Piano;
 import ox.musicalfingers.instrument.Piano.Piano_FiveKey;
 import ox.musicalfingers.instrument.Random.FiveNotes;
 import ox.musicalfingers.instrument.guitar.Guitar;
+import ox.musicalfingers.instrument.drum.Drum;
 import ox.musicalfingers.leap.GuitarListener;
 import ox.musicalfingers.leap.LeapMotion;
 import ox.musicalfingers.leap.PianoListener;
@@ -94,6 +96,10 @@ public class InstrumentScreen implements Screen {
 
 	@Override
 	public void init() {
+		
+		if(controller != null) {
+			controller.delete();
+		}
 
 		controller = new Controller();
 		
@@ -158,22 +164,27 @@ public class InstrumentScreen implements Screen {
 		record.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(recording) {
-					record.setText("record");
-				} else {
-					recorder.startRecording();
-					record.setText("stop");
-					
-					if(instruments.getSelectionIndex() == 0) {
-						//Piano
-						recordedOutput = new FiveNotes();
-					} else if(instruments.getSelectionIndex() == 1) {
-						//Guitar
-						recordedOutput = new GuitarOutput();
+				if(!playingBack){
+					if(recording) {
+						record.setText("record");
+					} else {
+						recorder.startRecording(output);
+						record.setText("stop");
+						
+						if(instruments.getSelectionIndex() == 0) {
+							//Piano
+							recordedOutput = new FiveNotes();
+						} else if(instruments.getSelectionIndex() == 1) {
+							//Guitar
+							recordedOutput = new GuitarOutput();
+						} else if(instruments.getSelectionIndex() == 2) {
+							//Drum
+							recordedOutput = new DrumOutput();
+						}
+	
 					}
-
+					recording = !recording;
 				}
-				recording = !recording;
 			}
 		}
 		);
@@ -185,18 +196,20 @@ public class InstrumentScreen implements Screen {
 		playButton.addListener(new ClickListener() { 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if(playingBack) {
-					playButton.setText("play");
-				} else {
-					recorder.startPlaying();
-					playButton.setText("stop");
+				if(!recording) {
+					if(playingBack) {
+						playButton.setText("play");
+					} else {
+						recorder.startPlaying();
+						playButton.setText("stop");
+					}
+					playingBack = !playingBack;
 				}
-				playingBack = !playingBack;
 			}
 		}
 		);
 		
-		String[] instrumentNames = {"     PIANO", "     GUITAR"};
+		String[] instrumentNames = {"     PIANO", "     GUITAR", "      DRUM"};
 		
 		instruments = new SelectBox(instrumentNames, skin);
 		instruments.setPosition(MusicalFingers.width-255f, MusicalFingers.height-100f-5f);
@@ -223,6 +236,9 @@ public class InstrumentScreen implements Screen {
 		play = MusicalFingers.manager.get("assets/playing.png");
 		
 		backToMenu = false;
+		
+		recording = false;
+		playingBack = false;
 	
 	}
 
@@ -245,6 +261,10 @@ public class InstrumentScreen implements Screen {
 				//Guitar
 				output = new GuitarOutput();
 				inputDisplay = new Guitar();
+			} else if(instruments.getSelectionIndex() == 2) {
+				//Drum
+				output = new DrumOutput();
+				inputDisplay = new Drum();
 			}
 			
 			controller.addListener((Listener) inputDisplay);
@@ -257,13 +277,15 @@ public class InstrumentScreen implements Screen {
 			recorder.changeToSong(recordings.getSelectionIndex());
 			
 			if(recording) {
-				recorder.startRecording();
+				recorder.startRecording(output);
 			}
 			if(playingBack) {
 				recorder.startPlaying();
 			}
 			
 			currentSong = recordings.getSelectionIndex();
+			
+			recordedOutput = recorder.getInstrumentForPlayback();
 		}
 
 		
