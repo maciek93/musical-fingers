@@ -66,7 +66,6 @@ public class Piano extends Listener implements DiscreteInputDisplay{
         iBox = controller.frame().interactionBox();
     }
     
-    public void onFrame(Controller controller) {
     
     public void onFrame(Controller controller) {
     	
