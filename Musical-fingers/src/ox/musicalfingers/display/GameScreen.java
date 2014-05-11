@@ -132,6 +132,7 @@ public class GameScreen implements Screen{
 	float noteSpeed = 8f;
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
     //Vars for playing back music
 	 FiveNotes musicPlayer;
 
@@ -144,6 +145,8 @@ public class GameScreen implements Screen{
 	 //anything to cheer?
 	 private boolean cheerBool;
 
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
 
@@ -160,9 +163,12 @@ public class GameScreen implements Screen{
 		 loseScreen=false;
 		 gameNotes.clear();
 <<<<<<< HEAD
+<<<<<<< HEAD
 		 cheerMessage="";
 		 cheerBool=false;
 		 pressed= new boolean []{false,false,false,false,false};
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
 		
@@ -193,9 +199,13 @@ public class GameScreen implements Screen{
 		
 		Skin skin = MusicalFingers.manager.get("assets/ui/pixelSkin.json");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		skin.getFont("default").setScale(1f);	
 		
 
+=======
+		skin.getFont("default").setScale(1f);		
+>>>>>>> FETCH_HEAD
 =======
 		skin.getFont("default").setScale(1f);		
 >>>>>>> FETCH_HEAD
@@ -315,6 +325,7 @@ public class GameScreen implements Screen{
 				}
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 		
 				for(int i=0;i<5;i++) {
 					
@@ -399,6 +410,46 @@ public class GameScreen implements Screen{
 				for(int i=0;i<gameNotes.size();i++) {
 					GameNote note = gameNotes.get(i);
 >>>>>>> FETCH_HEAD
+=======
+				
+					
+				for(int i=0;i<5;i++) {
+					
+					if(input.getPressed()[i]){
+						boolean wasNote =false;
+						for(int j=0;j<gameNotes.size();j++) {
+							GameNote note = gameNotes.get(j);
+							
+							if( input.getBounds(i).contains(note.bounds())) {
+								//Note is inside the bounds
+								reward(note.getX(), note.getY(),1f);
+								input.getPressed()[i]=false;
+								gameNotes.remove(j);
+								j--;
+								wasNote = true;
+							} else if (input.getBounds(i).overlaps(note.bounds())) {
+								//Note on ede of key
+								reward(note.getX(), note.getY(),0.5f);
+								input.getPressed()[i]=false;
+								gameNotes.remove(j);
+								j--;
+								wasNote = true;
+							} 
+							
+						}
+						
+						input.getPressed()[i]=false;
+						
+						if(!wasNote) {
+							punish((int)(input.getBounds(i).x+input.getBounds(i).width/2f),(int)(input.getBounds(i).y+input.getBounds(i).height/2f),0.5f);
+						}
+					}
+
+				}
+				
+				for(int i=0;i<gameNotes.size();i++) {
+					GameNote note = gameNotes.get(i);
+>>>>>>> FETCH_HEAD
 					note.pos += noteSpeed;
 					if(note.pos>=MusicalFingers.height-110f) {
 						//Missed note
@@ -409,7 +460,10 @@ public class GameScreen implements Screen{
 				}
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
 				
@@ -467,7 +521,11 @@ public class GameScreen implements Screen{
 	
 	public void reward(int x, int y, float multiplier) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (cheerMessage == "WOOH!") {cheerMessage= "";} else {cheerMessage = "WOOH!";}
+=======
+		
+>>>>>>> FETCH_HEAD
 =======
 		
 >>>>>>> FETCH_HEAD
@@ -480,8 +538,13 @@ public class GameScreen implements Screen{
 	
 	public void punish(int x, int y, float multiplier) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (cheerMessage == "BOO !") {cheerMessage= "";} else {cheerMessage = "BOO !";}
 
+=======
+		
+		
+>>>>>>> FETCH_HEAD
 =======
 		
 		
@@ -506,6 +569,7 @@ public class GameScreen implements Screen{
 		}
 	    
 	    
+<<<<<<< HEAD
 <<<<<<< HEAD
 	    
 	    //Draw score here
@@ -533,11 +597,16 @@ public class GameScreen implements Screen{
 		
 		
 =======
+=======
+>>>>>>> FETCH_HEAD
 	    //Draw score here
 	    font.setColor(1,1,1,1);
 		//font.setScale(1,-1);
 		font.draw(batch, "SCORE: "+score, MusicalFingers.width-300,30);
 	    //
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 	    
 		//Draw rectangle under toolbar
