@@ -74,41 +74,22 @@ public class GamePianoInput extends Listener {
     	iBox = controller.frame().interactionBox();
     	//Set notes to false
     	for(int i=0;i<5;i++) { notes[i]=false;}
-  
-    	//new method
-    	for (Hand hand : controller.frame().hands()){
-    		//Hand right = controller.frame().hands().rightmost();
-    		Vector norm= hand.palmNormal();
-    		for(Finger finger : hand.fingers()) {
-    			Vector fingerEnd = finger.tipPosition().minus(finger.direction().normalized().times(finger.length()));
-    			float LRangle =fingerEnd.minus(hand.palmPosition()).angleTo(hand.direction());
-		    	 double j=1.1;
-
-    			
-    			System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
-
-    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
-    			//Vector fingerPos =finger.tipPosition();
-    			 for(int i=0;i<5;i++) {
-    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ())){
-    					Vector fingerDir = finger.direction();
-    					      float cosAngle = fingerDir.angleTo(norm);
-    					      //System.out.println(cosAngle);
-    					      if (cosAngle< j*5*0.9*Math.PI/16){
-    					    	  //System.out.println(cosAngle);
-    					    	  if(prevNotes[i]==false) {
-    		    						pressed[i]=true;
-    		    					}
-    			    				notes[i] = true;
- 
-    					      }
-    				}
-    			 }
-    				
     	
+    	for(Hand hand : controller.frame().hands()) {
+    		for(Finger finger : hand.fingers()) {
+    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
+    			
+    			for(int i=0;i<5;i++) {
+    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
+    	    				(fingerPos.getY() < pianoLevel)) {
+    					if(prevNotes[i]==false) {
+    						pressed[i]=true;
+    					}
+	    				notes[i] = true;
+	    			}
+    			}
     		}
     	}
-    
     	
     	System.arraycopy(notes, 0, prevNotes, 0, notes.length);
     	fingerList = controller.frame().fingers();

@@ -50,6 +50,8 @@ public class FiveNotes implements DiscreteOutput {
 		}
 		System.arraycopy(notes,0,prev,0,notes.length);
 		prev = notes.clone();
+<<<<<<< HEAD
+<<<<<<< HEAD
 	}
 	
 	
@@ -63,6 +65,10 @@ public class FiveNotes implements DiscreteOutput {
 			}
 		}
 		
+=======
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
 	}
 
 
