@@ -61,7 +61,7 @@ import ox.musicalfingers.recording.Recorder;
 
 
 public class GameScreen implements Screen{
-	  //private SpriteBatch batch;
+	  private SpriteBatch batch;
 	  private BitmapFont font;
 
 	  public class Note {
@@ -143,6 +143,7 @@ public class GameScreen implements Screen{
 	 //anything to cheer?
 	 private boolean cheerBool;
 
+
 	@Override
 	public void init() {
 		
@@ -155,18 +156,27 @@ public class GameScreen implements Screen{
 		 winScreen=false;
 		 loseScreen=false;
 		 gameNotes.clear();
-
 		 cheerMessage="";
 		 cheerBool=false;
 		 pressed= new boolean []{false,false,false,false,false};
 		
-		//batch = new SpriteBatch();    
+		batch = new SpriteBatch();    
         font = new BitmapFont();
         font.setColor(Color.RED);
         t = System.nanoTime();
         song = new Note[] {new Note(2,30),new Note(2,60),new Note(2,90),new Note(0,120),new Note(1,150),new Note(1,180),new Note(0,210),new 
         		Note(4,270),new Note(4,300),new Note(3,330),new Note(3,360),new Note(2,390),new Note(0,480)};
-		songs = new Note [] [] {song,song,song,song,song,song,song,song,song};
+         Note [] song1 = new Note[] {
+        		new Note(2,30),new Note(1,60),new Note(0,90),new Note(1,120),
+        		new Note(2,150),new Note(2,180),new Note(2,210),
+        		new Note(1,240),new Note(1,270),new Note(1,300),
+        		new Note(2,330),new Note(4,360),new Note(4,390),
+        		new Note(2,420),new Note(1,450),new Note(0,480),new Note(1,510),
+        		new Note(2,540),new Note(2,570),new Note(2,600),
+                new Note(1,630),new Note(1,670),new Note(2,700), new Note(1,730), 
+                new Note(0,760) ,new Note(0,900)
+         };
+		songs = new Note [] [] {song,song1,song,song,song,song,song,song,song};
 		musicPlayer = new FiveNotes();
 		
         piano = MusicalFingers.manager.get("assets/game/game_piano.png");
@@ -186,9 +196,10 @@ public class GameScreen implements Screen{
 		Gdx.input.setInputProcessor(stager);
 		
 		Skin skin = MusicalFingers.manager.get("assets/ui/pixelSkin.json");
-
 		skin.getFont("default").setScale(1f);	
+		
 
+		
         TextButton back = new TextButton("back", skin, "small");
 		back.setWidth(100f);
 		back.setHeight(100f);
@@ -233,7 +244,7 @@ public class GameScreen implements Screen{
 		);
 		
 	
-		String[] songNames = {"     SONG  1"	, "     SONG  2" , "     SONG  3" , "     SONG  4" , "     SONG  5"	, "     SONG  6" , "     SONG  7" , "     SONG  8" , "     SONG  9"}	;					
+		String[] songNames = {"     Old McDon..."	, "     Mary had a..." , "     SONG  3" , "     SONG  4" , "     SONG  5"	, "     SONG  6" , "     SONG  7" , "     SONG  8" , "     SONG  9"}	;					
 		
 		playList = new SelectBox (songNames, skin);
 		playList.setPosition(MusicalFingers.width-255f , MusicalFingers.height-105f);
@@ -303,9 +314,9 @@ public class GameScreen implements Screen{
 					spawn(song[currentNote].note); currentNote++;
 				}
 				
-			
-				//If you play the note
+		
 				for(int i=0;i<5;i++) {
+					
 					
 					if(input.getPressed()[i]){
 						boolean wasNote =false;
@@ -314,13 +325,14 @@ public class GameScreen implements Screen{
 							
 							if( input.getBounds(i).contains(note.bounds())) {
 								//Note is inside the bounds
+								
 								reward(note.getX(), note.getY(),1f);
 								input.getPressed()[i]=false;
 								gameNotes.remove(j);
 								j--;
 								wasNote = true;
 							} else if (input.getBounds(i).overlaps(note.bounds())) {
-								//Note on edge of key
+								//Note on ede of key
 								reward(note.getX(), note.getY(),0.5f);
 								input.getPressed()[i]=false;
 								gameNotes.remove(j);
@@ -338,8 +350,7 @@ public class GameScreen implements Screen{
 					}
 
 				}
-				
-
+			
 				// play the sounds of the notes
 				boolean [] tobePlayed = new  boolean[5]; 
 				for(int i=0;i<gameNotes.size();i++) {
@@ -366,59 +377,27 @@ public class GameScreen implements Screen{
 
 				}
 
+			
 				
-				//If you miss the note
 				for(int i=0;i<gameNotes.size();i++) {
 					GameNote note = gameNotes.get(i);
+					
+
+					
 					note.pos += noteSpeed;
 					if(note.pos>=MusicalFingers.height-110f) {
 						//Missed note
-						punish(note.getX(), note.getY(),1f);
+						//punish(note.getX(), note.getY(),1f);
 						gameNotes.remove(i);
 						i--;
 					}
 				}
-
-			}
 				
-		
-			/*
-			if ((Gdx.input.isKeyPressed(Keys.Q)) && !Q) {
-				if(Q) {
-					reward();
-				} else {
-					punish();
-				}
-		 	}
-			if ((Gdx.input.isKeyPressed(Keys.W)) && !W) {
-				if(W) {
-					reward();
-				} else {
-					punish();
-				}
-		 	}
-			if ((Gdx.input.isKeyPressed(Keys.E)) && !E) {
-				if(E) {
-					reward();
-				} else {
-					punish();
-				}
-		 	}
-			if ((Gdx.input.isKeyPressed(Keys.R)) && !R) {
-				if(R) {
-					reward();
-				} else {
-					punish();
-				}
-		 	}
-			if ((Gdx.input.isKeyPressed(Keys.T)) && !T) {
-				if(T) {
-					reward();
-				} else {
-					punish();
-				}
-		 	}
-		 	*/
+
+				
+				
+			}
+			
 				
 			
 		} else {
@@ -431,17 +410,15 @@ public class GameScreen implements Screen{
 	}
 	
 	public void reward(int x, int y, float multiplier) {
-
 		if (cheerMessage == "WOOH!") {cheerMessage= "";} else {cheerMessage = "WOOH!";}
 		
 		//Graphical affects will go here
 		
 		
-		score +=250*multiplier;
+		score +=1000*multiplier;
 	}
 	
 	public void punish(int x, int y, float multiplier) {
-
 		if (cheerMessage == "BOO !") {cheerMessage= "";} else {cheerMessage = "BOO !";}
 
 		//Graphical affects will go here
@@ -464,6 +441,7 @@ public class GameScreen implements Screen{
 		}
 	    
 	    
+	    
 	    //Draw score here
 	    if (cheerMessage =="WOOH!") {
 	    	//batch.setColor(Color.WHITE);
@@ -474,18 +452,21 @@ public class GameScreen implements Screen{
 	    	//batch.setColor(Color.RED);
 	    	//batch.draw(rectangle,MusicalFingers.width/2-200,50,400,100);
 	    	font.setColor(1,0,0,1);
-	    }
+	    	}
+	    
+	    
 		font.setScale(2.5f);
 		font.draw(batch, cheerMessage, MusicalFingers.width/2-85,150);
 	    
 		
 		
-		//Draw the Punish/ reward box here 
 	    //Draw score here
 	    font.setColor(1,1,1,1);
 		//font.setScale(1,-1);
 	    font.setScale(1f);
 		font.draw(batch, "SCORE: "+score, MusicalFingers.width-400,30);
+		
+		
 	    
 		//Draw rectangle under toolbar
 		batch.setColor(200f/255f,200f/255f,200f/255f,1);
@@ -521,6 +502,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
+		 batch.dispose();
 	        font.dispose();
 	        stager.dispose();
 	}
