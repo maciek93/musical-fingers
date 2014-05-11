@@ -63,7 +63,10 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     public void onInit (Controller controller) {
         System.out.println("Initialized Piano");
         fingerList = controller.frame().fingers();
+        iBox = controller.frame().interactionBox();
     }
+    
+    public void onFrame(Controller controller) {
     
     public void onFrame(Controller controller) {
     	
