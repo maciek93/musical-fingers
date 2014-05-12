@@ -81,7 +81,7 @@ public class GameOver implements Screen {
 		title.setFontScale(3.5f);
 		title.setX(0);
 		title.setWidth(MusicalFingers.width);
-		title.setY(MusicalFingers.height*1f/2f+150);
+		title.setY(MusicalFingers.height*1f/2f+100);
 		title.setAlignment(Align.center);
 		
 		Label score = new Label("score_ " +GameScreen.score, skin);

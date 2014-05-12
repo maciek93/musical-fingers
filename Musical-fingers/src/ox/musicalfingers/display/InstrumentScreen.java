@@ -198,7 +198,7 @@ public class InstrumentScreen implements Screen {
 		}
 		);
 		
-		String[] instrumentNames = {"     PIANO", "     GUITAR", "      DRUM", "   SAMPLER"};
+		String[] instrumentNames = {"     PIANO", "     GUITAR", "      DRUM", "     SAMPLER"};
 		
 		instruments = new SelectBox(instrumentNames, skin);
 		instruments.setPosition(MusicalFingers.width-255f, MusicalFingers.height-100f-5f);
