@@ -74,15 +74,14 @@ public class GameOver implements Screen {
 		//Label for the title
 		if (won) {
 			theTitle="Finger Master";
-		}
-		else {
+		} else {
 			theTitle="Butter Fingers";
 		}
 		Label title = new Label(theTitle, skin);
 		title.setFontScale(3.5f);
 		title.setX(0);
 		title.setWidth(MusicalFingers.width);
-		title.setY(MusicalFingers.height*3f/4f-20);
+		title.setY(MusicalFingers.height*1f/2f+150);
 		title.setAlignment(Align.center);
 		
 		Label score = new Label("score_ " +GameScreen.score, skin);
@@ -90,7 +89,7 @@ public class GameOver implements Screen {
 		score.setX(0);
 		//score.setColor(0.12f,0.97f,0.54f,0f);
 		score.setWidth(MusicalFingers.width);
-		score.setY(MusicalFingers.height*3f/4f-120);
+		score.setY(MusicalFingers.height*1f/2f);
 		score.setAlignment(Align.center);
 		
 		stage.addActor(score);

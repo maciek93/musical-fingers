@@ -1,54 +1,37 @@
 package ox.musicalfingers.display;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.leapmotion.leap.Controller;
-import com.leapmotion.leap.Frame;
-import com.leapmotion.leap.Listener;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ox.musicalfingers.instrument.DiscreteDisplay;
 import ox.musicalfingers.instrument.DiscreteInput;
 import ox.musicalfingers.instrument.DiscreteInputDisplay;
 import ox.musicalfingers.instrument.DiscreteOutput;
-import ox.musicalfingers.instrument.GuitarOutput;
 import ox.musicalfingers.instrument.DrumOutput;
-import ox.musicalfingers.instrument.sampler.SamplerDisplay;
-import ox.musicalfingers.instrument.sampler.SamplerOutput;
+import ox.musicalfingers.instrument.GuitarOutput;
 import ox.musicalfingers.instrument.Piano.Piano;
-import ox.musicalfingers.instrument.Piano.Piano_FiveKey;
 import ox.musicalfingers.instrument.Random.FiveNotes;
-import ox.musicalfingers.instrument.guitar.Guitar;
 import ox.musicalfingers.instrument.drum.Drum;
+import ox.musicalfingers.instrument.guitar.Guitar;
 import ox.musicalfingers.instrument.sampler.Sampler;
-import ox.musicalfingers.leap.GuitarListener;
-import ox.musicalfingers.leap.LeapMotion;
-import ox.musicalfingers.leap.PianoListener;
+import ox.musicalfingers.instrument.sampler.SamplerOutput;
 import ox.musicalfingers.recording.Recorder;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Listener;
 
 public class InstrumentScreen implements Screen {
 

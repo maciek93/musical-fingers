@@ -1,5 +1,7 @@
 package ox.musicalfingers.game;
 
+import java.util.Arrays;
+
 import ox.musicalfingers.display.MusicalFingers;
 import ox.musicalfingers.instrument.DiscreteInputDisplay;
 
@@ -35,7 +37,7 @@ public class GamePianoInput extends Listener {
 	Texture piano;
 	Texture rectangle;
 	
-	float pianoLevel =0.5f;
+	float pianoLevel = 0.5f;
 	
 	public GamePianoInput() {
 		
@@ -68,53 +70,57 @@ public class GamePianoInput extends Listener {
     public void onInit (Controller controller) {
         System.out.println("Initialized GamePiano");
         fingerList = controller.frame().fingers();
+        iBox = controller.frame().interactionBox();
     }
     
-    public void onFrame(Controller controller) {
-    	iBox = controller.frame().interactionBox();
-    	//Set notes to false
-    	for(int i=0;i<5;i++) { notes[i]=false;}
-  
-    	//new method
-    	for (Hand hand : controller.frame().hands()){
-    		//Hand right = controller.frame().hands().rightmost();
-    		Vector norm= hand.palmNormal();
-    		for(Finger finger : hand.fingers()) {
-    			Vector fingerEnd = finger.tipPosition().minus(finger.direction().normalized().times(finger.length()));
-    			float LRangle =fingerEnd.minus(hand.palmPosition()).angleTo(hand.direction());
-		    	 double j=1.1;
+	public void onFrame(Controller controller) {
+		iBox = controller.frame().interactionBox();
+		// Set notes to false
+		for (int i = 0; i < 5; i++) {
+			notes[i] = false;
+		}
 
-    			
-    			System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
+		// new method
+		for (Hand hand : controller.frame().hands()) {
+			// Hand right = controller.frame().hands().rightmost();
+			Vector norm = hand.palmNormal();
+			for (Finger finger : hand.fingers()) {
+				Vector fingerEnd = finger.tipPosition().minus(finger.direction().normalized().times(finger.length()));
+				float LRangle = fingerEnd.minus(hand.palmPosition()).angleTo(hand.direction());
+				double j = 1.1;
 
-    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
-    			//Vector fingerPos =finger.tipPosition();
-    			 for(int i=0;i<5;i++) {
-    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ())){
-    					Vector fingerDir = finger.direction();
-    					      float cosAngle = fingerDir.angleTo(norm);
-    					      //System.out.println(cosAngle);
-    					      if (cosAngle< j*5*0.9*Math.PI/16){
-    					    	  //System.out.println(cosAngle);
-    					    	  if(prevNotes[i]==false) {
-    		    						pressed[i]=true;
-    		    					}
-    			    				notes[i] = true;
- 
-    					      }
-    				}
-    			 }
-    				
-    	
-    		}
-    	}
+				// System.out.println(LRangle+","
+				// +(fingerEnd.getX()-hand.palmPosition().getX()));
+
+				Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
+				// Vector fingerPos =finger.tipPosition();
+				for (int i = 0; i < 5; i++) {
+					if (keys[i].contains(fingerPos.getX(), fingerPos.getZ())) {
+						Vector fingerDir = finger.direction();
+						float cosAngle = fingerDir.angleTo(norm);
+						// System.out.println(cosAngle);
+						if (cosAngle < j * 5 * 0.9 * Math.PI / 16) {
+							// System.out.println(cosAngle);
+							if (prevNotes[i] == false) {
+								System.out.println("Happening");
+								pressed[i] = true;
+							}
+							notes[i] = true;
+
+						}
+					}
+				}
+
+			}
+		}
     
     	
-    	System.arraycopy(notes, 0, prevNotes, 0, notes.length);
+    	prevNotes=notes.clone();
     	fingerList = controller.frame().fingers();
     }
 
 	public boolean[] getPressed() {
+		//System.out.println(Arrays.toString(pressed));
 		return pressed;
 	}
 	
