@@ -11,9 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Finger;
+import com.leapmotion.leap.KeyTapGesture;
+import com.leapmotion.leap.Gesture;
 import com.leapmotion.leap.FingerList;
+import com.leapmotion.leap.GestureList;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.InteractionBox;
+import com.leapmotion.leap.Leap;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Vector;
 
@@ -24,7 +28,7 @@ public class GamePianoInput extends Listener {
 	boolean[] pressed = new boolean[5];
 	Rectangle[] keys = new Rectangle[5];
 	Rectangle[] bounds = new Rectangle[5];
-	
+	float fingerScaleFact = 1.6f;
 	Texture fingerPoint;
 	
 	int sF = 1;
@@ -68,6 +72,12 @@ public class GamePianoInput extends Listener {
     public void onInit (Controller controller) {
         System.out.println("Initialized GamePiano");
         fingerList = controller.frame().fingers();
+        iBox = controller.frame().interactionBox();
+        controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
+        if(controller.config().setFloat("Gesture.KeyTap.MinDownVelocity", 1) &&
+                controller.config().setFloat("Gesture.KeyTap.HistorySeconds", 0.2f) &&
+                controller.config().setFloat("Gesture.KeyTap.MinDistance", 3f))
+            controller.config().save();
     }
     
     public void onFrame(Controller controller) {
@@ -75,27 +85,59 @@ public class GamePianoInput extends Listener {
     	//Set notes to false
     	for(int i=0;i<5;i++) { notes[i]=false;}
   
+    	/* GestureList gesticulations  = controller.frame().gestures();
+    	 for (Gesture gesture : gesticulations){
+    		 if(gesture.type() == KeyTapGesture.classType()) {
+    			    KeyTapGesture ktp = new KeyTapGesture(gesture);
+    			    Vector tapPos = iBox.normalizePoint(ktp.position(),false).times(fingerScaleFact);
+    				 for(int i=0;i<5;i++) {
+    	    				if (keys[i].contains(tapPos.getX(), tapPos.getZ())){
+    	    					if(prevNotes[i]==false) {
+		    						pressed[i]=true;
+		    					}
+			    				notes[i] = true;
+    	    				
+    	    				}
+    			 }
+    		 }
+    	 }
+    	*/
+    	
+    	
+    	
     	//new method
     	for (Hand hand : controller.frame().hands()){
     		//Hand right = controller.frame().hands().rightmost();
     		Vector norm= hand.palmNormal();
+    		double  fst=-1000; double snd =-100000; double count=0;
+    		for (Finger finger : hand.fingers()) {fst=Math.max(finger.tipPosition().getY(), fst); count+=1;}
+    		for (Finger finger : hand.fingers() ) {
+    			if (finger.tipPosition().getY()!=fst) {snd=Math.max(finger.tipPosition().getY(), snd);}
+    		} 
+    		if (count<5){snd=-1000;}
+    		if (count<4){fst=-1000;}
+    		
     		for(Finger finger : hand.fingers()) {
     			Vector fingerEnd = finger.tipPosition().minus(finger.direction().normalized().times(finger.length()));
+    			
     			float LRangle =fingerEnd.minus(hand.palmPosition()).angleTo(hand.direction());
-		    	 double j=1.1;
+		    	 double  j=0.9; double k =1;
+		    	if(LRangle>1.6) {j=1.2;} else if (LRangle>1) {j=1;} else if (LRangle <0.20) {j=0.8;k=1.3;}
 
     			
     			System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
 
-    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
+    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
     			//Vector fingerPos =finger.tipPosition();
     			 for(int i=0;i<5;i++) {
-    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ())){
+    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ())&& finger.tipPosition().getY()!=fst &&
+    						finger.tipPosition().getY()!=snd){
     					Vector fingerDir = finger.direction();
+    					float fingerSpeed=finger.tipVelocity().getY();
+    						
     					      float cosAngle = fingerDir.angleTo(norm);
-    					      //System.out.println(cosAngle);
-    					      if (cosAngle< j*5*0.9*Math.PI/16){
-    					    	  //System.out.println(cosAngle);
+    					      if (cosAngle< j*8*Math.PI/16 && fingerSpeed <-200*k){
+    					    	  
     					    	  if(prevNotes[i]==false) {
     		    						pressed[i]=true;
     		    					}
@@ -108,7 +150,7 @@ public class GamePianoInput extends Listener {
     	
     		}
     	}
-    
+       
     	
     	System.arraycopy(notes, 0, prevNotes, 0, notes.length);
     	fingerList = controller.frame().fingers();
@@ -133,7 +175,7 @@ public class GamePianoInput extends Listener {
 		
 		batch.setColor(Color.BLACK);
 		for(Finger finger: fingerList) {
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
+			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
 			
 			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - piano.getWidth()/2f*sF+160f*sF*fingerPos.getX(),MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f))+((1f-fingerPos.getZ())*67)*sF,12,12);
 		}

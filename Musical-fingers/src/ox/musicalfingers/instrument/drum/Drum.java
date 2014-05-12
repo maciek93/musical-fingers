@@ -48,7 +48,7 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 	}
 	
     public void onInit (Controller controller) {
-        System.out.println("Initialized Drum");
+        System.out.println("Initialized Piano");
         pointableList = controller.frame().pointables();
     }
     
@@ -62,21 +62,23 @@ public class Drum extends Listener implements DiscreteInputDisplay{
     	if (iBox.isValid()) {
 	    	pointableList = controller.frame().pointables();
 	    	if (pointableList.count() > 0) {
-	    		Pointable pointable = lowestPointable(pointableList); // gets the pointable with the lowest y value.
-	    		Vector pointablePos = vectorMinus ( iBox.normalizePoint(pointable.tipPosition(),false) , midPoint ) ;
-	    		if (pointablePos.getY() < 0 && isAbove) {
-	    			isAbove = false; // you've gone below the drum.
-		    		// radius is how far from the centre the drum was hit.
-		    		double radius = Math.sqrt(Math.pow(pointablePos.getX(), 2.0) + Math.pow(pointablePos.getZ(), 2.0));
-		    		if (radius < 0.5) { // if you hit the actual drum
-		    			// This is currently a would be nice; scale volume according to how hard the drum was hit.
-		    			float volume = - pointable.tipVelocity().getY() / 4500f; 
-		    			// speed of impact = downward velocity, normalized to a fast drumstick impact speed.
-		    			volume = Math.min(1.0f, volume);
-		    			if ( volume > 0 ) notes[(int) (10*radius)] = true; // start sound from impact.
+	    		for (Pointable pointable : pointableList) {
+	    		// Pointable pointable = lowestPointable(pointableList); // gets the pointable with the lowest y value.
+		    		Vector pointablePos = vectorMinus ( iBox.normalizePoint(pointable.tipPosition(),false) , midPoint ) ;
+		    		if (pointablePos.getY() < 0 && isAbove) {
+		    			isAbove = false; // you've gone below the drum.
+			    		// radius is how far from the centre the drum was hit.
+			    		double radius = Math.sqrt(Math.pow(pointablePos.getX(), 2.0) + Math.pow(pointablePos.getZ(), 2.0));
+			    		if (radius < 0.5) { // if you hit the actual drum
+			    			// This is currently a would be nice; scale volume according to how hard the drum was hit.
+			    			float volume = - pointable.tipVelocity().getY() / 4500f; 
+			    			// speed of impact = downward velocity, normalized to a fast drumstick impact speed.
+			    			volume = Math.min(1.0f, volume);
+			    			if ( volume > 0 ) notes[(int) (10*radius)] = true; // start sound from impact.
+			    		}
+		    		} else if (pointablePos.getY() > 0) {
+		    			isAbove = true; // You've gone above the drum.
 		    		}
-	    		} else if (pointablePos.getY() > 0) {
-	    			isAbove = true; // You've gone above the drum.
 	    		}
 	    	}
     	}	
@@ -97,18 +99,26 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 		// y: MusicalFingers.height/6f + drumImg.getHeight()*sF / 2f
 		
 		batch.draw(drumImg, MusicalFingers.width/2f - drumImg.getWidth()/2f*sF, MusicalFingers.height/6f,drumImg.getWidth()*sF,drumImg.getHeight()*sF);
-
+		
+		
+		
 		// circle size = 7/8 of image height. 
-		Pointable pointable = lowestPointable(pointableList);
-		if (null != iBox && iBox.isValid()) {
-		// pointablePos returns a vector indicating the position of the pointable tip such that
-		// 	(0,0,0) is the centre of the interaction box, range from -0.5 to 0.5 in all dimensions
-		Vector pointablePos = vectorMinus ( iBox.normalizePoint(pointable.tipPosition(),false) , midPoint ) ;
-		// batch.draw (fingerPoint, -half Circle Width + centre of image + proportional offset on drum, Similar for height , Circle Width, Circle Height)
-		batch.draw(fingerPoint,-6f + (MusicalFingers.width/2f) + (pointablePos.getX() * drumImg.getHeight()*sF * 7f / 8f), -6f + (MusicalFingers.height/6f + drumImg.getHeight()*sF / 2f) - (pointablePos.getZ() * drumImg.getHeight()*sF * 7f / 8f) ,12,12);
+		
+		for (Pointable pointable : pointableList) {
+			// Pointable pointable = lowestPointable(pointableList);
+			if (null != iBox && iBox.isValid()) {
+			// pointablePos returns a vector indicating the position of the pointable tip such that
+			// 	(0,0,0) is the centre of the interaction box, range from -0.5 to 0.5 in all dimensions
+			Vector pointablePos = vectorMinus ( iBox.normalizePoint(pointable.tipPosition(),false) , midPoint ) ;
+			// batch.draw (fingerPoint, -half Circle Width + centre of image + proportional offset on drum, Similar for height , Circle Width, Circle Height)
+			batch.draw(fingerPoint,-6f + (MusicalFingers.width/2f) + (pointablePos.getX() * drumImg.getHeight()*sF * 7f / 8f), -6f + (MusicalFingers.height/6f + drumImg.getHeight()*sF / 2f) - (pointablePos.getZ() * drumImg.getHeight()*sF * 7f / 8f) ,12,12);
+			batch.draw(rectangle, MusicalFingers.width/2f - 5*10f*sF, 49 + pointablePos.getY() * 5 * sF,100*sF,sF );
+			}
 		}
 		
-		// indication of hit point?
+		// indication of drum level.		
+		batch.draw(rectangle,MusicalFingers.width/2f - 5*10f*sF,49,100*sF,sF);
+
 		
 	}
 
@@ -116,17 +126,5 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 	// Eclipse thinks this doesn't exist.
 	private Vector vectorMinus( Vector minuend, Vector subtrahend ) {
 		return new Vector(minuend.getX() - subtrahend.getX(), minuend.getY() - subtrahend.getY(), minuend.getZ() - subtrahend.getZ());
-	}
-	private Pointable lowestPointable(PointableList PL){
-		assert (PL.count() > 0);
-		Pointable low = PL.frontmost();
-		float lowPos = low.tipPosition().getY();
-		for (Pointable p : PL) {
-			if (p.tipPosition().getY() < lowPos) {
-				low = p;
-				lowPos = p.tipPosition().getY();
-			}
-		}
-		return low;
 	}
 }
