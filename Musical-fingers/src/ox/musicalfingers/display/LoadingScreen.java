@@ -96,6 +96,10 @@ public class LoadingScreen implements Screen {
 		manager.load("assets/game/butterfingers.png", Texture.class);
 		manager.load("assets/game/fingermaster.png", Texture.class);
 		manager.load("assets/game/wooh.png", Texture.class);
+		
+		for(int i=0;i<7;i++) {
+			manager.load("assets/game/explos"+i+".png", Texture.class);
+		}
 
 	}
 
