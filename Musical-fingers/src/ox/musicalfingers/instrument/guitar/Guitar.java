@@ -27,7 +27,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	
 	private class Str {
 		float pos;
-		float width = (float) 0.1;
+		float width = (float) 0.02;
 		
 		Str(float pos) {
 			this.pos = pos;
