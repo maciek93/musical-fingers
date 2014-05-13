@@ -184,6 +184,9 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 			notes[11] = true;
 			notes[5] = false;
 		}
+		if(Gdx.input.isKeyPressed(Keys.SPACE)) {
+			for (int i=0;i<12;i++){notes[i]=false;}
+		}
 		
 	}
 	
