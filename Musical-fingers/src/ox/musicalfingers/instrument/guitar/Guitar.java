@@ -46,6 +46,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	private InteractionBox iBox;
 	
 	
+	
 	Texture rectangle;
 	Texture circle;
 	
@@ -78,8 +79,8 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 		sF = ((MusicalFingers.width/160)-2);
 		
 		for(int i=0;i<6;i++) {
-			float x= (float) (0.3 + (i * 0.1));
-			string[i]= new Str(x);
+			float x = (float) (0.2 + (i * 0.1));
+			string[i] = new Str(x);
 			System.out.println("String: " + x);
 	}
 		
@@ -110,7 +111,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 			if(notes[i]) {
 				float z=1;
 				float x=147+2*sF*z;
-				float y=540-(i*13)*sF*z;
+				float y=150+(i*13)*sF*z;
 				float width=160*sF*z;
 				float height=5*sF*z;
 				
@@ -124,7 +125,8 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	        Vector Position = finger.tipPosition();
 	        Vector nPos = iBox.normalizePoint(Position);
 
-			batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,nPos.getY()*MusicalFingers.height-6,12,12);
+			//batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,nPos.getY()*MusicalFingers.height-12,12,12);
+	        batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,nPos.getY()*MusicalFingers.height-6,12,12);
 			
 		}
 		
@@ -146,12 +148,13 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	
 	private void processData(Frame frame) {
 		iBox = frame.interactionBox();
+		fingers = frame.fingers();
 		notes = new boolean[12];
 		for(Pointable pointable : frame.pointables()) {
 			float z = iBox.normalizePoint(pointable.tipPosition()).getZ();
 			float y = iBox.normalizePoint(pointable.tipPosition()).getY();
-			if(y < 5) {
-				int string = processPointable(z);
+			if(z < 0.5) {
+				int string = processPointable(y);
 				if(string >= 0) {
 					notes[string] = true;
 				}
@@ -181,6 +184,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 			notes[11] = true;
 			notes[5] = false;
 		}
+		
 	}
 	
 	 private int processPointable(float z) {
