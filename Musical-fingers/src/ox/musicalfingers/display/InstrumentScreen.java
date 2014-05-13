@@ -51,14 +51,6 @@ public class InstrumentScreen implements Screen {
 	// Background texture
 	Texture rectangle;
 
-	// Stuff for drawing background notes
-	List<Integer> noteHeights = new ArrayList<Integer>(16);
-	int count = 0;
-	Texture note1;
-	Texture note2;
-	Texture note3;
-	Texture clef;
-
 	// Recording & Playback stuff
 	Recorder recorder = new Recorder();
 	boolean recording = false;
@@ -96,18 +88,6 @@ public class InstrumentScreen implements Screen {
 		pixmap.setColor(1, 1, 1, 1);
 		pixmap.fill();
 		rectangle = new Texture(pixmap);
-
-		// For background notes
-		note1 = MusicalFingers.manager.get("assets/1note.png");
-		note2 = MusicalFingers.manager.get("assets/2note.png");
-		note3 = MusicalFingers.manager.get("assets/3note.png");
-		clef = MusicalFingers.manager.get("assets/clef.png");
-
-		Random rnd = new Random();
-
-		for (int i = 0; i < 16; i++) {
-			noteHeights.add(rnd.nextInt(MusicalFingers.height - 40));
-		}
 		
 		//Ui elements
 		stage = new Stage();
@@ -286,13 +266,7 @@ public class InstrumentScreen implements Screen {
 		
 		//display.getNotes(input.getNotes());
 		//display.getFingers(controller.frame().fingers());
-		//display.getInteractionBox(controller.frame().interactionBox());
-
-		// Update background images
-		count++;
-		if (count > noteHeights.size() * 100) {
-			count = 0;
-		}
+		//display.getInteractionBox(controller.frame().interactionBox());}
 
 		//Recording and playback
 		
@@ -320,20 +294,6 @@ public class InstrumentScreen implements Screen {
 
 		// batch.setColor(147,210,255,1);
 		// batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);
-
-		// Some notes in the background
-		for(int i=0;i<noteHeights.size();i++) {
-			if(i%4==0) {
-				batch.draw(clef,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),clef.getWidth()*4f,clef.getHeight()*4f);
-			} else if(i%4==1) {
-				batch.draw(note1,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note1.getWidth()*4f,note1.getHeight()*4f);
-			} else if(i%4==2) {
-				batch.draw(note2,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note2.getWidth()*4f,note2.getHeight()*4f);
-			} else {
-				//batch.draw(note3,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i));
-				batch.draw(note3,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note3.getWidth()*4f,note3.getHeight()*4f);
-			}
-		}
 
 		//Draw instrument
 		inputDisplay.draw(batch);

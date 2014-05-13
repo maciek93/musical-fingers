@@ -62,7 +62,7 @@ public class GamePianoInput extends Listener {
 		//Define keys in normalised InteractionBox co-ords
 		for(int i=0;i<5;i++) {
 			keys[i] = new Rectangle(i*(1f/5f),0f,(1f/5f),1f);
-			bounds[i] = new Rectangle(MusicalFingers.width/2f - piano.getWidth()/2f*sF+32*sF*i,MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f))+3*4,32*sF,67*sF);
+			bounds[i] = new Rectangle(MusicalFingers.width/2f - piano.getWidth()/2f*sF+32*sF*i,MusicalFingers.height- 110f - 10f - (piano.getHeight()*(4f))+3*4,32*sF,67*4);
 		}
 		
 	}
@@ -76,10 +76,12 @@ public class GamePianoInput extends Listener {
         fingerList = controller.frame().fingers();
         iBox = controller.frame().interactionBox();
         controller.enableGesture(Gesture.Type.TYPE_KEY_TAP);
-        if(controller.config().setFloat("Gesture.KeyTap.MinDownVelocity", 1) &&
-                controller.config().setFloat("Gesture.KeyTap.HistorySeconds", 0.2f) &&
-                controller.config().setFloat("Gesture.KeyTap.MinDistance", 3f))
-            controller.config().save();
+        controller.config().setFloat("Gesture.KeyTap.MinDownVelocity", 1);
+        controller.config().setFloat("Gesture.KeyTap.HistorySeconds", 0.2f);
+        controller.config().setFloat("Gesture.KeyTap.MinDistance", 3f);
+        boolean saved = controller.config().save();
+        if(!saved)
+        	System.out.println("Config.save failure");
     }
     
     public void onFrame(Controller controller) {
@@ -127,7 +129,7 @@ public class GamePianoInput extends Listener {
 		    	if(LRangle>1.6) {j=1.2;} else if (LRangle>1) {j=1;} else if (LRangle <0.20) {j=0.8;k=1.3;}
 
     			
-    			System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
+    			//System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
 
     			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
     			//Vector fingerPos =finger.tipPosition();

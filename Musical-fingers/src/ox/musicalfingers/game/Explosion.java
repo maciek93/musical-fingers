@@ -16,7 +16,9 @@ public class Explosion {
 	private Texture[] frames = new Texture[7];
 	
 	private int time=0;
-	private final int ticksPerFrame=10;
+	private final int ticksPerFrame=3;
+	
+	private int sf = 10;
 	
 	public Explosion(int x, int y, int note) {
 		for(int i=0;i<7;i++) {
@@ -33,6 +35,10 @@ public class Explosion {
 			frame++;
 			time=0;
 		}
+	}
+	
+	public boolean dead() {
+		return frame>6;
 	}
 
 	public void draw(SpriteBatch batch) {
@@ -52,10 +58,14 @@ public class Explosion {
 		case 4:
 			batch.setColor(Color.MAGENTA);
 			break;
+		case 5:
+			batch.setColor(Color.BLACK);
+			break;
 		default:
 			throw new Error("not a valid state");
 		}
-		batch.draw(frames[frame], x,y,frames[frame].getWidth() * 5, frames[frame].getHeight() * 5);
+		if(frame<=6)
+		batch.draw(frames[frame], x-frames[frame].getWidth()/2f*sf+55,y-frames[frame].getHeight()/2f+55,frames[frame].getWidth() * sf, frames[frame].getHeight() * sf);
 	}
 
 }

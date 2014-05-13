@@ -3,6 +3,7 @@ package ox.musicalfingers.display;
 import java.util.ArrayList;
 import java.util.List;
 
+import ox.musicalfingers.game.Explosion;
 import ox.musicalfingers.game.GameNote;
 import ox.musicalfingers.game.GamePianoInput;
 import ox.musicalfingers.instrument.Random.FiveNotes;
@@ -97,15 +98,15 @@ public class GameScreen implements Screen{
 	
     //Vars for playing back music
 	FiveNotes musicPlayer;
-
-	//Vars to tell what notes are currently being played out loud
-	boolean [] pressed;
 	 
 	//cheerMessage
 	private String cheerMessage;
 	
 	//anything to cheer?
-	private boolean cheerBool;
+	private int cheerTime = 0;
+	
+	//Explosion graphical effects
+	List<Explosion> explosions = new ArrayList<Explosion>();
 
 
 	@Override
@@ -125,8 +126,8 @@ public class GameScreen implements Screen{
 		loseScreen = false;
 		gameNotes.clear();
 		cheerMessage = "";
-		cheerBool = false;
-		pressed = new boolean[] { false, false, false, false, false };
+		cheerTime=0;
+		explosions.clear();
 		  
         font = new BitmapFont();
         font.setColor(Color.RED);
@@ -211,7 +212,7 @@ public class GameScreen implements Screen{
 		);
 		
 	
-		String[] songNames = {"     Old McDon..."	, "     Mary had a..." , "     SONG  3" , "     SONG  4" , "     SONG  5"	, "     SONG  6" , "     SONG  7" , "     SONG  8" , "     SONG  9"}	;					
+		String[] songNames = {"     Old McDon..."	, "     Mary had a..." }	;					
 		
 		playList = new SelectBox (songNames, skin);
 		playList.setPosition(MusicalFingers.width-255f , MusicalFingers.height-105f);
@@ -293,7 +294,7 @@ public class GameScreen implements Screen{
 							
 							if( input.getBounds(i).contains(note.bounds())) {
 								//Note is inside the bounds
-								reward(note.getX(), note.getY(),1f);
+								reward(note.getX(), note.getY()-40,note.note,1f);
 								input.getPressed()[i]=false;
 								gameNotes.remove(j);
 								j--;
@@ -301,7 +302,7 @@ public class GameScreen implements Screen{
 								break;
 							} else if (input.getBounds(i).overlaps(note.bounds())) {
 								//Note on edge of key
-								reward(note.getX(), note.getY(),0.5f);
+								reward(note.getX(), note.getY()-40,note.note,0.5f);
 								input.getPressed()[i]=false;
 								gameNotes.remove(j);
 								j--;
@@ -315,7 +316,7 @@ public class GameScreen implements Screen{
 						
 						//Pressed the key unnecessarily 
 						if(!wasNote) {
-							punish((int)(input.getBounds(i).x+input.getBounds(i).width/2f),(int)(input.getBounds(i).y+input.getBounds(i).height/2f),0.5f);
+							punish((int)(input.getBounds(i).x-55+input.getBounds(i).width/2f),(int)(input.getBounds(i).y-55f),5,0.5f);
 						}
 					}
 
@@ -328,10 +329,21 @@ public class GameScreen implements Screen{
 					note.pos += noteSpeed;
 					if(note.pos>=MusicalFingers.height-110f) {
 						//Missed note
-						punish(note.getX(), note.getY(),1f);
+						punish(note.getX(), (int) (note.getY()-note.bounds().height-40),note.note,1f);
 						gameNotes.remove(i);
 						i--;
 					}
+				}
+				
+				//Update explosions
+				for(int i=0;i<explosions.size();i++){
+					Explosion ex = explosions.get(i);
+					ex.update();
+					if(ex.dead()) {
+						explosions.remove(i);
+						i--;
+					}
+					
 				}
 				
 			}
@@ -345,20 +357,26 @@ public class GameScreen implements Screen{
 		
 	}
 	
-	public void reward(int x, int y, float multiplier) {
+	public void reward(int x, int y, int note, float multiplier) {
 		cheerMessage = "WOOH!";
+		cheerTime=0;
 		
 		//Graphical affects will go here
-		
+		Explosion ex = new Explosion(x, y, note);
+		explosions.add(ex);
 		
 		score +=1000*multiplier;
 	}
 	
-	public void punish(int x, int y, float multiplier) {
+	public void punish(int x, int y, int note, float multiplier) {
 		cheerMessage = "BOO !";
-
-		//Graphical affects will go here
+		cheerTime=0;
 		
+		//Graphical affects will go here
+		if(note!=5) {
+			Explosion ex = new Explosion(x, y, note);
+			explosions.add(ex);
+		}
 		
 		score -= 1000*multiplier;
 	}
@@ -376,22 +394,27 @@ public class GameScreen implements Screen{
 			note.draw(batch);
 		}
 	    
-	    
-	    
-	    //Draw score here
-	    if (cheerMessage =="WOOH!") {
-	    	//batch.setColor(Color.WHITE);
-	    	//batch.draw(rectangle,MusicalFingers.width/2-200,50,400, 100);
-	    	font.setColor(1, 1,1,1);
-	    } else {
-	    	//batch.setColor(Color.RED);
-	    	//batch.draw(rectangle,MusicalFingers.width/2-200,50,400,100);
-	    	font.setColor(1,0,0,1);
+	    for(Explosion ex: explosions) {
+	    	ex.draw(batch);
 	    }
 	    
 	    
-		font.setScale(2.5f);
-		font.draw(batch, cheerMessage, MusicalFingers.width/2-85,150);
+	    
+	    //Draw cheering here
+	    if(cheerTime < 60) {
+		    if (cheerMessage =="WOOH!") {
+		    	//batch.setColor(Color.WHITE);
+		    	//batch.draw(rectangle,MusicalFingers.width/2-200,50,400, 100);
+		    	font.setColor(1, 1,1,1);
+		    } else {
+		    	//batch.setColor(Color.RED);
+		    	//batch.draw(rectangle,MusicalFingers.width/2-200,50,400,100);
+		    	font.setColor(1,0,0,1);
+		    }
+		    cheerTime++;
+		    font.setScale(2.5f);
+			font.draw(batch, cheerMessage, MusicalFingers.width/2-80,150);
+	    }
 	    
 		
 		

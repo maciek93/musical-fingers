@@ -1,10 +1,15 @@
 package ox.musicalfingers.display;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -49,6 +54,15 @@ public class MusicalFingers implements ApplicationListener{
 	//AssetManager for storing assets
 	public static AssetManager manager = new AssetManager();
 	
+	// Stuff for drawing background notes
+	List<Integer> noteHeights = new ArrayList<Integer>(16);
+	int count = 0;
+	Texture note1;
+	Texture note2;
+	Texture note3;
+	Texture clef;
+	boolean drawBackground = false;
+	
 
 	@Override
 	public void create() {
@@ -83,8 +97,7 @@ public class MusicalFingers implements ApplicationListener{
 		lose = new GameOver("lose");
 		
 		//Set the state to loading
-		changeState(STATE_LOADING);
-		
+		changeState(STATE_LOADING);	
 		
 	}
 	
@@ -96,6 +109,7 @@ public class MusicalFingers implements ApplicationListener{
 									current = loading;
 									break;
 			case STATE_MENU:		menu.init();
+									notes();
 									current_state = STATE_MENU;
 									current = menu;
 									break;
@@ -129,7 +143,25 @@ public class MusicalFingers implements ApplicationListener{
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		current.init();
+		if(drawBackground)
+			notes();
 		
+	}
+	
+	private void notes() {
+		// For background notes
+		note1 = MusicalFingers.manager.get("assets/1note.png");
+		note2 = MusicalFingers.manager.get("assets/2note.png");
+		note3 = MusicalFingers.manager.get("assets/3note.png");
+		clef = MusicalFingers.manager.get("assets/clef.png");
+
+		Random rnd = new Random();
+
+		for (int i = 0; i < 20; i++) {
+			noteHeights.add(rnd.nextInt(MusicalFingers.height - 40));
+		}
+		
+		drawBackground = true;
 	}
 
 	@Override
@@ -141,6 +173,22 @@ public class MusicalFingers implements ApplicationListener{
 		Gdx.gl.glClearColor(147f/255f,210f/255f,255f/255f,1);
 		
 		batch.begin();
+		
+		if(drawBackground) {
+			// Some notes in the background
+			for(int i=0;i<noteHeights.size();i++) {
+				if(i%4==0) {
+					batch.draw(clef,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),clef.getWidth()*4f,clef.getHeight()*4f);
+				} else if(i%4==1) {
+					batch.draw(note1,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note1.getWidth()*4f,note1.getHeight()*4f);
+				} else if(i%4==2) {
+					batch.draw(note2,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note2.getWidth()*4f,note2.getHeight()*4f);
+				} else {
+					//batch.draw(note3,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i));
+					batch.draw(note3,MusicalFingers.width-(((i*100)+count)%(noteHeights.size()*100)),noteHeights.get(i),note3.getWidth()*4f,note3.getHeight()*4f);
+				}
+			}
+		}
 		
 		draw(batch);
 		
@@ -165,6 +213,13 @@ public class MusicalFingers implements ApplicationListener{
 		//Check if a screen wants to change state
 		if(current.changeStateTo() != -1) {
 			changeState(current.changeStateTo());
+		}
+		
+
+		// Update background images
+		count++;
+		if (count > noteHeights.size() * 100) {
+			count = 0;
 		}
 		
 		//Otherwise update it
