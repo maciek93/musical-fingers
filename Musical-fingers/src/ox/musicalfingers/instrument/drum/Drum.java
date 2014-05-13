@@ -91,7 +91,6 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		
 		batch.setColor(Color.WHITE);
 		// draw drum background
 		// drum centre at left + half width, top + half height
@@ -103,19 +102,19 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 		
 		
 		// circle size = 7/8 of image height. 
-		
-		for (Pointable pointable : pointableList) {
-			// Pointable pointable = lowestPointable(pointableList);
-			if (null != iBox && iBox.isValid()) {
-			// pointablePos returns a vector indicating the position of the pointable tip such that
-			// 	(0,0,0) is the centre of the interaction box, range from -0.5 to 0.5 in all dimensions
-			Vector pointablePos = vectorMinus ( iBox.normalizePoint(pointable.tipPosition(),false) , midPoint ) ;
-			// batch.draw (fingerPoint, -half Circle Width + centre of image + proportional offset on drum, Similar for height , Circle Width, Circle Height)
-			batch.draw(fingerPoint,-6f + (MusicalFingers.width/2f) + (pointablePos.getX() * drumImg.getHeight()*sF * 7f / 8f), -6f + (MusicalFingers.height/6f + drumImg.getHeight()*sF / 2f) - (pointablePos.getZ() * drumImg.getHeight()*sF * 7f / 8f) ,12,12);
-			batch.draw(rectangle, MusicalFingers.width/2f - 5*10f*sF, 49 + pointablePos.getY() * 5 * sF,100*sF,sF );
+		if (pointableList != null) {
+			for (Pointable pointable : pointableList) {
+				// Pointable pointable = lowestPointable(pointableList);
+				if (null != iBox && iBox.isValid()) {
+				// pointablePos returns a vector indicating the position of the pointable tip such that
+				// 	(0,0,0) is the centre of the interaction box, range from -0.5 to 0.5 in all dimensions
+				Vector pointablePos = vectorMinus ( iBox.normalizePoint(pointable.tipPosition(),false) , midPoint ) ;
+				// batch.draw (fingerPoint, -half Circle Width + centre of image + proportional offset on drum, Similar for height , Circle Width, Circle Height)
+				batch.draw(fingerPoint,-6f + (MusicalFingers.width/2f) + (pointablePos.getX() * drumImg.getHeight()*sF * 7f / 8f), -6f + (MusicalFingers.height/6f + drumImg.getHeight()*sF / 2f) - (pointablePos.getZ() * drumImg.getHeight()*sF * 7f / 8f) ,12,12);
+				batch.draw(rectangle, MusicalFingers.width/2f - 5*10f*sF, 49 + pointablePos.getY() * 5 * sF,100*sF,sF );
+				}
 			}
 		}
-		
 		// indication of drum level.		
 		batch.draw(rectangle,MusicalFingers.width/2f - 5*10f*sF,49,100*sF,sF);
 
