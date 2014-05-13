@@ -31,6 +31,7 @@ public class Sampler extends Listener implements DiscreteInputDisplay{
 	Texture fingerPoint;
 	Texture rectangle;
 	
+	float scaleFactor=2;
 	int sF = 1;
 	
 	FingerList fingerList;
@@ -72,12 +73,12 @@ public class Sampler extends Listener implements DiscreteInputDisplay{
     	
     	for(Hand hand : controller.frame().hands()) {
     		for(Finger finger : hand.fingers()) {
-    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
+    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(scaleFactor);
     			
     			for(int i=0;i<12;i++) {
 
-    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) &&
-    	    				(fingerPos.getY() < samplerLevel)) {
+    				if (keys[i].contains(fingerPos.getX(), 1-fingerPos.getY()) &&
+    	    				(fingerPos.getZ() < samplerLevel*scaleFactor)) {
     	    				notes[i] = true;
 	    			}
     			}
@@ -110,8 +111,8 @@ public class Sampler extends Listener implements DiscreteInputDisplay{
 		batch.draw(sampler, MusicalFingers.width/2f - sampler.getWidth()/2f*sF,MusicalFingers.height/6f,sampler.getWidth()*sF,sampler.getHeight()*sF);
 		
 		for(Finger finger: fingerList) {
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
-			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - (sampler.getWidth()/2f*sF) +sampler.getWidth()*sF*fingerPos.getX(),-6f+MusicalFingers.height/6f+(6+64*(1f-1f*fingerPos.getZ()))*sF,12,12);
+			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(scaleFactor);
+			batch.draw(fingerPoint,-6f+MusicalFingers.width/2f - (sampler.getWidth()/2f*sF) +sampler.getWidth()*sF*fingerPos.getX(),-6f+MusicalFingers.height/6f+(6+64*(fingerPos.getY()))*sF,12,12);
 		}
 		
 		batch.setColor(0f, 0f, 0f, 0.5f);
@@ -127,9 +128,9 @@ public class Sampler extends Listener implements DiscreteInputDisplay{
 		batch.setColor(Color.RED);
 		for(int i=0; i < fingerListSorted.size(); i++) {
 			Finger finger = fingerListSorted.get(i);
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),true);
+			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),true).times(scaleFactor);
 			
-			batch.draw(rectangle,MusicalFingers.width/2f - fingerListSorted.size()/2f*10f+10f*i,50+(fingerPos.getY()-samplerLevel)*50f,10,5);
+			batch.draw(rectangle,MusicalFingers.width/2f - fingerListSorted.size()/2f*10f+10f*i,50+(fingerPos.getZ()-samplerLevel*scaleFactor)*50f,10,5);
 		}
 		
 		batch.setColor(Color.BLACK);
