@@ -1,5 +1,6 @@
 package ox.musicalfingers.display;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.audio.Music;
@@ -23,9 +24,11 @@ public class LoadingScreen implements Screen {
 	private float progress = 0f;
 	private Texture rectangle;
 	private boolean change = false;
+	private BitmapFont font;
 	
 	public LoadingScreen(AssetManager manager) {
 		this.manager = manager;
+		font = new BitmapFont(Gdx.files.internal("assets/font/pixel.fnt"), Gdx.files.internal("assets/font/pixel.png"), false);
 	}
 
 	@Override
@@ -115,8 +118,13 @@ public class LoadingScreen implements Screen {
 
 	@Override
 	public void draw(SpriteBatch batch) {
+		batch.setColor(Color.BLACK);
+		batch.draw(rectangle,MusicalFingers.width/4f,MusicalFingers.height/2f-100,MusicalFingers.width/2f,200);
 		batch.setColor(Color.RED);
-		batch.draw(rectangle,MusicalFingers.width/3f,MusicalFingers.height/2f-100,progress*MusicalFingers.width/3f,200);
+		batch.draw(rectangle,MusicalFingers.width/4f,MusicalFingers.height/2f-100,progress*MusicalFingers.width/2f,200);
+		batch.setColor(Color.WHITE);
+		font.setScale(3f);
+		font.draw(batch, "Loading", MusicalFingers.width/2f-190f, MusicalFingers.height/2f+50f);
 
 	}
 

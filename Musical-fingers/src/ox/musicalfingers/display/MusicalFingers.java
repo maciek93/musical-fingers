@@ -203,6 +203,9 @@ public class MusicalFingers implements ApplicationListener{
 		fps++;
 		if(TimeUtils.nanoTime() - time >  (1000000000 - 1)) {
 			showfps = fps;
+			if(showfps<=55) {
+				System.out.println("Fps drop");
+			}
 			fps = 0;
 			time = TimeUtils.nanoTime();
 		}

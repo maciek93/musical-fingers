@@ -64,6 +64,12 @@ public class FiveNotes implements DiscreteOutput {
 		}
 		
 	}
+	
+	public void stopPlaying() {
+		for(int i = 0; i < 5; i++) {
+			sounds[i].stop();
+		}
+	}
 
 
 }

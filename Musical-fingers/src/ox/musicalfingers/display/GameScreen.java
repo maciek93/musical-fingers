@@ -79,7 +79,7 @@ public class GameScreen implements Screen{
 	boolean pause= false;
 	
 	//TextButton scorer;
-	TextButton pauseButton;
+	TextButton pauseButtonCopy;
 	
 	// UI
 	Stage stager;
@@ -107,6 +107,12 @@ public class GameScreen implements Screen{
 	
 	//Explosion graphical effects
 	List<Explosion> explosions = new ArrayList<Explosion>();
+	
+	//Buffer going to the next screen
+	int gonnaChange = 0;
+	
+	//Between being ready and starting
+	int pauseBuffer =0;
 
 
 	@Override
@@ -128,6 +134,8 @@ public class GameScreen implements Screen{
 		cheerMessage = "";
 		cheerTime=0;
 		explosions.clear();
+		gonnaChange=0;
+		pauseBuffer=0;
 		  
         font = new BitmapFont();
         font.setColor(Color.RED);
@@ -210,6 +218,7 @@ public class GameScreen implements Screen{
 			}
 		}
 		);
+		pauseButtonCopy=pauseButton;
 		
 	
 		String[] songNames = {"     Old McDon..."	, "     Mary had a..." }	;					
@@ -247,6 +256,14 @@ public class GameScreen implements Screen{
 			 currentNote = 0;
 			 score = 0; 
 			 toReplay=false;
+			 gameNotes.clear();
+			 explosions.clear();
+			 pause = true;
+			 cheerMessage = "";
+			 cheerTime=0;
+			 pauseButtonCopy.setText("play");
+			 gonnaChange=0;
+			 pauseBuffer=0;
 		}
 		
 		//Change song?
@@ -271,6 +288,12 @@ public class GameScreen implements Screen{
 					winScreen = true;
 				} else {
 					loseScreen = true;
+				}
+				
+				gonnaChange++;
+				
+				for(int i=0;i<explosions.size();i++){
+					explosions.get(i).update();
 				}
 				
 			} else if(!gameNotes.isEmpty() || currentNote<song.length){
@@ -347,10 +370,25 @@ public class GameScreen implements Screen{
 				}
 				
 			}
+			if(!input.isReady()) {
+				pause = true;
+				pauseButtonCopy.setText("play");
+				pauseBuffer=0;
+			}
 
 		} else {
 			for(int i=0;i<5;i++) {
 				input.getPressed()[i]=false;
+			}
+			if(input.isReady()) {
+				pauseBuffer++;
+				if(pauseBuffer>179) {
+					pause = false;
+					pauseButtonCopy.setText("pause");
+					pauseBuffer=0;
+				}
+			} else {
+				pauseBuffer=0;
 			}
 		}
 		stager.act();
@@ -424,6 +462,23 @@ public class GameScreen implements Screen{
 	    font.setScale(2f);
 		font.draw(batch, "SCORE: "+score, 10,font.getCapHeight()-font.getDescent());
 		
+		//Draw pause screen here
+		if(pause) {
+			if(pauseBuffer==0) {
+				batch.setColor(0f,0f,0f,0.8f);
+				batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);
+				font.setScale(4f);
+				font.draw(batch, "PAUSED",MusicalFingers.width/2f-260f,MusicalFingers.height/2f+100f);
+				font.setScale(2f);
+				font.drawMultiLine(batch, "         move fingers over\nleap motion to continue",MusicalFingers.width/2f-370f,MusicalFingers.height/2f-50f);
+			} else {
+				batch.setColor(0f,0f,0f,1f);
+				batch.draw(rectangle,0,MusicalFingers.height/2f-50f,MusicalFingers.width,100f);
+				font.setScale(4f);
+				font.draw(batch, ""+(3-pauseBuffer/60),MusicalFingers.width/2f-20f,MusicalFingers.height/2f+70f);
+			}
+		}
+		
 		
 	    
 		//Draw rectangle under toolbar
@@ -447,13 +502,18 @@ public class GameScreen implements Screen{
 	@Override
 	public int changeStateTo() {
 		if(backToMenu) { 
+			//Stop playing the current sound
+			musicPlayer.stopPlaying();
 			return MusicalFingers.STATE_MENU;
-		} else if (winScreen){
+		} else if (winScreen && gonnaChange>59){
+			//Stop playing the current sound
+			musicPlayer.stopPlaying();
 			return MusicalFingers.STATE_WIN;
-		} else if (loseScreen){
+		} else if (loseScreen && gonnaChange>59){
+			//Stop playing the current sound
+			musicPlayer.stopPlaying();
 			return MusicalFingers.STATE_LOSE;
-		}
-		else {
+		} else {
 			return -1;
 		}
 	}
