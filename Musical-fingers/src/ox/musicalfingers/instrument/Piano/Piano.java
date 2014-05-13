@@ -228,7 +228,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 		batch.setColor(Color.WHITE);
 		for(Finger finger: fingerList) {
 
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false)times(fingerScaleFact);
+			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
 			batch.draw(fingerPoint,-12f+MusicalFingers.width/2f - (piano.getWidth()/2f*sF) +piano.getWidth()*sF*fingerPos.getX(),-12f+MusicalFingers.height/6f+(6+64*(1f-1f*fingerPos.getZ()))*sF,24,24);
 
 		}
