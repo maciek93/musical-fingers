@@ -212,18 +212,6 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 		
 		sortFingerList(fingerList);
 		
-		//Draw the levels of the fingers
-		batch.setColor(Color.RED);
-		for(int i=0; i < fingerListSorted.size(); i++) {
-			Finger finger = fingerListSorted.get(i);
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),true);
-			
-			batch.draw(rectangle,MusicalFingers.width/2f - fingerListSorted.size()/2f*10f*sF+sF*10f*i,50+(fingerPos.getY()-pianoLevel)*50f,10*sF,sF);
-		}
-		
-		batch.setColor(Color.BLACK);
-		batch.draw(rectangle,MusicalFingers.width/2f - 5*10f*sF,49,100*sF,sF);
-		
 		//Fingers
 		batch.setColor(Color.WHITE);
 		for(Finger finger: fingerList) {
