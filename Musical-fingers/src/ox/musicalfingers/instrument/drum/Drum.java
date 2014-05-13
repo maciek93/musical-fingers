@@ -86,7 +86,7 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 			    			// speed of impact = downward velocity, normalized to a fast drumstick impact speed.
 			    			volume = Math.min(1.0f, volume);
 			    			if ( volume > 0 ) notes[(int) (10*radius)] = true; 
-			    			timeout=5;// start sound from impact.
+			    			timeout=10;// start sound from impact.
 			    		}
 
 	    		}
