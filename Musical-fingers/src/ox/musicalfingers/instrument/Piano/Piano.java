@@ -122,7 +122,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     			 }
     		}
     		
-    		/*for(int i=0;i<5;i++) {
+    		for(int i=0;i<5;i++) {
     			boolean isoff= true;
     			for(Finger finger : hand.fingers()) {
         			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
@@ -131,7 +131,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     			}
     			if (isoff) {notes[i]=false;}
     		}
-			*/
+		
     		
     	}
        
