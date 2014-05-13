@@ -221,11 +221,11 @@ public class GameScreen implements Screen{
 		pauseButtonCopy=pauseButton;
 		
 	
-		String[] songNames = {"     Old McDon..."	, "     Mary had a..." }	;					
+		String[] songNames = {"     old mcdonald"	, "     marys lamb" }	;					
 		
 		playList = new SelectBox (songNames, skin);
-		playList.setPosition(MusicalFingers.width-255f , MusicalFingers.height-105f);
-		playList.setWidth(250f);
+		playList.setPosition(MusicalFingers.width-405f , MusicalFingers.height-105f);
+		playList.setWidth(400f);
 		playList.setHeight(100f);
 		
 
@@ -472,6 +472,8 @@ public class GameScreen implements Screen{
 				font.setScale(2f);
 				font.drawMultiLine(batch, "         move fingers over\nleap motion to continue",MusicalFingers.width/2f-370f,MusicalFingers.height/2f-50f);
 			} else {
+				batch.setColor(0f,0f,0f,0.8f-Math.min(pauseBuffer/60f,0.8f));
+				batch.draw(rectangle,0,0,MusicalFingers.width,MusicalFingers.height);
 				batch.setColor(0f,0f,0f,1f);
 				batch.draw(rectangle,0,MusicalFingers.height/2f-50f,MusicalFingers.width,100f);
 				font.setScale(4f);
@@ -505,11 +507,11 @@ public class GameScreen implements Screen{
 			//Stop playing the current sound
 			musicPlayer.stopPlaying();
 			return MusicalFingers.STATE_MENU;
-		} else if (winScreen && gonnaChange>59){
+		} else if (winScreen && gonnaChange>40){
 			//Stop playing the current sound
 			musicPlayer.stopPlaying();
 			return MusicalFingers.STATE_WIN;
-		} else if (loseScreen && gonnaChange>59){
+		} else if (loseScreen && gonnaChange>40){
 			//Stop playing the current sound
 			musicPlayer.stopPlaying();
 			return MusicalFingers.STATE_LOSE;

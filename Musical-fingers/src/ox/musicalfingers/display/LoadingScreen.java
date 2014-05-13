@@ -119,7 +119,7 @@ public class LoadingScreen implements Screen {
 	@Override
 	public void draw(SpriteBatch batch) {
 		batch.setColor(Color.BLACK);
-		batch.draw(rectangle,MusicalFingers.width/4f,MusicalFingers.height/2f-100,MusicalFingers.width/2f,200);
+		batch.draw(rectangle,MusicalFingers.width/4f-10,MusicalFingers.height/2f-100-10,MusicalFingers.width/2f+20,200+20);
 		batch.setColor(Color.RED);
 		batch.draw(rectangle,MusicalFingers.width/4f,MusicalFingers.height/2f-100,progress*MusicalFingers.width/2f,200);
 		batch.setColor(Color.WHITE);

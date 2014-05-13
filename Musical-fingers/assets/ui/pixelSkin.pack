@@ -10,37 +10,44 @@ pixel
   orig: 512, 512
   offset: 0, 0
   index: -1
-buttonDown
+select
   rotate: false
   xy: 1, 13
-  size: 20, 10
-  orig: 20, 10
+  size: 25, 10
+  orig: 25, 10
   offset: 0, 0
   index: -1
-buttonOver
+selectOver
   rotate: false
   xy: 515, 527
-  size: 20, 10
-  orig: 20, 10
+  size: 25, 10
+  orig: 25, 10
   offset: 0, 0
   index: -1
-buttonUp
+buttonDown
   rotate: false
   xy: 1, 1
   size: 20, 10
   orig: 20, 10
   offset: 0, 0
   index: -1
-select
+buttonOver
   rotate: false
-  xy: 23, 13
+  xy: 28, 13
+  size: 20, 10
+  orig: 20, 10
+  offset: 0, 0
+  index: -1
+buttonUp
+  rotate: false
+  xy: 515, 515
   size: 20, 10
   orig: 20, 10
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 515, 524
+  xy: 542, 536
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
