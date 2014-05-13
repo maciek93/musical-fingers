@@ -31,6 +31,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 	Texture fingerPoint;
 	Texture rectangle;
 	
+	float fingerScaleFact=1.3f;
 	int sF = 1;
 	
 	FingerList fingerList;
@@ -68,6 +69,78 @@ public class Piano extends Listener implements DiscreteInputDisplay{
     
     
     public void onFrame(Controller controller) {
+    	iBox = controller.frame().interactionBox();
+    	//Set notes to false
+    	 //for(int i=0;i<5;i++) { notes[i]=false;}
+  
+
+    	
+    
+    	//new method
+    	for (Hand hand : controller.frame().hands()){
+    		//Hand right = controller.frame().hands().rightmost();
+    		Vector norm= hand.palmNormal();
+    		double  fst=-1000; double snd =-100000; double count=0;
+    		for (Finger finger : hand.fingers()) {fst=Math.max(finger.tipPosition().getY(), fst); count+=1;}
+    		for (Finger finger : hand.fingers() ) {
+    			if (finger.tipPosition().getY()!=fst) {snd=Math.max(finger.tipPosition().getY(), snd);}
+    		} 
+    		if (count<5){snd=-1000;}
+    		if (count<4){fst=-1000;}
+    		
+    		for(Finger finger : hand.fingers()) {
+    			Vector fingerEnd = finger.tipPosition().minus(finger.direction().normalized().times(finger.length()));
+    			
+    			float LRangle =fingerEnd.minus(hand.palmPosition()).angleTo(hand.direction());
+		    	 double  j=0.9; double k =1;
+		    	if(LRangle>1.6) {j=1.2;} else if (LRangle>1) {j=1;} else if (LRangle <0.20) {j=0.8;k=1.3;}
+
+    			
+    			System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
+
+    			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
+    			//Vector fingerPos =finger.tipPosition();
+    			boolean anyIn =false; 
+    			for(int i=0;i<5;i++) {
+    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ())){
+    					Vector fingerDir = finger.direction();
+    					float fingerSpeed=finger.tipVelocity().getY();
+    						
+    					      float cosAngle = fingerDir.angleTo(norm);
+    					      if (cosAngle< j*8*Math.PI/16 && fingerSpeed <-200*k
+    					    		  && finger.tipPosition().getY()!=fst &&
+    		    						finger.tipPosition().getY()!=snd){
+    					    	  
+    			    				notes[i] = true;
+    					      }	
+    			    		  if (cosAngle> j*8*Math.PI/16 || fingerSpeed >60*k){
+    	    					    	  
+        			    				notes[i] = false;
+ 
+    					      }
+    				}
+    			 }
+    		}
+    		
+    		/*for(int i=0;i<5;i++) {
+    			boolean isoff= true;
+    			for(Finger finger : hand.fingers()) {
+        			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
+    			    if (keys[i].contains(fingerPos.getX(), fingerPos.getZ())){isoff= false;}
+
+    			}
+    			if (isoff) {notes[i]=false;}
+    		}
+			*/
+    		
+    	}
+       
+    	
+
+    	fingerList = controller.frame().fingers();
+    }
+    
+ /*   public void onFrame(Controller controller) {
     	
     	boolean[] noteCopy = new boolean[5];
     	iBox = controller.frame().interactionBox();
@@ -85,7 +158,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 	    			}
 	    				//*/
     				///*
-    				if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) && (fingerPos.getY() < pianoLevel)) {
+ /*					if (keys[i].contains(fingerPos.getX(), fingerPos.getZ()) && (fingerPos.getY() < pianoLevel)) {
     					noteCopy[i] = true;
 	    			}
     				/*
@@ -93,14 +166,14 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 	    				notes[i]=false;
 	    			}
 	    			*/
-    			}
+ /*				}
     		}
     	//}
     	
     	this.setNotes(noteCopy);
     	fingerList = controller.frame().fingers();
     }
-    
+ */    
     private void sortFingerList(FingerList fingers) {
     	fingerListSorted.clear();
     	for(Finger finger : fingers) {
@@ -154,7 +227,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 		//Fingers
 		batch.setColor(Color.WHITE);
 		for(Finger finger: fingerList) {
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false);
+			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
 			batch.draw(fingerPoint,-18f+MusicalFingers.width/2f - (piano.getWidth()/2f*sF) +piano.getWidth()*sF*fingerPos.getX(),-18f+MusicalFingers.height/6f+(6+64*(1f-1f*fingerPos.getZ()))*sF,36,36);
 		}
 		
