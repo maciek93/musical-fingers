@@ -46,6 +46,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	private InteractionBox iBox;
 	
 	
+	
 	Texture rectangle;
 	Texture circle;
 	
@@ -124,7 +125,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	        Vector Position = finger.tipPosition();
 	        Vector nPos = iBox.normalizePoint(Position);
 
-			batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,nPos.getY()*MusicalFingers.height-6,12,12);
+			batch.draw(fingerPoint,nPos.getX()*MusicalFingers.width-6,(1-nPos.getZ())*MusicalFingers.height-6,12,12);
 			
 		}
 		
@@ -146,6 +147,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	
 	private void processData(Frame frame) {
 		iBox = frame.interactionBox();
+		fingers = frame.fingers();
 		notes = new boolean[12];
 		for(Pointable pointable : frame.pointables()) {
 			float z = iBox.normalizePoint(pointable.tipPosition()).getZ();
@@ -181,6 +183,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 			notes[11] = true;
 			notes[5] = false;
 		}
+		
 	}
 	
 	 private int processPointable(float z) {
