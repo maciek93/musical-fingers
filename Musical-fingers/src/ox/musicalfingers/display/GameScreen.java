@@ -327,7 +327,7 @@ public class GameScreen implements Screen{
 					GameNote note = gameNotes.get(i);
 					
 					note.pos += noteSpeed;
-					if(note.pos>=MusicalFingers.height-110f) {
+					if(note.pos>=MusicalFingers.height-110f&&time>=160) {
 						//Missed note
 						punish(note.getX(), (int) (note.getY()-note.bounds().height-40),note.note,1f);
 						gameNotes.remove(i);
