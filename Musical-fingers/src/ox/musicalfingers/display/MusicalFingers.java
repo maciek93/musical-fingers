@@ -187,7 +187,7 @@ public class MusicalFingers implements ApplicationListener{
 			pSwitch=false;
 		}
 		
-		System.out.println(pColor);
+		//System.out.println(pColor);
 		Gdx.gl.glClearColor(pColor,163f/255f,255f/255f,1);
 		
 		batch.begin();
