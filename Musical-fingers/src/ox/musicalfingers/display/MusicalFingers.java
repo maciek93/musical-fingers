@@ -213,7 +213,7 @@ public class MusicalFingers implements ApplicationListener{
 		//Draw fps in top left corner
 		font.setColor(1,1,1,1);
 		//font.setScale(1,-1);
-		font.draw(batch, ""+showfps, MusicalFingers.width-50,30);
+		//font.draw(batch, ""+showfps, MusicalFingers.width-50,30);
 		
 		batch.end();
 		

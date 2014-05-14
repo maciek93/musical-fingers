@@ -28,6 +28,7 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 	Texture fingerPoint;
 	Texture rectangle;
 	Texture drums;
+	int count = 5;
 	
 	float fingerScaleFact=1.3f;
 	int sF = 1;
@@ -68,6 +69,7 @@ public class Drum extends Listener implements DiscreteInputDisplay{
     public void onFrame(Controller controller) {
     	iBox = controller.frame().interactionBox();
     	
+    	count -=1;
 		for (int i = 0; i < 2; i++) {
 			notes[i] = false; // Stop starting previous sound.
 		}
@@ -81,10 +83,11 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 	    			if (palmVel.getY()>100){timeout=false;}
 	    			
 	    			for(int i=0;i<2;i++) {
-	    				if (keys[i].contains(palmPos.getX(), palmPos.getZ())){
+	    				if (count<=0 && keys[i].contains(palmPos.getX(), palmPos.getZ())){
 	    					if (palmVel.getY()<-100 &&!timeout) {
 	    						notes[i]=true;
 	    						timeout=true;
+	    						count = 5;
 			    			
 			    		    }
 	    				}
@@ -118,8 +121,8 @@ public class Drum extends Listener implements DiscreteInputDisplay{
 		batch.setColor(0f, 0f, 0f, 0.5f);
 		for (int i = 0; i < 2; i++) {
 			if (notes[i]) {
-				batch.setColor(Color.WHITE);
-				batch.draw(rectangle, (int ) (MusicalFingers.width/2f - 0.5*sF) ,MusicalFingers.width/2f - 55f - 0.5f*sF, sF,sF);
+				//batch.setColor(Color.WHITE);
+				//batch.draw(rectangle, (int ) (MusicalFingers.width/2f - 0.5*sF) ,MusicalFingers.width/2f - 55f - 0.5f*sF, sF,sF);
 			}
 		}
 		
