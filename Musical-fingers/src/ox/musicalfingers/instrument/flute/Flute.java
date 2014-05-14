@@ -43,7 +43,7 @@ public class Flute extends Listener implements DiscreteInputDisplay{
 	
 	float pianoLevel = 0.5f;
 	
-	MicrophoneVolume mV = new MicrophoneVolume();
+	MicrophoneVolume mV = MicrophoneVolume.getMic();
 	
 	public Flute() {
 		//Define keys in normalised InteractionBox co-ords
@@ -85,16 +85,26 @@ public class Flute extends Listener implements DiscreteInputDisplay{
     		int fId = 0;
     		for (Finger fin : fingerListSorted) {
     			if (! (fin == fin.hand().fingers().leftmost())) {
-    				System.out.println(fin.tipPosition().getY() - fin.hand().palmPosition().getY());
     				if (fin.tipPosition().getY() - fin.hand().palmPosition().getY() < 4f) {
     					fingerPressed[fId] = true;
     				} else {
     					fingerPressed[fId] = false;
     				}
-    				fId += 1;
+    				fId += 1; // FIXME
     			}
     			
     		}
+    		
+    		// interpret finger position to get note.
+    		// TODO
+    		
+    		// test whether to make noise
+    		if (mV.getMicVol() > 0.001) {
+    			System.out.println("NOISE");
+    			notes[2] = true; // TODO, actually, play the right note!
+    		}
+    		
+    		
     		
     		
     	} else {

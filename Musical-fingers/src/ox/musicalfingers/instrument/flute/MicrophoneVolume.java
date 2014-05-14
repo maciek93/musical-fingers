@@ -8,7 +8,9 @@ public class MicrophoneVolume {
 	private short[] buffer;
 	private int bufferLen = 100;
 	private float bufferLenRec = 1.0f / bufferLen;
-	public MicrophoneVolume() {
+	private static volatile MicrophoneVolume thisMic = new MicrophoneVolume();
+	
+	private MicrophoneVolume() {
 		mic = Gdx.audio.newAudioRecorder(44100, true);
 		buffer = new short[bufferLen];
 	}
@@ -20,8 +22,8 @@ public class MicrophoneVolume {
 		}
 		return Math.min(mean * bufferLenRec * (1f / 3277f), 1f);
 	}
-	protected void finalize(){
-		mic.dispose();
+	public static MicrophoneVolume getMic() {
+		return thisMic;
 	}
 	
 	
