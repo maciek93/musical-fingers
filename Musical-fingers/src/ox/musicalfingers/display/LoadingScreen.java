@@ -1,5 +1,6 @@
 package ox.musicalfingers.display;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.audio.Music;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+
 public class LoadingScreen implements Screen {
 	
 	private AssetManager manager;
@@ -23,9 +25,11 @@ public class LoadingScreen implements Screen {
 	private float progress = 0f;
 	private Texture rectangle;
 	private boolean change = false;
+	private BitmapFont font;
 	
 	public LoadingScreen(AssetManager manager) {
 		this.manager = manager;
+		font = new BitmapFont(Gdx.files.internal("assets/font/pixel.fnt"), Gdx.files.internal("assets/font/pixel.png"), false);
 	}
 
 	@Override
@@ -50,6 +54,8 @@ public class LoadingScreen implements Screen {
 		manager.load("assets/recording.png", Texture.class);
 		manager.load("assets/notPlaying.png", Texture.class);
 		manager.load("assets/playing.png", Texture.class);
+		manager.load("assets/bongo.png", Texture.class);
+
 		
 		//Font
 		manager.load("assets/font/pixel.fnt", BitmapFont.class);
@@ -120,8 +126,13 @@ public class LoadingScreen implements Screen {
 
 	@Override
 	public void draw(SpriteBatch batch) {
+		batch.setColor(Color.BLACK);
+		batch.draw(rectangle,MusicalFingers.width/4f-10,MusicalFingers.height/2f-100-10,MusicalFingers.width/2f+20,200+20);
 		batch.setColor(Color.RED);
-		batch.draw(rectangle,MusicalFingers.width/3f,MusicalFingers.height/2f-100,progress*MusicalFingers.width/3f,200);
+		batch.draw(rectangle,MusicalFingers.width/4f,MusicalFingers.height/2f-100,progress*MusicalFingers.width/2f,200);
+		batch.setColor(Color.WHITE);
+		font.setScale(3f);
+		font.draw(batch, "LOADING", MusicalFingers.width/2f-220f, MusicalFingers.height/2f+50f);
 
 	}
 

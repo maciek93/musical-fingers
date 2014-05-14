@@ -71,6 +71,10 @@ public class GamePianoInput extends Listener {
 		return bounds[i];
 	}
 	
+	public boolean isReady() {
+		return !fingerList.isEmpty();
+	}
+	
 	public void onInit (Controller controller) {
         System.out.println("Initialized GamePiano");
         fingerList = controller.frame().fingers();

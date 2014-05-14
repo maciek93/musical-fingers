@@ -96,7 +96,7 @@ public class Piano extends Listener implements DiscreteInputDisplay{
 		    	if(LRangle>1.6) {j=1.2;} else if (LRangle>1) {j=1;} else if (LRangle <0.20) {j=0.8;k=1.3;}
 
     			
-    			System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
+    			//System.out.println(LRangle+"," +(fingerEnd.getX()-hand.palmPosition().getX()));
 
     			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
     			//Vector fingerPos =finger.tipPosition();

@@ -183,17 +183,17 @@ public class InstrumentScreen implements Screen {
 		}
 		);
 		
-		String[] instrumentNames = {"     PIANO", "     GUITAR", "      DRUM", "     SAMPLER", "     FLUTE"};
+		String[] instrumentNames = {"     piano", "     guitar", "      drum", "     sampler", "     flute"};
 		
 		instruments = new SelectBox(instrumentNames, skin);
-		instruments.setPosition(MusicalFingers.width-255f, MusicalFingers.height-100f-5f);
-		instruments.setWidth(250f);
+		instruments.setPosition(MusicalFingers.width-325f, MusicalFingers.height-100f-5f);
+		instruments.setWidth(320f);
 		instruments.setHeight(100f);	
 		
-		String[] recordingNames = {"     SONG  1"	, "     SONG  2" , "     SONG  3" , "     SONG  4" , "     SONG  5"	, "     SONG  6" , "     SONG  7" , "     SONG  8" , "     SONG  9"}	;					
+		String[] recordingNames = {"     track  1"	, "     track  2" , "     track  3" , "     track  4" , "     track  5"	, "     track  6" , "     track  7" , "     track  8" , "     track  9"}	;					
 		
 		recordings = new SelectBox (recordingNames, skin);
-		recordings.setPosition(MusicalFingers.width-555f , MusicalFingers.height-105f);
+		recordings.setPosition(MusicalFingers.width-555f-50f , MusicalFingers.height-105f);
 		recordings.setWidth(250f);
 		recordings.setHeight(100f);
 		

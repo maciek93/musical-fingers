@@ -62,6 +62,9 @@ public class MusicalFingers implements ApplicationListener{
 	Texture note3;
 	Texture clef;
 	boolean drawBackground = false;
+	float pColor=0f;
+	boolean pSwitch = false;
+	float pInc = 0.0005f;
 	
 
 	@Override
@@ -170,7 +173,22 @@ public class MusicalFingers implements ApplicationListener{
 		
 		//Clear screen with black background
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glClearColor(147f/255f,210f/255f,255f/255f,1);
+		
+		if(pSwitch) {
+			pColor-=pInc;
+		} else {
+			pColor+=pInc;
+		}
+		
+		if(pColor>1f-pInc) {
+			pSwitch=true;
+		}
+		if(pColor < pInc) {
+			pSwitch=false;
+		}
+		
+		//System.out.println(pColor);
+		Gdx.gl.glClearColor(pColor,163f/255f,255f/255f,1);
 		
 		batch.begin();
 		
@@ -195,7 +213,7 @@ public class MusicalFingers implements ApplicationListener{
 		//Draw fps in top left corner
 		font.setColor(1,1,1,1);
 		//font.setScale(1,-1);
-		font.draw(batch, ""+showfps, MusicalFingers.width-50,30);
+		//font.draw(batch, ""+showfps, MusicalFingers.width-50,30);
 		
 		batch.end();
 		
@@ -203,6 +221,9 @@ public class MusicalFingers implements ApplicationListener{
 		fps++;
 		if(TimeUtils.nanoTime() - time >  (1000000000 - 1)) {
 			showfps = fps;
+			if(showfps<=55) {
+				System.out.println("Fps drop");
+			}
 			fps = 0;
 			time = TimeUtils.nanoTime();
 		}

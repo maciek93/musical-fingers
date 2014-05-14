@@ -76,7 +76,7 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 		piano = MusicalFingers.manager.get("assets/guitar_main.png");
 		fingerPoint = MusicalFingers.manager.get("assets/finger.png");
 		
-		sF = ((MusicalFingers.width/160)-2);
+		sF = (((MusicalFingers.height-110)/piano.getHeight())-2);
 		
 		for(int i=0;i<6;i++) {
 			float x = (float) (0.2 + (i * 0.1));
@@ -104,14 +104,14 @@ public class Guitar extends Listener implements DiscreteInputDisplay{
 	public void draw(SpriteBatch batch) {
 		batch.setColor(Color.WHITE);
 		
-		batch.draw(piano,160,120,sF*160,sF*80);
+		batch.draw(piano,MusicalFingers.width/2f - 80*sF,120,sF*160,sF*80);
 		
 		batch.setColor(0f,0f,0f,0.5f);
 		for(int i=0;i<6;i++) {
 			if(notes[i]) {
 				float z=1;
-				float x=147+2*sF*z;
-				float y=150+(i*13)*sF*z;
+				float x=MusicalFingers.width/2f - 80*sF;
+				float y=155+(i*13)*sF*z;
 				float width=160*sF*z;
 				float height=5*sF*z;
 				
