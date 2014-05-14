@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+
 public class LoadingScreen implements Screen {
 	
 	private AssetManager manager;
@@ -53,6 +54,8 @@ public class LoadingScreen implements Screen {
 		manager.load("assets/recording.png", Texture.class);
 		manager.load("assets/notPlaying.png", Texture.class);
 		manager.load("assets/playing.png", Texture.class);
+		manager.load("assets/bongo.png", Texture.class);
+
 		
 		//Font
 		manager.load("assets/font/pixel.fnt", BitmapFont.class);
