@@ -97,6 +97,10 @@ public class Flute extends Listener implements DiscreteInputDisplay{
     		}
     		
     		
+    	} else {
+    		for (int f = 0; f < 8; f++) {
+    			fingerPressed[f] = false;
+    		}
     	}
     }
     
