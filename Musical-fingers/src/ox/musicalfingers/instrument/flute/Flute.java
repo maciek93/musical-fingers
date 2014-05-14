@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
+import java.util.*;
 
 import ox.musicalfingers.display.MusicalFingers;
 import ox.musicalfingers.instrument.DiscreteInputDisplay;
@@ -23,15 +24,15 @@ import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Vector;
 
 public class Flute extends Listener implements DiscreteInputDisplay{
+	private static int noteCount = 14;
 	
-	private boolean[] notes = new boolean[5];
+	private boolean[] notes = new boolean[noteCount];
 	private int[] fingeringX = new int[8]; 
 	private int[] fingeringY = new int[8]; // where to draw dots if things are held.
 	private boolean[] fingerPressed = new boolean[8];
 	
 	Texture flute;
 	Texture fingerPoint;
-	Texture rectangle;
 	
 	float fingerScaleFact=1.3f;
 	int sF = 1;
@@ -41,9 +42,9 @@ public class Flute extends Listener implements DiscreteInputDisplay{
 	
 	ArrayList<Finger> fingerListSorted = new ArrayList<Finger>(10);
 	
-	float pianoLevel = 0.5f;
-	
 	MicrophoneVolume mV = MicrophoneVolume.getMic();
+	long lastNotePlayed = -1000;
+	long noteDuration = 1000;
 	
 	public Flute() {
 		//Define keys in normalised InteractionBox co-ords
@@ -64,11 +65,6 @@ public class Flute extends Listener implements DiscreteInputDisplay{
 		sF = (int) (MusicalFingers.height/flute.getHeight()/1.5f);
 		//sF-=2;
 		
-		//Rectangle
-		Pixmap pixmap = new Pixmap( 1,1, Format.RGBA8888 );
-		pixmap.setColor( 1,1,1,1);
-		pixmap.fill();
-		rectangle = new Texture(pixmap);
 	}
 	
     public void onInit (Controller controller) {
@@ -81,37 +77,73 @@ public class Flute extends Listener implements DiscreteInputDisplay{
     public void onFrame(Controller controller) {
     	fingerList = controller.frame().fingers();
     	sortFingerList(fingerList);
-    	if (fingerList.count() == 10) { // if we can see all 10 fingers
+    	// if (fingerList.count() == 10) { // if we can see all 10 fingers
     		int fId = 0;
     		for (Finger fin : fingerListSorted) {
-    			if (! (fin == fin.hand().fingers().leftmost())) {
+    			if (! (fin == fin.hand().fingers().leftmost()) && fId < 8) {
     				if (fin.tipPosition().getY() - fin.hand().palmPosition().getY() < 4f) {
     					fingerPressed[fId] = true;
     				} else {
     					fingerPressed[fId] = false;
     				}
-    				fId += 1; // FIXME
+    				fId += 1;
     			}
     			
     		}
     		
-    		// interpret finger position to get note.
-    		// TODO
+    		int noteToPlay = -1;
+    		int binary = 0;
+    		int multiplier = 1;
+    		for (int i = 7; i >= 0; i--) {
+    			if (fingerPressed[i]) binary += multiplier;
+    			multiplier *= 2;
+    		}
+    	
+			if (binary >= 239) {
+    			noteToPlay = 1;
+    			} else if (binary >= 238) {
+    			noteToPlay = 0;
+    			} else if (binary >= 237) {
+    			noteToPlay = 2;
+    			} else if (binary >= 233) {
+    			noteToPlay = 3;
+    			} else if (binary >= 227) {
+    			noteToPlay = 4;
+    			} else if (binary >= 225) {
+    			noteToPlay = 5;
+    			} else if (binary >= 241) {
+    			noteToPlay = 6;
+    			} else if (binary >= 193) {
+    			noteToPlay = 7;
+    			} else if (binary >= 137) {
+    			noteToPlay = 8;
+    			} else if (binary >= 129) {
+    			noteToPlay = 9;
+    			} else if (binary >= 111) {
+    			noteToPlay = 13;
+    			} else if (binary >= 110) {
+    			noteToPlay = 12;
+    		}
+			
+    		System.out.println(binary + "   " + noteToPlay);
     		
-    		// test whether to make noise
-    		if (mV.getMicVol() > 0.001) {
-    			System.out.println("NOISE");
-    			notes[2] = true; // TODO, actually, play the right note!
+    		for (int i = 0; i < noteCount; i++) {
+    			notes[i] = false;
     		}
     		
-    		
-    		
-    		
-    	} else {
-    		for (int f = 0; f < 8; f++) {
-    			fingerPressed[f] = false;
+    		if (System.currentTimeMillis() - lastNotePlayed > noteDuration ){
+	    		float vol = mV.getMicVol();
+	    		// test whether to make noise
+	    		if (vol > 0.015) {
+	    			if (noteToPlay >= 0) {
+		    			lastNotePlayed = System.currentTimeMillis();
+		    			notes[noteToPlay] = true;
+	    			}
+	    		}
     		}
-    	}
+	    		
+    		
+    	// }
     }
     
     private void sortFingerList(FingerList fingers) {
@@ -148,14 +180,6 @@ public class Flute extends Listener implements DiscreteInputDisplay{
 			if (fingerPressed[i]) {
 				batch.draw(fingerPoint,-12f+MusicalFingers.width/2f - (flute.getWidth()/2f*sF) +fingeringX[i]*sF,-12f+MusicalFingers.height/6f+ fingeringY[i]*sF,24,24);
 			}
-		}
-		
-		//Fingers
-		for(Finger finger: fingerList) {
-
-			Vector fingerPos = iBox.normalizePoint(finger.tipPosition(),false).times(fingerScaleFact);
-			batch.draw(fingerPoint,-12f+MusicalFingers.width/2f - (flute.getWidth()/2f*sF) +flute.getWidth()*sF*fingerPos.getX(),-12f+MusicalFingers.height/6f+(6+64*(1f-1f*fingerPos.getZ()))*sF,24,24);
-
 		}
 		
 	}
