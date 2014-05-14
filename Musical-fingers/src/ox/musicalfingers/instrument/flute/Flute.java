@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
+import java.util.*;
 
 import ox.musicalfingers.display.MusicalFingers;
 import ox.musicalfingers.instrument.DiscreteInputDisplay;
@@ -41,6 +42,8 @@ public class Flute extends Listener implements DiscreteInputDisplay{
 	ArrayList<Finger> fingerListSorted = new ArrayList<Finger>(10);
 	
 	MicrophoneVolume mV = MicrophoneVolume.getMic();
+	long lastNotePlayed = -1000;
+	long noteDuration = 1000;
 	
 	public Flute() {
 		//Define keys in normalised InteractionBox co-ords
@@ -89,14 +92,17 @@ public class Flute extends Listener implements DiscreteInputDisplay{
     		
     		// interpret finger position to get note.
     		// TODO
-    		
-    		float vol = mV.getMicVol();
-    		// test whether to make noise
-    		if (vol > 0.02) {
-    			System.out.println("NOISE " + vol);
-    			notes[0] = true; // TODO, actually, play the right note!
+    		notes[0] = false;
+    		if (System.currentTimeMillis() - lastNotePlayed > noteDuration ){
+	    		float vol = mV.getMicVol();
+	    		// test whether to make noise
+	    		if (vol > 0.015) {
+	    			System.out.println("NOISE " + vol);
+	    			lastNotePlayed = System.currentTimeMillis();
+	    			notes[0] = true; // TODO, actually, play the right note!
+	    		}
     		}
-    		
+	    		
     		
     	// }
     }
