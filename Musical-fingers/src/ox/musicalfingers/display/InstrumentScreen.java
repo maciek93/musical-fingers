@@ -154,7 +154,7 @@ public class InstrumentScreen implements Screen {
 						} else if(instruments.getSelectionIndex() == 4) {
 							// flute
 							recordedOutput = new FluteOutput();
-						} 
+						}
 	
 					}
 					recording = !recording;
