@@ -141,7 +141,8 @@ public class GameScreen implements Screen{
         font.setColor(Color.RED);
         t = System.nanoTime();
         song = new Note[] {new Note(2,30),new Note(2,60),new Note(2,90),new Note(0,120),new Note(1,150),new Note(1,180),new Note(0,210),new 
-        		Note(4,270),new Note(4,300),new Note(3,330),new Note(3,360),new Note(2,390),new Note(0,480)};
+        		Note(4,270),new Note(4,300),new Note(3,330),new Note(3,360),new Note(2,390),new Note(0,480),new Note(2,510),new Note(2,540),new Note(2,570),new Note(0,600),new Note(1,630),new Note(1,660),new Note(0,690),new 
+        		Note(4,750),new Note(4,780),new Note(3,810),new Note(3,840),new Note(2,870),new Note(0,900), new Note(0,915)};
          Note [] song1 = new Note[] {
         		new Note(2,30),new Note(1,60),new Note(0,90),new Note(1,120),
         		new Note(2,150),new Note(2,180),new Note(2,210),
