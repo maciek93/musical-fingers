@@ -10,12 +10,14 @@ import ox.musicalfingers.instrument.DiscreteInputDisplay;
 import ox.musicalfingers.instrument.DiscreteOutput;
 import ox.musicalfingers.instrument.DrumOutput;
 import ox.musicalfingers.instrument.GuitarOutput;
+import ox.musicalfingers.instrument.sampler.SamplerOutput;
+import ox.musicalfingers.instrument.FluteOutput;
 import ox.musicalfingers.instrument.Piano.Piano;
 import ox.musicalfingers.instrument.Random.FiveNotes;
 import ox.musicalfingers.instrument.drum.Drum;
 import ox.musicalfingers.instrument.guitar.Guitar;
 import ox.musicalfingers.instrument.sampler.Sampler;
-import ox.musicalfingers.instrument.sampler.SamplerOutput;
+import ox.musicalfingers.instrument.flute.Flute;
 import ox.musicalfingers.recording.Recorder;
 
 import com.badlogic.gdx.Gdx;
@@ -149,7 +151,10 @@ public class InstrumentScreen implements Screen {
 						} else if(instruments.getSelectionIndex() == 3) {
 							// Sampler
 							recordedOutput = new SamplerOutput();
-						}
+						} else if(instruments.getSelectionIndex() == 4) {
+							// flute
+							recordedOutput = new FluteOutput();
+						} 
 	
 					}
 					recording = !recording;
@@ -178,7 +183,7 @@ public class InstrumentScreen implements Screen {
 		}
 		);
 		
-		String[] instrumentNames = {"     PIANO", "     GUITAR", "      DRUM", "     SAMPLER"};
+		String[] instrumentNames = {"     PIANO", "     GUITAR", "      DRUM", "     SAMPLER", "     FLUTE"};
 		
 		instruments = new SelectBox(instrumentNames, skin);
 		instruments.setPosition(MusicalFingers.width-255f, MusicalFingers.height-100f-5f);
@@ -237,6 +242,10 @@ public class InstrumentScreen implements Screen {
 				//Sampler
 				output = new SamplerOutput();
 				inputDisplay = new Sampler();
+			} else if(instruments.getSelectionIndex() == 4) {
+				//Flute
+				output = new FluteOutput();
+				inputDisplay = new Flute();
 			}
 			
 			controller.addListener((Listener) inputDisplay);
