@@ -94,7 +94,7 @@ public class LoadingScreen implements Screen {
 		manager.load("assets/sampler.png", Texture.class);
 
 		
-		for (int i = 1; i < 13; i++){
+		for (int i = 1; i <= 14; i++){
 			manager.load("assets/flute/flute" + i + ".mp3", Sound.class);
 		}
 		manager.load("assets/flute.png", Texture.class);

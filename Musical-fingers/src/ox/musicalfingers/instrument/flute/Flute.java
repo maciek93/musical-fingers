@@ -24,8 +24,9 @@ import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Vector;
 
 public class Flute extends Listener implements DiscreteInputDisplay{
+	private static int noteCount = 14;
 	
-	private boolean[] notes = new boolean[5];
+	private boolean[] notes = new boolean[noteCount];
 	private int[] fingeringX = new int[8]; 
 	private int[] fingeringY = new int[8]; // where to draw dots if things are held.
 	private boolean[] fingerPressed = new boolean[8];
@@ -90,16 +91,54 @@ public class Flute extends Listener implements DiscreteInputDisplay{
     			
     		}
     		
-    		// interpret finger position to get note.
-    		// TODO
-    		notes[0] = false;
+    		int noteToPlay = -1;
+    		int binary = 0;
+    		int multiplier = 1;
+    		for (int i = 7; i >= 0; i--) {
+    			if (fingerPressed[i]) binary += multiplier;
+    			multiplier *= 2;
+    		}
+    	
+			if (binary >= 239) {
+    			noteToPlay = 1;
+    			} else if (binary >= 238) {
+    			noteToPlay = 0;
+    			} else if (binary >= 237) {
+    			noteToPlay = 2;
+    			} else if (binary >= 233) {
+    			noteToPlay = 3;
+    			} else if (binary >= 227) {
+    			noteToPlay = 4;
+    			} else if (binary >= 225) {
+    			noteToPlay = 5;
+    			} else if (binary >= 241) {
+    			noteToPlay = 6;
+    			} else if (binary >= 193) {
+    			noteToPlay = 7;
+    			} else if (binary >= 137) {
+    			noteToPlay = 8;
+    			} else if (binary >= 129) {
+    			noteToPlay = 9;
+    			} else if (binary >= 111) {
+    			noteToPlay = 13;
+    			} else if (binary >= 110) {
+    			noteToPlay = 12;
+    		}
+			
+    		System.out.println(binary + "   " + noteToPlay);
+    		
+    		for (int i = 0; i < noteCount; i++) {
+    			notes[i] = false;
+    		}
+    		
     		if (System.currentTimeMillis() - lastNotePlayed > noteDuration ){
 	    		float vol = mV.getMicVol();
 	    		// test whether to make noise
 	    		if (vol > 0.015) {
-	    			System.out.println("NOISE " + vol);
-	    			lastNotePlayed = System.currentTimeMillis();
-	    			notes[0] = true; // TODO, actually, play the right note!
+	    			if (noteToPlay >= 0) {
+		    			lastNotePlayed = System.currentTimeMillis();
+		    			notes[noteToPlay] = true;
+	    			}
 	    		}
     		}
 	    		
