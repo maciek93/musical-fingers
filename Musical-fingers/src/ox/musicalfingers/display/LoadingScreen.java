@@ -124,7 +124,7 @@ public class LoadingScreen implements Screen {
 		batch.draw(rectangle,MusicalFingers.width/4f,MusicalFingers.height/2f-100,progress*MusicalFingers.width/2f,200);
 		batch.setColor(Color.WHITE);
 		font.setScale(3f);
-		font.draw(batch, "Loading", MusicalFingers.width/2f-190f, MusicalFingers.height/2f+50f);
+		font.draw(batch, "LOADING", MusicalFingers.width/2f-190f, MusicalFingers.height/2f+50f);
 
 	}
 
