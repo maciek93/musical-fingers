@@ -51,7 +51,7 @@ public class Sampler extends Listener implements DiscreteInputDisplay{
 		fingerPoint = MusicalFingers.manager.get("assets/finger.png");
 		
 		//ScaleFactor
-		sF = MusicalFingers.width/sampler.getWidth();
+		sF = (MusicalFingers.height-110)/sampler.getHeight();
 		sF-=2;
 		
 		//Rectangle
